@@ -54,7 +54,6 @@ Route::get('/', function () {return view('home');})->name('accueil');
         Route::post('/add_roles' , [RoleController::class , 'add_roles'])->name('add_roles');
         Route::put('/update_roles/{id}' , [RoleController::class , 'update_roles'])->name('update_roles');
         Route::delete('/delete_roles/{id}' , [RoleController::class , 'delete_roles'])->name('delete_roles');
-        Route::get('verification_paiement', function(){return view('verification_paiement');})->name('verification_paiement');
         Route::get('/liste_boutiques' , [SuperAdminController::class , 'liste_boutiques'])->name('liste_boutiques');
         Route::get('/liste_utilisateurs' , [SuperAdminController::class , 'liste_utilisateurs'])->name('liste_utilisateurs');
         Route::get('/stats_superAdmin' , [StatistiquesController::class , 'statistiques_admin'])->name('stats_superAdmin');
@@ -83,6 +82,7 @@ Route::middleware(['auth' , 'role:admin'])->group(function () {
     Route::delete('/delete_boutique/{id}',[BoutiquesController::class , 'boutique_delete'])->name( 'delete_boutiques');
     Route::get('packages', function(){ return view('Admin.packages');})->name('packages');
     Route::get('/mes_paiements' , [PaiementController::class , 'mes_paiements'])->name('mes_paiements');
+    Route::get('verification_paiement', function(){return view('verification_paiement');})->name('verification_paiement');
 });
 
 Route::middleware(['auth' , 'role:admin', 'check.boutique'])->group(function() {
