@@ -269,7 +269,7 @@
                         </div>
 
                         <div class="col-lg-4 col-md-6 mb-4">
-                            <form action="{{route('update_plan')}}" method="POST">
+                            <form action="{{route('packageUpdate')}}" method="POST">
                                 @csrf
                                 <input type="hidden" name="type_package" value="regular">
                                 <input type="hidden" name="prix_abonnement" value="25">

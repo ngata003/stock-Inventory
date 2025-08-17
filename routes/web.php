@@ -86,7 +86,7 @@ Route::middleware(['auth' , 'role:admin'])->group(function () {
 });
 
 Route::middleware(['auth' , 'role:admin', 'check.boutique'])->group(function() {
-    Route::post('/update_plan' , [PackageController::class , 'update_plan'])->name('update_plan');
+    Route::post('/update_plan' , [PackageController::class , 'update_plan'])->name('packageUpdate');
     Route::get('/update_view' , [PackageController::class , 'update_view'])->name('update_view');
 });
 /*FIN ROUTES ADMIN*/
