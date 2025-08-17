@@ -41,7 +41,7 @@ use Maatwebsite\Excel\Facades\Excel;
     Route::get('/sign_up', function () {return view('Users.auth.inscription');})->name('inscription');
     Route::get('/login', function () {return view('Users.auth.connexion');})->name('login');
     Route::post('signup' , [UserController::class, 'signup'])->name('signup');
-    Route::post('login' , [UserController::class, 'login_post'])->name('login');
+    Route::post('login' , [UserController::class, 'login_post'])->name('login_post');
 /*FIN ROUTES AUTHENTIFICATION*/
 
 Route::get('/', function () {return view('home');})->name('accueil');

@@ -13,26 +13,19 @@
     <link rel="stylesheet" href="{{asset('assets/vendors/css/vendor.bundle.base.css')}}">
     <link rel="stylesheet" href="{{asset('assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css')}}../../">
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
   </head>
   <body>
     <div class="container-scroller">
       <div class="container-fluid page-body-wrapper full-page-wrapper">
         <div class="content-wrapper d-flex align-items-center auth px-0">
           <div class="row w-100 mx-0">
-            <div class="col-lg-4 mx-auto">
-                @if (session('success'))
-                  <div class="alert alert-success">
-                    {{ session('success') }}
-                  </div>
-                @endif
               <div class="auth-form-light text-left py-5 px-4 px-sm-5">
                 <div class="brand-logo">
                   <img src="{{asset('assets/images/logo.svg')}} " alt="logo">
                 </div>
                 <h4>Hello Deja de retour ?</h4>
                 <h6 class="fw-light">Connectez-vous pour continuer.</h6>
-                <form class="pt-3" method="POST" action="{{route('login')}}">
+                <form class="pt-3" method="POST" action="{{route('login_post')}}">
                     @csrf
                     <div class="form-group">
                         <input type="email" class="form-control form-control-lg" name="email" id="exampleInputEmail1" placeholder="votre email">
