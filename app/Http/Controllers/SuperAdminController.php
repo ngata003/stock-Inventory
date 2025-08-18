@@ -39,6 +39,6 @@ class SuperAdminController extends Controller
         $nb_fournisseurs = Fournisseur::whereIn('fk_boutique', $boutiques_admin->pluck('id'))->count();
         $package = Package::where('fk_createur' , $id)->first();
 
-        return view('superAdmin.details_utilisateurs', compact('boutiques_admin', 'nb_boutiques', 'nb_coursiers', 'nb_employes', 'nb_fournisseurs', 'package'));
+        return view('SuperAdmin.details_utilisateurs', compact('boutiques_admin', 'nb_boutiques', 'nb_coursiers', 'nb_employes', 'nb_fournisseurs', 'package'));
     }
 }
