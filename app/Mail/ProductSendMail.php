@@ -43,7 +43,7 @@ class ProductSendMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'Users.Produits.product_mail',
+            view: 'Users.produits.product_mail',
 
             with:[
                 'product' => $this->product,
