@@ -35,7 +35,7 @@ class RoleController extends Controller
 
     public function roles_view(){
 
-        $roles = Role::all();
+        $roles = Role::paginate(6);
         return view('SuperAdmin.roles', compact('roles'));
 
     }

@@ -85,6 +85,7 @@ Route::middleware(['auth' , 'role:admin'])->group(function () {
     Route::get('verification_paiement', function(){return view('verification_paiement');})->name('verification_paiement');
 });
 
+
 Route::middleware(['auth' , 'role:admin', 'check.boutique'])->group(function() {
     Route::post('/update_plan' , [PackageController::class , 'update_plan'])->name('packageUpdate');
     Route::get('/update_view' , [PackageController::class , 'update_view'])->name('update_view');
