@@ -24,7 +24,7 @@
     <div class="container-scroller">
       @include('includes.user_profil_include')
       <div class="container-fluid page-body-wrapper">
-        @include('superAdmin.includes_nav')
+        @include('includes.includes_nav')
         <div class="main-panel">
           <div class="content-wrapper">
             <div class="row">
