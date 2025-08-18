@@ -14,7 +14,7 @@ class suggestionsController extends Controller
     //
     public function suggestions_view(){
         $superadmin = User::where('type' , 'superadmin')->first();
-        return view('admin.suggestions' , compact('superadmin'));
+        return view('Admin.suggestions' , compact('superadmin'));
     }
 
     public function send_suggestions(Request $request){
