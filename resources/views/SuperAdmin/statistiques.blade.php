@@ -24,7 +24,7 @@
     <div class="container-scroller">
         @include('includes.nav_include')
       <div class="container-fluid page-body-wrapper">
-       @include('includes.includes-nav')
+       @include('includes.adminNavig')
         <div class="main-panel">
           <div class="content-wrapper">
             <div class="row">
