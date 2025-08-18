@@ -35,7 +35,7 @@
                         <p class="card-subtitle card-subtitle-dash">managez vos fournisseurs en toute aisance</p>
                       </div>
                       <div>
-                        <button class="btn btn-primary btn-lg text-white mb-0 me-0" data-bs-toggle="modal" data-bs-target="#shopModal" type="button"><i class="mdi mdi-plus"></i></button>
+                        <button class="add btn btn-icons btn-rounded btn-primary todo-list-add-btn text-white me-0 pl-12p"  data-bs-toggle="modal" data-bs-target="#shopModal" type="button"><i class="mdi mdi-plus"></i></button>
                       </div>
                     </div>
                     <div class="table-responsive">
