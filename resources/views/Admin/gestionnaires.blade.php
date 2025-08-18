@@ -74,7 +74,7 @@
                         <p class="card-subtitle card-subtitle-dash">managez vos employés en toute aisance</p>
                       </div>
                       <div>
-                        <button class="btn btn-primary btn-lg text-white mb-0 me-0" data-bs-toggle="modal" data-bs-target="#shopModal" type="button"><i class="mdi mdi-account-plus"></i> Ajouter un employé </button>
+                        <button class="btn btn-primary btn-lg text-white mb-0 me-0" data-bs-toggle="modal" data-bs-target="#shopModal" type="button"><i class="mdi mdi-plus"></i></button>
                       </div>
                     </div>
                     <div class="table-responsive">

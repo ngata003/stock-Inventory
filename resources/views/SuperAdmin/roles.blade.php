@@ -37,7 +37,7 @@
                                      <p class="card-subtitle card-subtitle-dash">managez les roles en toute aisance</p>
                                     </div>
                                     <div>
-                                      <button class="btn btn-primary btn-lg text-white mb-0 me-0" data-bs-toggle="modal" data-bs-target="#shopModal" type="button"><i class="mdi mdi-shield-account"></i></i>Ajouter un role</button>
+                                      <button class="btn btn-primary btn-lg text-white mb-0 me-0" data-bs-toggle="modal" data-bs-target="#shopModal" type="button"><i class="mdi mdi-plus"></i></button>
                                     </div>
                                   </div>
                                   <div class="table-responsive mt-1">

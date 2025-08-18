@@ -38,7 +38,7 @@
                                      <p class="card-subtitle card-subtitle-dash"> gerez tous les approvisionnements des produits de votre boutique </p>
                                     </div>
                                     <div>
-                                      <button class="btn btn-primary btn-lg text-white mb-0 me-0" data-bs-toggle="modal" data-bs-target="#shopModal" type="button"><i class=" mdi mdi-package-variant"></i></i>Effectuer un reapprovisionnement de produit </button>
+                                      <button class="btn btn-primary btn-lg text-white mb-0 me-0" data-bs-toggle="modal" data-bs-target="#shopModal" type="button"><i class=" mdi mdi-plus"></i></i></button>
                                     </div>
                                   </div>
 

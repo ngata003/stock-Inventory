@@ -35,7 +35,7 @@
                         <p class="card-subtitle card-subtitle-dash">managez vos Produits en toute aisance</p>
                       </div>
                       <div>
-                        <button class="btn btn-primary btn-lg text-white mb-0 me-0" data-bs-toggle="modal" data-bs-target="#shopModal" type="button"><i class="mdi mdi-package-variant"></i> Ajouter un nouveau produit </button>
+                        <button class="btn btn-primary btn-lg text-white mb-0 me-0" data-bs-toggle="modal" data-bs-target="#shopModal" type="button"><i class="mdi mdi-plus"></i></button>
                       </div>
                     </div>
                     <div class="table-responsive">
