@@ -50,7 +50,7 @@
                             <th> utilisateur </th>
                             <th> status </th>
                             <th> date paiement </th>
-                            <th colspan="2"> Action </th>
+                            <th> Action </th>
                           </tr>
                         </thead>
                         <tbody>
@@ -59,13 +59,13 @@
                             <td>{{$pay->montant}}</td>
                             <td>{{$pay->packages->type_package}}</td>
                             <td>{{$pay->createurs->name}}</td>
-                            @if ($pay->statut)
+                            @if ($pay->statut === "valide")
                                 <td class="text-success fw-bold">
                                     <label class="badge badge-success">✔ payé</label>
                                 </td>
                             @else
                                 <td class="text-danger fw-bold">
-                                    <label class="badge badge-danger"> ✖ Non payé </label>
+                                    <label class="badge badge-warning"> … En attente </label>
                                 </td>
                             @endif
                             <td>{{$pay->date_paiement}}</td>

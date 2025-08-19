@@ -36,22 +36,21 @@
                         <input type="password" name="password" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="Password">
                         <i class="bi bi-eye-slash position-absolute top-50 end-0 translate-middle-y me-3" id="togglePassword" style="cursor: pointer;"></i>
                     </div>
-                  <div class="mt-3 d-grid gap-2">
-                    <input type="submit" name="save" value="Connectez-vous" class="btn btn-block btn-primary btn-lg fw-medium auth-form-btn">
-                  </div>
-                  <div class="my-2 d-flex justify-content-between align-items-center">
                     <div class="form-check">
                       <label class="form-check-label text-muted">
                         <input type="checkbox" name="remember" class="form-check-input"> Se souvenir de moi </label>
                     </div>
-                    <a href="{{route('reset_password')}}" class="auth-link text-primary">mot de passe oublié ?</a>
+                  <div class="mt-3 d-grid gap-2">
+                    <input type="submit" name="save" value="Connectez-vous" class="btn btn-block btn-primary btn-lg fw-medium auth-form-btn">
+                  </div>
+                  <div class="my-2 d-flex justify-content-between align-items-center">
+
                   </div>
                   <div class="mb-2 d-grid gap-2">
-                    <button type="button" class="btn btn-block btn-facebook auth-form-btn">
+                    <button type="button" class="btn btn-block btn-google auth-form-btn">
                       <i class="ti-google me-2"></i>connexion avec google </button>
                   </div>
-                  <div class="text-center mt-4 fw-light"> Pas encore inscrit? <a href="{{route('inscription')}}" class="text-primary">creer votre compte</a>
-                  </div>
+                  <div class="text-center mt-4 fw-light"> Mot de passe oublié? <a href="{{route('reset_password')}}" class="text-primary">changez de mot de passe ici </a></div>
                 </form>
               </div>
             </div>

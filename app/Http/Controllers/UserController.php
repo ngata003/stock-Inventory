@@ -214,7 +214,7 @@ class UserController extends Controller
 
 
 
-        $link = "http://127.0.0.1:8000/login";
+        $link = "https://camestocks.com/login";
         Mail::to($validated['email'])->send( new PasswordEmployesMail($validated['email'], $validated['name'] , $password , $link));
 
 
@@ -370,7 +370,7 @@ class UserController extends Controller
 
     public function reset_password(){
 
-        return view('Users.password_forget');
+        return view('Users.auth.password_forget');
     }
 
    public function sendResetLinkEmail(Request $request)
@@ -401,7 +401,7 @@ class UserController extends Controller
 
     public function showResetForm($token, Request $request)
     {
-        return view('reset_password', [
+        return view('Users.auth.reset_password', [
             'token' => $token,
             'email' => $request->query('email')
         ]);
