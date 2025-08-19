@@ -29,24 +29,22 @@
               <div class="col-lg-12 grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">
-                    <div class="d-sm-flex justify-content-between align-items-start">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
                       <div>
                         <h4 class="card-title card-title-dash">Espace Fournisseurs </h4>
                         <p class="card-subtitle card-subtitle-dash">managez vos fournisseurs en toute aisance</p>
                       </div>
-                      <div>
                         <button class="add btn btn-icons btn-rounded btn-primary todo-list-add-btn text-white me-0 pl-12p"  data-bs-toggle="modal" data-bs-target="#shopModal" type="button"><i class="mdi mdi-plus"></i></button>
-                      </div>
                     </div>
                     <div class="table-responsive">
-                      <table class="table table-striped">
+                      <table class="table table-striped table-sm align-middle">
                         <thead>
                           <tr>
                             <th> Nom  </th>
                             <th> Email  </th>
                             <th> Adresse </th>
                             <th>Telephone</th>
-                            <th colspan="2"> Action </th>
+                            <th> Action </th>
                           </tr>
                         </thead>
                         <tbody>
@@ -57,8 +55,8 @@
                                     <td>{{$fournis->adresse}}</td>
                                     <td>{{$fournis->telephone}}</td>
                                     <td>
-                                        <button type="button" class="btn btn-success" data-id="{{$fournis->id}}" data-nom="{{$fournis->nom_fournisseur}}" data-email="{{$fournis->email}}" data-telephone="{{$fournis->telephone}}" data-adresse="{{$fournis->adresse}}" onclick="openEditModal(this)"> Modifier</button>
-                                        <button type="button" class="btn btn-danger" data-id="{{$fournis->id}}" onclick="openSuppModal(this)"> Supprimer </button>
+                                        <button type="button" class="btn btn-success btn-sm me-1" data-id="{{$fournis->id}}" data-nom="{{$fournis->nom_fournisseur}}" data-email="{{$fournis->email}}" data-telephone="{{$fournis->telephone}}" data-adresse="{{$fournis->adresse}}" onclick="openEditModal(this)"><i class="mdi mdi-pencil"></i></button>
+                                        <button type="button" class="btn btn-danger btn-sm" data-id="{{$fournis->id}}" onclick="openSuppModal(this)"> <i class="mdi mdi-trash-can-outline"></i> </button>
                                     </td>
                                 </tr>
                             @empty

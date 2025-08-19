@@ -68,17 +68,15 @@
               <div class="col-lg-12 grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">
-                    <div class="d-sm-flex justify-content-between align-items-start">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
                       <div>
                         <h4 class="card-title card-title-dash"> Espace Employés  </h4>
                         <p class="card-subtitle card-subtitle-dash">managez vos employés en toute aisance</p>
                       </div>
-                      <div>
                         <button class="add btn btn-icons btn-rounded btn-primary todo-list-add-btn text-white me-0 pl-12p" data-bs-toggle="modal" data-bs-target="#shopModal" type="button"><i class="mdi mdi-plus"></i></button>
-                      </div>
                     </div>
                     <div class="table-responsive">
-                      <table class="table table-striped">
+                      <table class="table table-striped table-sm align-middle">
                         <thead>
                           <tr>
                             <th> Nom  </th>
@@ -114,8 +112,8 @@
                                         <img src="{{asset('assets/images/'.$gest->piece_identite)}}" alt="">
                                     </td>
                                     <td>
-                                            <button type="button" class="btn btn-success" data-id="{{$gest->id}}" data-role="{{$gest->role}}" data-nom="{{$gest->name}}" data-email="{{$gest->email}}" data-contact="{{$gest->contact}}" data-adresse="{{$gest->adresse}}" data-profil="{{$gest->profil}}" data-piece_identite="{{$gest->piece_identite}}" onclick="openEditModal(this)"> Modifier</button>
-                                            <button type="button" class="btn btn-danger" data-id="{{$gest->id}}" onclick="openSuppModal(this)"> Supprimer </button>
+                                        <button type="button"  class="btn btn-success btn-sm me-1" data-id="{{$gest->id}}" data-role="{{$gest->role}}" data-nom="{{$gest->name}}" data-email="{{$gest->email}}" data-contact="{{$gest->contact}}" data-adresse="{{$gest->adresse}}" data-profil="{{$gest->profil}}" data-piece_identite="{{$gest->piece_identite}}" onclick="openEditModal(this)"> <i class="mdi mdi-pencil"></i></button>
+                                        <button type="button" class="btn btn-danger btn-sm" data-id="{{$gest->id}}" onclick="openSuppModal(this)"> <i class="mdi mdi-trash-can-outline"></i> </button>
                                     </td>
                                 </tr>
                             @empty

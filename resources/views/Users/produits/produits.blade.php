@@ -29,17 +29,15 @@
               <div class="col-lg-12 grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">
-                    <div class="d-sm-flex justify-content-between align-items-start">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
                       <div>
                         <h4 class="card-title card-title-dash">Espace Produits </h4>
                         <p class="card-subtitle card-subtitle-dash">managez vos Produits en toute aisance</p>
                       </div>
-                      <div>
                         <button class="add btn btn-icons btn-rounded btn-primary todo-list-add-btn text-white me-0 pl-12p"  data-bs-toggle="modal" data-bs-target="#shopModal" type="button"><i class="mdi mdi-plus"></i></button>
-                      </div>
                     </div>
                     <div class="table-responsive">
-                      <table class="table table-striped">
+                      <table class="table table-striped table-sm align-middle">
                         <thead>
                           <tr>
                             <th> Nom produit  </th>
@@ -76,9 +74,9 @@
                                     <img src="{{asset('assets/images/qrCodes/'.$prod->qr_code)}}" alt="image" />
                                 </td>
                                 <td>
-                                    <button type="button" data-id="{{$prod->id}}" data-nom="{{$prod->nom_produit}}" data-image="{{$prod->image_produit}}" data-vente="{{$prod->prix_vente}}" data-achat="{{$prod->prix_achat}}" data-description="{{ $prod->description}}" data-produit_pris="{{$prod->produit_pris}}" data-commande="{{$prod->qte_commandee}}" data-reste="{{$prod->qte_restante}}" onclick="openEditModal(this)" class="btn btn-success">Modifier</button>
-                                    <button type="button" data-id="{{$prod->id}}" onclick="openSuppModal(this)" class="btn btn-danger">Supprimer</button>
-                                    <button type="button" data-id="{{$prod->id}}" class="btn btn-dark"><i class="icon-printer"></i> Qr Code</button>
+                                    <button type="button" data-id="{{$prod->id}}" data-nom="{{$prod->nom_produit}}" data-image="{{$prod->image_produit}}" data-vente="{{$prod->prix_vente}}" data-achat="{{$prod->prix_achat}}" data-description="{{ $prod->description}}" data-produit_pris="{{$prod->produit_pris}}" data-commande="{{$prod->qte_commandee}}" data-reste="{{$prod->qte_restante}}" onclick="openEditModal(this)" class="btn btn-success btn-sm me-1"><i class="mdi mdi-pencil"></i></button>
+                                    <button type="button" data-id="{{$prod->id}}" onclick="openSuppModal(this)" class="btn btn-danger btn-sm"><i class="mdi mdi-trash-can-outline"></i></button>
+                                    <button type="button" data-id="{{$prod->id}}" class="btn btn-dark btn-sm"><i class="icon-printer"></i></button>
 
                                     <div id="qr-code-{{ $prod->id }}" style="display: none;">
                                         {!! QrCode::size(200)->generate($prod->id) !!}

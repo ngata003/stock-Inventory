@@ -30,24 +30,22 @@
               <div class="col-lg-12 grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">
-                    <div class="d-sm-flex justify-content-between align-items-start">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
                       <div>
                         <h4 class="card-title card-title-dash">Espace clients </h4>
                         <p class="card-subtitle card-subtitle-dash">managez vos clients en toute aisance</p>
                       </div>
-                      <div>
                         <button class="add btn btn-icons btn-rounded btn-primary todo-list-add-btn text-white me-0 pl-12p" data-bs-toggle="modal" data-bs-target="#shopModal" type="button" ><i class="mdi  mdi-plus"></i></button>
-                      </div>
                     </div>
                     <div class="table-responsive">
-                      <table class="table table-striped">
+                      <table class="table table-striped table-sm align-middle">
                         <thead>
                           <tr>
                             <th> Nom  </th>
                             <th> Email   </th>
                             <th> Contact  </th>
                             <th> Adresse </th>
-                            <th colspan="2"> Action </th>
+                            <th> Action </th>
                           </tr>
                         </thead>
                         <tbody>
@@ -58,8 +56,8 @@
                                     <td>{{$clt->telephone}}</td>
                                     <td> {{$clt->adresse}}</td>
                                     <td>
-                                    <button type="button" class="btn btn-success" data-id="{{$clt->id}}" data-nom="{{$clt->nom_client}}" data-email="{{$clt->email}}" data-adresse="{{$clt->adresse}}" data-telephone="{{$clt->telephone}}" onclick="openEditModal(this)"> Modifier </button>
-                                    <button type="button" class="btn btn-danger" data-id="{{$clt->id}}" onclick="openSuppModal(this)"> Supprimer </button>
+                                    <button type="button" class="btn btn-success btn-sm me-1" data-id="{{$clt->id}}" data-nom="{{$clt->nom_client}}" data-email="{{$clt->email}}" data-adresse="{{$clt->adresse}}" data-telephone="{{$clt->telephone}}" onclick="openEditModal(this)"> <i class="mdi mdi-pencil"></i> </button>
+                                    <button type="button" class="btn btn-danger btn-sm" data-id="{{$clt->id}}" onclick="openSuppModal(this)"> <i class="mdi mdi-trash-can-outline"></i> </button>
                                     </td>
                                 </tr>
                             @empty
@@ -157,7 +155,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -196,8 +194,7 @@
             </div>
         </div>
     </div>
-
-
+    
     <!-- Success Modal -->
     <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-sm">
@@ -215,7 +212,7 @@
                 </div>
             </div>
         </div>
-    </div
+    </div>
 
     <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-sm">
@@ -257,6 +254,7 @@
             </div>
         </div>
     @endif
+
 
     <script src="{{asset('assets/vendors/js/vendor.bundle.base.j')}}s"></script>
     <script src="{{asset('assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js')}}"></script>

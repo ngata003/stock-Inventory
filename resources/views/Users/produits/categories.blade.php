@@ -32,7 +32,7 @@
                         <div class="col-12 grid-margin stretch-card">
                             <div class="card card-rounded">
                                 <div class="card-body">
-                                  <div class="d-sm-flex justify-content-between align-items-start">
+                                  <div class="d-sm-flex justify-content-between align-items-center mb-3">
                                     <div>
                                      <h4 class="card-title card-title-dash">Espace Categories Produits </h4>
                                      <p class="card-subtitle card-subtitle-dash">managez les categories des produits de votre boutique en toute aisance</p>
@@ -42,7 +42,7 @@
                                     </div>
                                   </div>
                                   <div class="table-responsive  mt-1">
-                                    <table class="table select-table">
+                                    <table class="table select-table table-sm align-middle">
                                         <thead>
                                             <tr>
                                                 <th> Nom  </th>
@@ -56,8 +56,8 @@
                                                 <td>{{$cat->categorie}}</td>
                                                 <td>{{$cat->description}}</td>
                                                 <td>
-                                                    <button type="button" class="btn btn-success" data-id="{{$cat->id}}" data-nom="{{$cat->categorie}}" data-description="{{$cat->description}}" onclick="openEditModal(this)"> Modifier </button>
-                                                    <button type="button" class="btn btn-danger" data-id="{{$cat->id}}" onclick="openSuppModal(this)"> Supprimer </button>
+                                                    <button type="button" class="btn btn-success btn-sm me-1" data-id="{{$cat->id}}" data-nom="{{$cat->categorie}}" data-description="{{$cat->description}}" onclick="openEditModal(this)"> <i class="mdi mdi-pencil"></i> </button>
+                                                    <button type="button" class="btn btn-danger btn-sm" data-id="{{$cat->id}}" onclick="openSuppModal(this)"> <i class="mdi mdi-trash-can-outline"></i> </button>
                                                 </td>
                                             </tr>
                                         @empty

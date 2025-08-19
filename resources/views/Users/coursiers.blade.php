@@ -30,24 +30,22 @@
               <div class="col-lg-12 grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">
-                    <div class="d-sm-flex justify-content-between align-items-start">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
                       <div>
                         <h4 class="card-title card-title-dash">Espace Coursiers </h4>
                         <p class="card-subtitle card-subtitle-dash">managez vos coursiers en toute aisance</p>
                       </div>
-                      <div>
                         <button class="add btn btn-icons btn-rounded btn-primary todo-list-add-btn text-white me-0 pl-12p" data-bs-toggle="modal" data-bs-target="#shopModal" type="button"><i class="mdi mdi-plus"></i></button>
-                      </div>
                     </div>
                     <div class="table-responsive">
-                      <table class="table table-striped">
+                      <table class="table table-striped table-sm align-middle">
                         <thead>
                           <tr>
                             <th> Nom  </th>
                             <th> Contact  </th>
                             <th> residence </th>
                             <th> Image CNI </th>
-                            <th colspan="2"> Action </th>
+                            <th> Action </th>
                           </tr>
                         </thead>
                         <tbody>
@@ -58,8 +56,8 @@
                                 <td>{{$cours->adresse}}</td>
                                 <td> <img src="{{asset('assets/images/'.$cours->image_cni)}}" alt=""> </td>
                                 <td>
-                                    <button type="button" class="btn btn-success" data-id="{{$cours->id}}" data-nom="{{$cours->nom_coursier}}" data-contact="{{$cours->contact}}" data-residence="{{$cours->adresse}}" data-image="{{$cours->image_cni}}" onclick="openEditModal(this)"> Modifier </button>
-                                    <button type="button" class="btn btn-danger" data-id="{{$cours->id}}" onclick="openSuppModal(this)"> Supprimer </button>
+                                    <button type="button" class="btn btn-success btn-sm me-1" data-id="{{$cours->id}}" data-nom="{{$cours->nom_coursier}}" data-contact="{{$cours->contact}}" data-residence="{{$cours->adresse}}" data-image="{{$cours->image_cni}}" onclick="openEditModal(this)"> <i class="mdi mdi-pencil"></i> </button>
+                                    <button type="button" class="btn btn-danger btn-sm" data-id="{{$cours->id}}" onclick="openSuppModal(this)"> <i class="mdi mdi-trash-can-outline"></i> </button>
                                 </td>
                             </tr>
                         @empty
