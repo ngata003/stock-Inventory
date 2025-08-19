@@ -71,7 +71,7 @@
                             <td>{{$pay->date_paiement}}</td>
                             <td>
                               <button type="button" class="btn btn-danger btn-sm me-1" data-id="{{$pay->id}}" onclick="openSuppModal(this)"> <i class="mdi mdi-trash-can-outline"></i> </button>
-                              <button type="button" class="btn btn-danger btn-sm" data-id="{{$pay->id}}" data-auth="{{$pay->userid}}" onclick="openValidModal(this)"><i class="mdi mdi-check-circle-outline"></i></button>
+                              <button type="button" class="btn btn-success btn-sm" data-id="{{$pay->id}}" data-auth="{{$pay->userid}}" onclick="openValidModal(this)"><i class="mdi mdi-check-circle-outline"></i></button>
                             </td>
                           </tr>
                             @empty
