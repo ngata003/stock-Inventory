@@ -6,9 +6,7 @@
   <title>StarAdmin - Gestion de Stock</title>
   @include('includes.seo')
 
-  <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Material Design Icons -->
   <link href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css" rel="stylesheet">
 
   <style>
@@ -18,14 +16,21 @@
     }
 
     /* Navbar */
+    .navbar {
+      padding-top: 1.2rem;
+      padding-bottom: 1.2rem;
+    }
+
     .navbar-brand span {
       font-weight: bold;
       color: #0d6efd;
+      font-size: 1.4rem;
     }
 
     /* Carousel */
     .carousel img {
-      height: 420px;
+      width: 100%;
+      height: 500px;
       object-fit: cover;
     }
 
@@ -70,7 +75,11 @@
     /* Responsive tweaks */
     @media (max-width: 768px) {
       .carousel img {
-        height: 250px;
+        height: 300px;
+      }
+      .navbar-collapse {
+        background-color: #fff;
+        padding: 1rem;
       }
     }
   </style>
@@ -79,50 +88,51 @@
 
   <!-- NAVBAR -->
   <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
-    <div class="container">
-      <a class="navbar-brand" href="#">
-        <span>Star</span>Admin
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+   <div class="container">
+  <a class="navbar-brand" href="#">
+    <span>Star</span>Admin
+  </a>
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-      <div class="collapse navbar-collapse justify-content-end" id="navMenu">
-        <a class="btn btn-outline-primary me-2" href="{{route('login')}}">Connexion</a>
-        <a href="{{route('inscription')}}" class="btn btn-primary">Inscription</a>
-      </div>
+    <div class="collapse navbar-collapse justify-content-end" id="navMenu">
+        <div class="d-flex flex-column flex-lg-row align-items-lg-center">
+            <a class="btn btn-outline-primary rounded-pill mb-2 mb-lg-0 me-lg-2" href="{{route('login')}}">Connexion</a>
+            <a class="btn btn-primary rounded-pill mb-2 mb-lg-0 me-lg-2" href="{{route('inscription')}}">Inscription</a>
+            <a class="btn btn-outline-secondary rounded-pill" href="{{asset('assets/videos/demo.mp4')}}" target="_blank">Demo d'utilisation</a>
+        </div>
     </div>
+
+
   </nav>
 
-  <!-- MAIN CONTENT -->
   <main class="mt-5 pt-4">
-    <div class="container mt-4">
 
-      <!-- Carousel -->
-      <div id="carouselExampleIndicators" class="carousel slide mb-5" data-bs-ride="carousel">
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <img src="{{asset('assets/images/banniere_1.jpg')}}" class="d-block w-100" alt="Gestion de stock - Rapidité" loading="lazy">
-          </div>
-          <div class="carousel-item">
-            <img src="{{asset('assets/images/banniere_2.jpg')}}" class="d-block w-100" alt="Sécurité des données" loading="lazy">
-          </div>
-          <div class="carousel-item">
-            <img src="{{asset('assets/images/banniere_3.jpg')}}" class="d-block w-100" alt="Interface responsive" loading="lazy">
-          </div>
+    <div id="carouselExampleIndicators" class="carousel slide mb-5" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="{{asset('assets/images/banniere_1.jpg')}}" class="d-block w-100" alt="Gestion de stock - Rapidité" loading="lazy">
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon"></span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-          <span class="carousel-control-next-icon"></span>
-        </button>
+        <div class="carousel-item">
+          <img src="{{asset('assets/images/banniere_2.jpg')}}" class="d-block w-100" alt="Sécurité des données" loading="lazy">
+        </div>
+        <div class="carousel-item">
+          <img src="{{asset('assets/images/banniere_3.jpg')}}" class="d-block w-100" alt="Interface responsive" loading="lazy">
+        </div>
       </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </button>
+    </div>
 
-      <!-- Avantages -->
+    <div class="container-fluid px-5 mt-4">
       <section class="text-center mb-5">
         <h3 class="mb-4">Pourquoi choisir notre application ?</h3>
-        <div class="row g-4">
+        <div class="row g-4 justify-content-center">
 
           <div class="col-md-4">
             <div class="advantage-card">
@@ -175,15 +185,16 @@
         </div>
       </section>
     </div>
+
   </main>
 
-  <!-- FOOTER -->
   <footer>
     <div class="container">
-      <p class="mb-0 text-muted">© {{ date('Y') }} StarAdmin. Tous droits réservés.</p>
+      <p class="mb-0 text-muted">© {{ date('Y') }} CAMES ORGANISATION. Tous droits réservés.</p>
     </div>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
