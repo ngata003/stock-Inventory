@@ -8,6 +8,7 @@
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css" rel="stylesheet">
+  <link rel="shortcut icon" href="{{asset(path: 'assets/images/cames_favIcon.png')}}"/>
 
   <style>
     body {
