@@ -59,7 +59,7 @@
                             <th> montant rembourse </th>
                             <th> moyen paiement </th>
                             <th> date vente </th>
-                            <th colspan="2"> Action </th>
+                            <th> Action </th>
                           </tr>
                         </thead>
                         <tbody>
@@ -73,9 +73,9 @@
                                     <td> {{$vt->moyen_paiement}}</td>
                                     <td> {{$vt->updated_at}}</td>
                                     <td>
-                                    <a href="{{route('update_ventes_view' , ['id' => $vt->id])}}" class="btn btn-success">Modifier</a>
-                                    <button type="button" class="btn btn-danger" data-id="{{$vt->id}}" onclick="openSuppModal(this)"> Annuler la vente  </button>
-                                    <a href="{{route('imprimer_factures' , ['id' => $vt->id])}}" class="btn btn-dark"><i class="icon-printer"></i></a>
+                                        <a href="{{route('update_ventes_view' , ['id' => $vt->id])}}" class="btn btn-success btn-sm me-1"><i class="mdi mdi-pencil"></i></a>
+                                        <button type="button" class="btn btn-danger btn-sm me-1" data-id="{{$vt->id}}" onclick="openSuppModal(this)"><i class="mdi mdi-trash-can-outline"></i>  </button>
+                                        <a href="{{route('imprimer_factures' , ['id' => $vt->id])}}" class="btn btn-dark btn-sm me-1"><i class="icon-printer"></i></a>
                                     </td>
                                 </tr>
                             @empty

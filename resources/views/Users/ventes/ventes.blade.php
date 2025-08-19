@@ -180,7 +180,7 @@
     <script src="{{asset('assets/js/typeahead.js')}}"></script>
     <script src="{{asset('assets/js/select2.js')}}"></script>
     <script>
-        let index = 1;
+           let index = 1;
         const numRows = document.getElementById('numRows');
         numRows.value = 1;
         const divCommande = document.getElementById('commandesContainer');
@@ -230,7 +230,7 @@
             index++;
             numRows.value = index;
         });
-
+        
         function autoCompletion_produits(index) {
             let input = document.getElementById(`nom_produit${index}`);
             let suggestionsContainer = document.getElementById(`suggestions_${index}`);

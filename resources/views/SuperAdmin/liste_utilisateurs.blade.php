@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="{{asset('assets/vendors/css/vendor.bundle.base.css')}}">
     <link rel="stylesheet" href="{{asset('assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
-    <link rel="shortcut icon" href="{{asset('assets/images/favicon.png')}}"/>
+    <link rel="shortcut icon" href="{{asset('assets/images/cames_favIcon.png')}}"/>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   </head>
@@ -78,7 +78,7 @@
                                         <td><img src="{{asset('assets/images/faces/no_profile_picture.png')}}" alt=""></td>
                                     @endif
                                     <td>
-                                        <a href="{{route('details_admin',[$util->id])}}" class="btn btn-success text-white"><i class="fas fa-eye"></i></a>
+                                        <a href="{{route('details_admin',[$util->id])}}" class="btn btn-success btn-sm me-1 text-white"><i class="fas fa-eye"></i></a>
                                     </td>
                                 </tr>
                             @empty

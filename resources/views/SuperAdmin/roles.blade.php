@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="{{asset('assets/vendors/css/vendor.bundle.base.css')}}">
     <link rel="stylesheet" href="{{asset('assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
-    <link rel="shortcut icon" href="{{asset('assets/images/favicon.png')}}" />
+    <link rel="shortcut icon" href="{{asset('assets/images/cames_favIcon.png')}}" />
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   </head>
@@ -53,8 +53,8 @@
                                             <tr>
                                                 <td>{{$rol->nom}}</td>
                                                 <td>
-                                                    <button type="button" class="btn btn-success" data-id="{{$rol->id}}" data-nom="{{$rol->nom}}" onclick="openEditModal(this)"> Modifier </button>
-                                                    <button type="button" class="btn btn-danger" data-id="{{$rol->id}}" onclick="openSuppModal(this)"> Supprimer </button>
+                                                    <button type="button" class="btn btn-success btn-sm me-1" data-id="{{$rol->id}}" data-nom="{{$rol->nom}}" onclick="openEditModal(this)"> <i class="mdi mdi-pencil"></i> </button>
+                                                    <button type="button" class="btn btn-danger btn-sm" data-id="{{$rol->id}}" onclick="openSuppModal(this)"> <i class="mdi mdi-trash-can-outline"></i> </button>
                                                 </td>
                                             </tr>
                                         @empty

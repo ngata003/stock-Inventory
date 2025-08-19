@@ -37,7 +37,7 @@
                         <button class="add btn btn-icons btn-rounded btn-primary todo-list-add-btn text-white me-0 pl-12p"  data-bs-toggle="modal" data-bs-target="#shopModal" type="button"><i class="mdi mdi-plus"></i></button>
                     </div>
                     <div class="table-responsive">
-                      <table class="table table-striped table-sm align-middle">
+                      <table class="table table-striped">
                         <thead>
                           <tr>
                             <th> Nom  </th>

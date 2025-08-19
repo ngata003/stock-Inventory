@@ -42,12 +42,12 @@
                                     </div>
                                   </div>
                                   <div class="table-responsive  mt-1">
-                                    <table class="table select-table table-sm align-middle">
+                                    <table class="table select-table ">
                                         <thead>
                                             <tr>
                                                 <th> Nom  </th>
                                                 <th> Description </th>
-                                                <th colspan="2"> Action </th>
+                                                <th > Action </th>
                                             </tr>
                                         </thead>
                                       <tbody>

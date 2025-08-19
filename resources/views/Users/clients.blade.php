@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="{{asset('assets/vendors/css/vendor.bundle.base.css')}}">
     <link rel="stylesheet" href="{{asset('assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
-    <link rel="shortcut icon" href="{{asset('assets/images/favicon.png')}}"/>
+    <link rel="shortcut icon" href="{{asset('assets/images/cames_favIcon.png')}}"/>
 
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -38,7 +38,7 @@
                         <button class="add btn btn-icons btn-rounded btn-primary todo-list-add-btn text-white me-0 pl-12p" data-bs-toggle="modal" data-bs-target="#shopModal" type="button" ><i class="mdi  mdi-plus"></i></button>
                     </div>
                     <div class="table-responsive">
-                      <table class="table table-striped table-sm align-middle">
+                      <table class="table table-striped">
                         <thead>
                           <tr>
                             <th> Nom  </th>
@@ -194,7 +194,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Success Modal -->
     <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-sm">

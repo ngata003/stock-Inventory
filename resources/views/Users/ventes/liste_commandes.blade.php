@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="{{asset('assets/vendors/css/vendor.bundle.base.css')}}">
     <link rel="stylesheet" href="{{asset('assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
-    <link rel="shortcut icon" href="{{asset('assets/images/favicon.png')}}"/>
+    <link rel="shortcut icon" href="{{asset('assets/images/cames_favIcon.png')}}"/>
 
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -52,7 +52,7 @@
                             <th> payé via </th>
                             <th> date commande </th>
                             <th> status </th>
-                            <th colspan="2"> Action </th>
+                            <th > Action </th>
                           </tr>
                         </thead>
                         <tbody>
@@ -75,10 +75,10 @@
                                         </td>
                                     @endif
                                     <td>
-                                    <a href="{{route('update_ventes_view' , ['id' => $cmd->id])}}" class="btn btn-success">Modifier</a>
-                                    <button type="button" class="btn btn-danger" data-id="{{$cmd->id}}" onclick="openSuppModal(this)"> Supprimer </button>
-                                    <a href="{{route('imprimer_factures' , ['id' => $cmd->id])}}" class="btn btn-dark"><i class="icon-printer"></i></a>
-                                    <button type="button" class="btn btn-primary" data-id="{{$cmd->id}}" onclick="openValidModal(this)"> valider la commande </button>
+                                    <a href="{{route('update_ventes_view' , ['id' => $cmd->id])}}" class="btn btn-success btn-sm me-1"><i class="mdi mdi-pencil"></i></a>
+                                    <button type="button" class="btn btn-danger btn-sm me-1" data-id="{{$cmd->id}}" onclick="openSuppModal(this)"> <i class="mdi mdi-trash-can-outline"></i> </button>
+                                    <a href="{{route('imprimer_factures' , ['id' => $cmd->id])}}" class=" btn btn-dark btn-sm me-1 "><i class="icon-printer"></i></a>
+                                    <button type="button" class="btn btn-primary btn-sm me-1" data-id="{{$cmd->id}}" onclick="openValidModal(this)"> <i class="mdi mdi-check-circle-outline"></i> </button>
                                     </td>
                                 </tr>
                             @empty

@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="{{asset('assets/vendors/css/vendor.bundle.base.css')}}">
     <link rel="stylesheet" href="{{asset('assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
-    <link rel="shortcut icon" href="{{asset('assets/images/favicon.png')}}"/>
+    <link rel="shortcut icon" href="{{asset('assets/images/cames_favIcon.png')}}"/>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   </head>
@@ -70,8 +70,8 @@
                             @endif
                             <td>{{$pay->date_paiement}}</td>
                             <td>
-                              <button type="button" class="btn btn-danger" data-id="{{$pay->id}}" onclick="openSuppModal(this)"> supprimer </button>
-                              <button type="button" class="btn btn-success" data-id="{{$pay->id}}" data-auth="{{$pay->userid}}" onclick="openValidModal(this)">valider</button>
+                              <button type="button" class="btn btn-danger btn-sm me-1" data-id="{{$pay->id}}" onclick="openSuppModal(this)"> <i class="mdi mdi-trash-can-outline"></i> </button>
+                              <button type="button" class="btn btn-danger btn-sm" data-id="{{$pay->id}}" data-auth="{{$pay->userid}}" onclick="openValidModal(this)"><i class="mdi mdi-check-circle-outline"></i></button>
                             </td>
                           </tr>
                             @empty
