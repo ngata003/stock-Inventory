@@ -19,4 +19,16 @@ class vente_detail extends Model
     ];
 
 
+    public function createur(){
+        return $this->belongsTo(User::class , 'fk_createur');
+    }
+
+    public function boutique(){
+        return $this->belongsTo(Boutique::class , 'fk_boutique');
+    }
+
+    public function vente(){
+        return $this->belongsTo(Vente::class , 'fk_vente');
+    }
+
 }

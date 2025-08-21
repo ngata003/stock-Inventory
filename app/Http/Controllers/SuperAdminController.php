@@ -41,4 +41,23 @@ class SuperAdminController extends Controller
 
         return view('SuperAdmin.details_utilisateurs', compact('boutiques_admin', 'nb_boutiques', 'nb_coursiers', 'nb_employes', 'nb_fournisseurs', 'package'));
     }
+    public function statistiques(){
+
+        $nb_boutiques = Boutique::count();
+        $chiffreA = Paiement::whereYear('created_at' , now()->year)->sum('montant');
+        $chiffreM = Paiement::whereMonth('created_at' , now()->month)->sum('montant');
+        $abonnement = Package::get();
+        $nb_abonnements = $abonnement->count();
+        $abonnements_actifs = Paiement::whereIn('package_id' , $abonnement->pluck('id'))->whereMonth('created_at' , now()->month)->where('statut','valide')->count('package_id');
+        $paiements_par_mois = Paiement::selectRaw('MONTH(created_at) as mois, SUM(montant) as total')->where('statut', 'valide')->groupBy('mois')->orderBy('mois')->pluck('total', 'mois');
+        $data = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $data[] = $paiements_par_mois[$i] ?? 0;
+        }
+
+        $boutiques = Boutique::with('createur')->withSum(['ventes as total_ventes' => function($query) {$query->whereIn('type_operation', ['vente', 'commande'])->where('status', 1);}], 'montant_total')->get();
+
+
+        return view('SuperAdmin.statistiques' , compact('nb_boutiques' , 'chiffreA' , 'chiffreM' , 'nb_abonnements' , 'abonnements_actifs', 'data', 'boutiques'));
+    }
 }

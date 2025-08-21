@@ -33,6 +33,7 @@
                     <h4 class="card-title"> Espace Suggestions </h4>
                     <p class="card-description"> Entrez votre problème ou des appreciations ici </p>
                     <form class="forms-sample" method="POST" action="{{route('add_suggestions')}}">
+                        @csrf
                         <?php $user = Auth::user();?>
                       <div class="form-group">
                         <label for="exampleInputEmail3"> Mail Envoyé à : </label>

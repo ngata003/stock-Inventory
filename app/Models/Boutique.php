@@ -50,4 +50,8 @@ class Boutique extends Model
     public function suggestion(){
         return $this->hasManany(Suggestion::class , 'fk_boutique');
     }
+
+    public function ventes(){
+        return $this->hasMany(Vente::class , 'fk_boutique');
+    }
 }

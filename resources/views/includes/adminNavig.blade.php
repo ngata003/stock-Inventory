@@ -31,11 +31,5 @@
                     <span class="menu-title"> notifications </span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{route('boutiques_view')}}">
-                    <i class="menu-icon mdi mdi-home"></i>
-                    <span class="menu-title"> créer une boutique </span>
-                    </a>
-                </li>
           </ul>
         </nav>

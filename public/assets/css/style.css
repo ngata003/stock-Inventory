@@ -28390,9 +28390,15 @@ dl li {
 }
 .auth .brand-logo {
   margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
 .auth .brand-logo img {
   width: 90px;
+  max-width: 100%;
+  height: 90px;
 }
 .auth form .form-group {
   margin-bottom: 1.5rem;

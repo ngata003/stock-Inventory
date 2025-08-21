@@ -28,5 +28,17 @@ class Vente extends Model
         return $this->belongsTo(Coursier::class ,'fk_coursier');
     }
 
+    public function boutique(){
+        return $this->belongsTo(Boutique::class , 'fk_boutique');
+    }
+
+    public function createur(){
+        return $this->belongsTo(User::class , 'fk_createur');
+    }
+
+    public function vente_detail(){
+        return $this->hasMany(vente_detail::class , 'fk_vente');
+    }
+
 
 }
