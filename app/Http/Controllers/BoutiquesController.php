@@ -141,22 +141,6 @@ class BoutiquesController extends Controller
 
         return view('boutiques', compact('boutiques'));
     }
-
-    public function boutiques_nav(){
-        $user = Auth::user();
-        $fk_boutique = session('boutique_active_id');
-
-        if($user->type === "admin"){
-            $inf_boutiques  = Boutique::where('fk_createur' , $user->id)->where('id' , $fk_boutique)->get();
-
-            return view('SuperAdmin.all_boutiques' , compact('inf_boutiques'));
-        }
-        elseif ($user->type === "superadmin") {
-
-            $inf_boutiques  = Boutique::all();
-            return view('' , compact('inf_boutiques'));
-        }
-    }
 }
 
 

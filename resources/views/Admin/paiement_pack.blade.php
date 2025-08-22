@@ -22,9 +22,10 @@
             <div class="col-lg-4 mx-auto">
               <div class="auth-form-light text-left py-5 px-4 px-sm-5">
                 <div class="brand-logo">
-                  <img src="{{asset('assets/images/logo.svg')}} " alt="logo">
+                  <img src="{{asset('assets/images/exact.png')}} " alt="logo">
                 </div>
                 <h6 class="fw-light"> Renseignez les informations de paiement.</h6>
+                <h5> vous devez recharger une somme de : {{$package->prix_abonnement * 700}} FCFA</h5>
                 <form class="pt-3" action="{{route('add_paiement')}}" method="POST">
                     @csrf
                     <div class="form-group">
@@ -36,6 +37,8 @@
                     <div class="mt-3 d-grid gap-2">
                         <input type="submit" value="Validez le paiement" class="btn btn-primary btn-lg">
                     </div>
+                    <div class="text-center mt-4 fw-light"> <h5> rechargez votre abonnement au 659559970 (OM) ou 678650315(MOMO)</h5></div>
+                    <div class="text-center mt-4 fw-light"> <h5> rechargez votre abonnement via Compte Bancaire ici : 15009005812 si vous etes hors du pays   </h5></div>
                 </form>
               </div>
             </div>

@@ -70,7 +70,7 @@ Route::get('/', function () {return view('home');})->name('accueil');
 
 /* ROUTES ADMIN*/
 Route::middleware(['auth' , 'role:admin'])->group(function () {
-    Route::get('/paiement_view' , function(){ return view('Admin.paiement_pack');})->name('paiement_view');
+    Route::get('/paiement_view', [PaiementController::class, 'paiement_view'])->name('paiement_view');
     Route::post('/add_paiement' , [PaiementController::class , 'add_paiement'])->name('add_paiement');
     Route::get('/boutique_activation/{id}',[BoutiquesController::class,'boutique_activation'])->name('boutique_activation');
     Route::middleware(['auth', 'check.abonnement'])->group(function () {

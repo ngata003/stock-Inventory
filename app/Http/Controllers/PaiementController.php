@@ -17,7 +17,7 @@ class PaiementController extends Controller
 
         $messages = [
             'nom_depositaire.required' => 'renseignez le nom de celui qui a fait le depot',
-            'nom_depositaire.regex' => 'entrez un nom valable pas de chiffres de lettres',
+            'nom_depositaire.regex' => 'entrez un nom valable pas de chiffres ,uniquement des lettres',
             'montant.required' => 'veuillez rentrer un montant',
         ];
 
@@ -82,5 +82,11 @@ class PaiementController extends Controller
         $user = Auth::user();
         $paiements = Paiement::where('user_id' , $user->id)->paginate(6);
         return view('Admin.mes_paiements' , compact('paiements'));
+    }
+
+    public function paiement_view(){
+
+        $package = Package::where('fk_createur' , Auth::user()->id)->first();
+        return view('Admin.paiement_pack' , compact('package'));
     }
 }

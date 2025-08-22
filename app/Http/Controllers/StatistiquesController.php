@@ -36,19 +36,35 @@ class StatistiquesController extends Controller
             $donnees[] = $commandes_par_mois[$i] ?? 0;
         }
 
-    $top_clients = Vente::select('nom_client', 'contact_client' ,'email_client', DB::raw('SUM(montant_total) as montant_total'))
+        $top_clients = Vente::select(
+            DB::raw("COALESCE(nom_client, contact_client) as client_identifiant"),
+            DB::raw('SUM(montant_total) as total_montant')
+        )
         ->where('fk_boutique', $fk_boutique)
         ->whereYear('created_at', now()->year)
         ->whereIn('type_operation', ['commande', 'vente'])
-        ->groupBy('nom_client', 'contact_client','email_client')
-        ->orderByDesc('montant_total')
+        ->groupBy('client_identifiant')
+        ->orderByDesc('total_montant')
         ->take(5)
         ->get();
 
-
+       $top_produits = DB::table('vente_details')
+        ->join('ventes', 'ventes.id', '=', 'vente_details.fk_vente')
+        ->select(
+            'vente_details.nom_produit',
+            DB::raw("SUM(vente_details.montant_total) as total_montant")
+        )
+        ->where('vente_details.fk_boutique', $fk_boutique)
+        ->whereYear('vente_details.created_at', now()->year)
+        ->where('ventes.status', 1)
+        ->whereIn('ventes.type_operation', ['commande', 'vente'])
+        ->groupBy('vente_details.nom_produit')
+        ->orderByDesc('total_montant')
+        ->limit(5)
+        ->get();
 
         return view('Admin.statistiques' , compact('nb_coursiers' ,
-        'nb_employes' , 'chffreA' ,'top_clients',
+        'nb_employes' , 'chffreA' ,'top_clients', 'top_produits',
          'nb_ventes' , 'nb_commandes_val' , 'nb_commandes_inval' , 'data' , 'donnees'));
     }
 

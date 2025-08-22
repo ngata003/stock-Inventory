@@ -16,6 +16,8 @@
     <link rel="stylesheet" type="text/css" href="{{asset('assets/js/select.dataTables.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
     <link rel="shortcut icon" href="{{asset('assets/images/cames_favIcon.png')}}" />
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   </head>
   <body class="with-welcome-text">
     <div class="container-scroller">
@@ -29,10 +31,52 @@
                 <div class="home-tab">
                   <div class="d-sm-flex align-items-center justify-content-between border-bottom">
                     <div>
-                      <div class="btn-wrapper">
-                        <a href="#" class="btn btn-otline-dark align-items-center"><i class="icon-share"></i> Share</a>
-                        <a href="#" class="btn btn-otline-dark"><i class="icon-printer"></i> Print</a>
-                        <a href="#" class="btn btn-primary text-white me-0"><i class="icon-download"></i> Export</a>
+                      <div class="btn-wrapper d-flex align-items-center gap-2">
+                        <a href="#" class="btn btn-success align-items-center"><i class="icon-download"></i> Export Commandes </a>
+                        <a href="#" class="btn btn-primary text-white me-0"><i class="icon-download"></i> Export Ventes </a>
+                        <div class="dropdown">
+                            <a class="btn btn-outline-white dropdown-toggle" href="#" role="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                Selectionner Mois
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="categoryDropdown">
+                                <li>
+                                    <a class="dropdown-item" href="#"> Janvier </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#"> Fevrier </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#"> Mars </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#"> Avril </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#"> Mai </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#"> Juin </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#"> Juillet </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#"> Aout </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#"> Septembre </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#"> Octobre </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#"> Novembre </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#"> Decembre </a>
+                                </li>
+                            </ul>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -102,14 +146,16 @@
                                         </div>
                                       </div>
                                       <div class="mt-3">
-                                        <div class="wrapper d-flex align-items-center justify-content-between py-2 border-bottom">
-                                          <div class="d-flex">
-                                            <div class="wrapper ms-3">
-                                              <p class="ms-1 mb-1 fw-bold">Brandon Washington</p>
+                                        @foreach ($top_produits as $t_prod )
+                                            <div class="wrapper d-flex align-items-center justify-content-between py-2 border-bottom">
+                                                <div class="d-flex">
+                                                    <div class="wrapper ms-3">
+                                                    <p class="ms-1 mb-1 fw-bold">{{$t_prod->nom_produit}} </p>
+                                                    </div>
+                                                </div>
+                                                <div class="text-primary text-small fw-bold"> {{$t_prod->total_montant}}  FCFA</div>
                                             </div>
-                                          </div>
-                                          <div class="text-primary text-small"> 1h ago </div>
-                                        </div>
+                                        @endforeach
                                       </div>
                                     </div>
                                   </div>
@@ -157,10 +203,10 @@
                                             <div class="wrapper d-flex align-items-center justify-content-between py-2 border-bottom">
                                                 <div class="d-flex">
                                                     <div class="wrapper ms-3">
-                                                    <p class="ms-1 mb-1 fw-bold">{{$tclt->nom_client ?: $tclt->contact ?: $tclt->email_client?? '--'}}</p>
+                                                    <p class="ms-1 mb-1 fw-bold">{{$tclt->client_identifiant}}</p>
                                                     </div>
                                                 </div>
-                                                <div class="text-muted text-small">{{$tclt->montant_total}} </div>
+                                                <div class="text-primary text-small fw-bold">{{$tclt->total_montant}} FCFA</div>
                                             </div>
                                         @endforeach
                                       </div>
@@ -196,7 +242,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         const ctx = document.getElementById('ventesLine').getContext('2d');
-
         new Chart(ctx, {
             type: 'line',
             data: {
