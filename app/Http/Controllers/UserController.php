@@ -101,7 +101,7 @@ class UserController extends Controller
                 }
             }
 
-            elseif($user->type === "employé"){
+            elseif($user->type === "employe"){
                 $boutique = Boutique::where('id',$user->fk_boutique)->first();
 
                 if($boutique){
@@ -111,7 +111,7 @@ class UserController extends Controller
                         'boutique_logo' => $boutique->logo,
                     ]);
 
-                    return redirect()->route('accueil_gestionnaire')->with('success', 'Connexion réussie !');
+                    return redirect()->route('produits')->with('success', 'Connexion réussie !');
 
                 } else {
                     return redirect()->back()->withErrors(['email' => 'Aucune boutique associée trouvée.']);
@@ -119,7 +119,7 @@ class UserController extends Controller
             }
 
             elseif($user->type === "superadmin"){
-                return redirect()->route('liste_paiements');
+                return redirect()->route('statistiques_SA');
             }
 
 

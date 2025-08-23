@@ -90,9 +90,10 @@
   <!-- NAVBAR -->
   <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
    <div class="container">
-  <a class="navbar-brand" href="#">
-    <span>Star</span>Admin
+  <a class="navbar-brand" href="">
+    <img src="{{asset('assets/images/cames_stock.png')}}" height="45px" width="45px" alt="">
   </a>
+
   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>

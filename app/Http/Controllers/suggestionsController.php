@@ -21,18 +21,30 @@ class suggestionsController extends Controller
 
         $fk_createur = Auth::user()->id;
         $fk_boutique = session('boutique_active_id');
+        $messages = [
+            'message.required' => 'veuillez remplir la case de message',
+            'message.string' => 'rentrez une chaine de caractere',
+            'message.regex' => 'veuillez rentrer une composition de lettres et de chiffres',
+        ];
+
         $validated = $request->validate([
-            'message' => 'required|string|max:255|regex:',
-        ]);
+            'message' =>'required|string|max:255|regex:/^[A-Za-zÀ-ÖØ-öø-ÿ0-9\s.,!?;:()\'"-]+$/u',
+        ] , $messages);
 
         Suggestion::create([
             'message' => $validated['message'],
-            'fk_apg' => $fk_createur,
+            'fk_createur' => $fk_createur,
             'fk_boutique' => $fk_boutique,
         ]);
 
         Mail::to('storecames@gmail.com')->send( new suggestions($request->nom_admin,$request->nom_boutique,  $request->message));
 
         return back()->with('succes_suggestions' , 'suggestion envoyé à l\'administrateur réussi');
+    }
+
+    public function SA_suggestions(){
+        $suggestions = Suggestion::where('direction' , 'superadmin')->paginate(6);
+
+        return view('SuperAdmin.suggestions' , compact('suggestions'));
     }
 }

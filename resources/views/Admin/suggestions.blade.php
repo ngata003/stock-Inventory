@@ -85,6 +85,29 @@
         </div>
     </div>
 
+    @if ($errors->any())
+        <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-sm">
+                <div class="modal-content border-danger shadow-lg">
+                    <div class="modal-body text-center p-4">
+                        <div class="mb-3">
+                            <i class="mdi mdi-alert-circle-outline mdi-48px text-danger animate__animated animate__zoomIn"></i>
+                        </div>
+                        <h5 class="text-danger fw-bold mb-3">Erreur(s) détectée(s)</h5>
+                        <ul class="text-start text-danger small">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                        <button type="button" class="btn btn-danger btn-sm mt-3" data-bs-dismiss="modal">
+                            Fermer
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
     <script src="{{asset('assets/vendors/js/vendor.bundle.base.js')}}"></script>
     <script src="{{asset('assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js')}}"></script>
     <script src="{{asset('assets/vendors/typeahead.js/typeahead.bundle.min.js')}}"></script>
@@ -104,7 +127,16 @@
             successModal.show();
         @endif
         });
-
     </script>
+
+    @if ($errors->any())
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+                errorModal.show();
+            });
+        </script>
+    @endif
+    
   </body>
 </html>

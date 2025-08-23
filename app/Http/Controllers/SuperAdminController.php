@@ -55,9 +55,20 @@ class SuperAdminController extends Controller
             $data[] = $paiements_par_mois[$i] ?? 0;
         }
 
+        $abonnements_par_mois = Paiement::selectRaw('MONTH(created_at) as mois, COUNT(*) as total_abonnements')
+        ->where('statut', 'valide')
+        ->groupBy('mois')
+        ->orderBy('mois')
+        ->pluck('total_abonnements', 'mois');
+
+        $abonnements = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $abonnements[] = $abonnements_par_mois[$i] ?? 0;
+        }
+
         $boutiques = Boutique::with('createur')->withSum(['ventes as total_ventes' => function($query) {$query->whereIn('type_operation', ['vente', 'commande'])->where('status', 1);}], 'montant_total')->get();
 
 
-        return view('SuperAdmin.statistiques' , compact('nb_boutiques' , 'chiffreA' , 'chiffreM' , 'nb_abonnements' , 'abonnements_actifs', 'data', 'boutiques'));
+        return view('SuperAdmin.statistiques' , compact('nb_boutiques' , 'chiffreA' , 'chiffreM' , 'nb_abonnements' , 'abonnements_actifs', 'data', 'abonnements', 'boutiques'));
     }
 }

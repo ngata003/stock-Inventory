@@ -14,15 +14,15 @@
     <link rel="stylesheet" href="{{asset('assets/vendors/css/vendor.bundle.base.css')}}">
     <link rel="stylesheet" href="{{asset('assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
-    <link rel="shortcut icon" href="{{asset('assets/images/favicon.png')}}" />
+    <link rel="shortcut icon" href="{{asset('assets/images/cames_favIcon.png')}}" />
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   </head>
   <body>
     <div class="container-scroller">
-     @include('includes/user_profil_include')
+     @include('includes.user_profil_include')
       <div class="container-fluid page-body-wrapper">
-       @include('includes/nav_include')
+       @include('includes.nav_include')
         <div class="main-panel">
           <div class="content-wrapper">
             <div class="row">
@@ -143,8 +143,8 @@
                             </div>
                             <div  class="col-12">
                                 <label for="categorie_produit" class="form-label">Catégorie du produit</label>
-                                <select name="fk_categorie" id="categorie_produit" class="form-select">
-                                    <option value="" selected disabled>— Sélectionnez une catégorie —</option>
+                                <select name="fk_categorie" id="categorie_produit" class="form-select text-dark">
+                                    <option value="" selected disabled class="text-dark">— Sélectionnez une catégorie —</option>
                                     @foreach ($categories as $cat)
                                         <option value="{{ $cat->id }}">{{ $cat->categorie }}</option>
                                     @endforeach
@@ -152,8 +152,8 @@
                             </div>
                             <div  class="col-12">
                                 <label for="fournisseur" class="form-label"> fournisseur </label>
-                                <select name="fk_fournisseur" id="fournisseur" class="form-select">
-                                    <option value="" selected disabled>— Sélectionnez une fournisseur —</option>
+                                <select name="fk_fournisseur" id="fournisseur" class="form-select text-dark">
+                                    <option value="" selected disabled class="text-dark">— Sélectionnez une fournisseur —</option>
                                     @foreach ($fournisseurs as $fournis)
                                         <option value="{{ $fournis->id }}">{{ $fournis->nom_fournisseur }}</option>
                                     @endforeach
@@ -217,8 +217,8 @@
 
                             <div class="col-12">
                                 <label for="categorie_produit" class="form-label">Catégorie du produit</label>
-                                <select name="fk_categorie" id="categorie_produit" class="form-select">
-                                    <option value="" id="categorie" selected >— Sélectionnez une categorie —</option>
+                                <select name="fk_categorie" id="categorie_produit" class="form-select text-dark">
+                                    <option value="" id="categorie" selected class="text-dark">— Sélectionnez une categorie —</option>
                                     @foreach ($categories as $cat)
                                         <option value="{{ $cat->id }}">{{ $cat->categorie }}</option>
                                     @endforeach
@@ -226,8 +226,8 @@
                             </div>
                             <div class="col-12">
                                 <label for="fournisseur" class="form-label">fournisseur</label>
-                                <select name="fk_fournisseur" id="categorie_produit" class="form-select">
-                                    <option value="" id="fournisseur" selected >— Sélectionnez une fournisseur —</option>
+                                <select name="fk_fournisseur" id="categorie_produit" class="form-select text-dark">
+                                    <option value="" id="fournisseur" selected class="text-dark" >— Sélectionnez une fournisseur —</option>
                                     @foreach ($fournisseurs as $fournis)
                                         <option value="{{ $fournis->id }}">{{ $fournis->nom_fournisseur }}</option>
                                     @endforeach

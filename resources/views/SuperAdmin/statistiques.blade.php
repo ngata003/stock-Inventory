@@ -145,10 +145,8 @@
                                         @foreach ($boutiques as $btq )
                                             <div class="wrapper d-flex align-items-center justify-content-between py-2 border-bottom">
                                                 <div class="d-flex">
-                                                    <img class="img-sm rounded-10" src="{{asset('assets/images/'.$btq->logo)}}" alt="profile">
                                                     <div class="wrapper ms-3">
-                                                        <p class="ms-1 mb-1 fw-bold"> Boutique: {{$btq->nom_boutique}}</p>
-                                                        <small class="text-black mb-0"> Createur : {{$btq->createur->name}}</small>
+                                                        <p class="ms-1 mb-1 fw-bold">{{$btq->nom_boutique}}</p>
                                                     </div>
                                                 </div>
                                                 <div class="text-primary text-small fw-bold">{{$btq->total_ventes}} FCFA</div>
@@ -157,6 +155,28 @@
                                       </div>
                                     </div>
                                   </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-lg-8 d-flex flex-column">
+                          <div class="row flex-grow">
+                            <div class="col-12 grid-margin stretch-card">
+                              <div class="card card-rounded">
+                               <div class="card-body">
+                                  <div class="d-sm-flex justify-content-between align-items-start">
+                                    <div>
+                                      <h4 class="card-title card-title-dash"> Espace Abonnements </h4>
+                                      <h5 class="card-subtitle card-subtitle-dash"> Flux d'abonnements par mois </h5>
+                                    </div>
+                                    <div id="performanceLine-legend"></div>
+                                  </div>
+                                 <div class="chartjs-wrapper mt-4" style="height: 300px;">
+                                    <canvas id="LegendLine"></canvas>
+                                 </div>
                                 </div>
                               </div>
                             </div>
@@ -227,5 +247,51 @@
             }
         });
     </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const ctx = document.getElementById('LegendLine');
+            if (ctx) {
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: [
+                            'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+                        ],
+                        datasets: [{
+                            label: '',
+                            data: @json($abonnements),
+                            borderColor: '#0000FF',
+                            borderWidth: 2,
+                            fill: false,
+                            tension: 0.4,
+                            pointRadius: 5,
+                            pointBackgroundColor: '#0000FF'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                enabled: true,
+                                callbacks: {
+                                    label: function(context) {
+                                        return context.parsed.y.toLocaleString() + " abonnements";
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: { beginAtZero: true }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+
   </body>
 </html>

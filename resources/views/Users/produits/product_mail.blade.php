@@ -11,7 +11,7 @@
     <p><strong>Prix :</strong> {{ $product->prix_vente }} FCFA</p>
     <p><strong>Description :</strong> {{ $product->description }}</p>
     @if ($product->image_produit)
-    <img src="{{public_path('assets/images/'.$product->image_produit)}}" alt="">
+    <img src="{{asset('assets/images/'.$product->image_produit)}}" alt="">
     @else
     <p>pas d'image</p>
     @endif

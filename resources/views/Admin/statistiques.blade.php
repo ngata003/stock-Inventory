@@ -16,8 +16,8 @@
     <link rel="stylesheet" type="text/css" href="{{asset('assets/js/select.dataTables.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
     <link rel="shortcut icon" href="{{asset('assets/images/cames_favIcon.png')}}" />
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
   </head>
   <body class="with-welcome-text">
     <div class="container-scroller">
@@ -32,49 +32,21 @@
                   <div class="d-sm-flex align-items-center justify-content-between border-bottom">
                     <div>
                       <div class="btn-wrapper d-flex align-items-center gap-2">
-                        <a href="#" class="btn btn-success align-items-center"><i class="icon-download"></i> Export Commandes </a>
-                        <a href="#" class="btn btn-primary text-white me-0"><i class="icon-download"></i> Export Ventes </a>
+                        <a href="{{route('export_commandes')}}" class="btn btn-success text-white align-items-center"><i class="icon-download"></i> Export Commandes </a>
+                        <a href="{{route('ventes_annuelles')}}" class="btn btn-primary text-white me-0"><i class="icon-download"></i> Export Ventes </a>
                         <div class="dropdown">
-                            <a class="btn btn-outline-white dropdown-toggle" href="#" role="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                Selectionner Mois
-                            </a>
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="categoryDropdown"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Choisir un mois
+                            </button>
                             <ul class="dropdown-menu" aria-labelledby="categoryDropdown">
-                                <li>
-                                    <a class="dropdown-item" href="#"> Janvier </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#"> Fevrier </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#"> Mars </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#"> Avril </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#"> Mai </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#"> Juin </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#"> Juillet </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#"> Aout </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#"> Septembre </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#"> Octobre </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#"> Novembre </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#"> Decembre </a>
-                                </li>
+                                @for ($i = 1; $i <= 12; $i++)
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('statistiques', ['mois' => $i]) }}">
+                                            {{ \Carbon\Carbon::create()->month($i)->locale('fr')->monthName }}
+                                        </a>
+                                    </li>
+                                @endfor
                             </ul>
                         </div>
                       </div>
@@ -95,7 +67,7 @@
                             </div>
                             <div>
                               <p class="statistics-title"> Chiffre d'Affaire</p>
-                              <h3 class="rate-percentage">{{$chffreA}} FCFA</h3>
+                              <h3 class="rate-percentage">{{$chffreA}}</h3>
                             </div>
                             <div class="d-none d-md-block">
                               <p class="statistics-title"> Nbre Ventes  </p>
@@ -108,6 +80,10 @@
                             <div class="d-none d-md-block">
                               <p class="statistics-title"> Total Commandes non validées  </p>
                               <h3 class="rate-percentage">{{$nb_commandes_inval}}</h3>
+                            </div>
+                            <div class="d-none d-md-block">
+                              <p class="statistics-title"> Benefice </p>
+                              <h3 class="rate-percentage">{{$benefice ?? 0}}</h3>
                             </div>
                           </div>
                         </div>
@@ -174,7 +150,7 @@
                                   <div class="d-sm-flex justify-content-between align-items-start">
                                     <div>
                                       <h4 class="card-title card-title-dash"> commandes mensuelles </h4>
-                                      <h5 class="card-subtitle card-subtitle-dash"> produit ventes par mois  </h5>
+                                      <h5 class="card-subtitle card-subtitle-dash"> commandes validées par mois  </h5>
                                     </div>
                                     <div id="performanceLine-legend"></div>
                                   </div>
@@ -240,6 +216,7 @@
     <script src="{{asset('assets/js/jquery.cookie.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/js/dashboard.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <script>
         const ctx = document.getElementById('ventesLine').getContext('2d');
         new Chart(ctx, {
@@ -269,7 +246,7 @@
                         enabled: true,
                         callbacks: {
                             label: function(context) {
-                                return context.parsed.y.toLocaleString() + " FCFA"; // formatage
+                                return context.parsed.y.toLocaleString() + ""; // formatage
                             }
                         }
                     }
@@ -311,7 +288,7 @@
                                 enabled: true,
                                 callbacks: {
                                     label: function(context) {
-                                        return context.parsed.y.toLocaleString() + " FCFA";
+                                        return context.parsed.y.toLocaleString() + " ";
                                     }
                                 }
                             }

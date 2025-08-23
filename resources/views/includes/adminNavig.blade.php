@@ -31,5 +31,11 @@
                     <span class="menu-title"> notifications </span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('suggestions_SA')}}">
+                    <i class="menu-icon mdi mdi-message-text-outline"></i>
+                    <span class="menu-title"> suggestions </span>
+                    </a>
+                </li>
           </ul>
         </nav>

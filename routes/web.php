@@ -1,6 +1,8 @@
 <?php
 
+use App\Exports\CommandesExport;
 use App\Exports\PaiementsExport;
+use App\Exports\VentesExport;
 use App\Http\Controllers\approvisionnementController;
 use App\Http\Controllers\BoutiquesController;
 use App\Http\Controllers\CategorieController;
@@ -65,6 +67,7 @@ Route::get('/', function () {return view('home');})->name('accueil');
         Route::get('statistiques_superadmin' , [SuperAdminController::class , 'statistiques'])->name('statistiques_SA');
         Route::get('/details_admin/{id}', [SuperAdminController::class , 'details_admin'])->name('details_admin');
         Route::get('/statistiques_boutiques/{id}' , [StatistiquesController::class , 'statistiques_boutiques'])->name('statistiques_boutiques');
+        Route::get('/suggestions_SA' , [SuggestionsController::class , 'SA_suggestions'])->name('suggestions_SA');
     });
 /*FIN ROUTES SUPER-ADMIN*/
 
@@ -83,6 +86,8 @@ Route::middleware(['auth' , 'role:admin'])->group(function () {
     Route::get('packages', function(){ return view('Admin.packages');})->name('packages');
     Route::get('/mes_paiements' , [PaiementController::class , 'mes_paiements'])->name('mes_paiements');
     Route::get('verification_paiement', function(){return view('verification_paiement');})->name('verification_paiement');
+    Route::get('/export_ventes' , function(){ return Excel::download(new VentesExport , 'ventes_annuelles.xlsx');})->name('ventes_annuelles');
+    Route::get('/export_commandes' , function(){ return Excel::download(new CommandesExport , 'commandes_annuelles.xlsx');})->name('export_commandes');
 });
 
 
@@ -90,7 +95,8 @@ Route::middleware(['auth' , 'role:admin', 'check.boutique'])->group(function() {
     Route::post('/update_plan' , [PackageController::class , 'update_plan'])->name('packageUpdate');
     Route::get('/update_view' , [PackageController::class , 'update_view'])->name('update_view');
     Route::get('/suggestions' , [suggestionsController::class , 'suggestions_view'])->name('suggestions');
-    Route::post('/add_suggestions' , [suggestionsController::class , ''])->name('add_suggestions');
+    Route::post('/add_suggestions' , [suggestionsController::class , 'send_suggestions'])->name('add_suggestions');
+    Route::get('/statistiques/{mois?}', [StatistiquesController::class, 'statistiques_admin'])->name('statistiques');
 });
 /*FIN ROUTES ADMIN*/
 
@@ -109,7 +115,6 @@ Route::middleware(['auth' , 'role:admin', 'check.boutique'])->group(function() {
     Route::delete('/delete_produits/{id}', [ProductController::class , 'delete_produits'])->name('delete_produits');
     Route::put('/update_produits/{id}' , [ProductController::class , 'update_produits'])->name('update_produits');
     Route::get('/coursiers', [CoursiersController::class, 'coursiers_view'])->name('coursiers');
-    Route::get('/statistiques', [StatistiquesController::class, 'statistiques_admin'])->name('statistiques');
     Route::post('/add_coursiers' ,[CoursiersController::class , 'add_coursiers'])->name('add_coursiers');
     Route::put('/update_coursiers/{id}', [CoursiersController::class, 'update_coursiers'])->name('update_coursiers');
     Route::delete('/delete_coursiers/{id}' , [CoursiersController::class , 'delete_coursiers'])->name('delete_coursiers');

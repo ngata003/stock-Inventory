@@ -45,16 +45,16 @@
                                     <table class="table select-table ">
                                         <thead>
                                             <tr>
-                                                <th> Nom  </th>
-                                                <th> Description </th>
-                                                <th > Action </th>
+                                                <th style="color:black"> Nom  </th>
+                                                <th style="color: black"> Description </th>
+                                                <th style="color: black"> Action </th>
                                             </tr>
                                         </thead>
                                       <tbody>
                                         @forelse ($categories as $cat )
                                             <tr>
-                                                <td>{{$cat->categorie}}</td>
-                                                <td>{{$cat->description}}</td>
+                                                <td class="text-dark">{{$cat->categorie}}</td>
+                                                <td class="text-dark">{{$cat->description}}</td>
                                                 <td>
                                                     <button type="button" class="btn btn-success btn-sm me-1" data-id="{{$cat->id}}" data-nom="{{$cat->categorie}}" data-description="{{$cat->description}}" onclick="openEditModal(this)"> <i class="mdi mdi-pencil"></i> </button>
                                                     <button type="button" class="btn btn-danger btn-sm" data-id="{{$cat->id}}" onclick="openSuppModal(this)"> <i class="mdi mdi-trash-can-outline"></i> </button>

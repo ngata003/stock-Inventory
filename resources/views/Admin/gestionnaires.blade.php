@@ -20,48 +20,9 @@
   </head>
   <body>
     <div class="container-scroller">
-      <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex align-items-top flex-row">
-        <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start">
-          <div class="me-3">
-            <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-bs-toggle="minimize">
-              <span class="icon-menu"></span>
-            </button>
-          </div>
-          <div>
-            <a class="navbar-brand brand-logo"  href="">
-              <img src="{{asset('assets/images/logo.svg')}}" alt="logo" />
-            </a>
-            <a class="navbar-brand brand-logo-mini" href="">
-              <img src="{{asset('assets/images/logo-mini.svg')}}" alt="logo" />
-            </a>
-          </div>
-        </div>
-        <div class="navbar-menu-wrapper d-flex align-items-top">
-          <ul class="navbar-nav ms-auto">
-            <?php $user = Auth::user(); ?>
-            <li class="nav-item dropdown d-none d-lg-block user-dropdown">
-              <a class="nav-link" id="UserDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                <img class="img-xs rounded-circle" src="{{asset('assets/images/'.$user->profil)}}" alt="Profile image"> </a>
-              <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
-                <div class="dropdown-header text-center">
-                  <img class="img-md rounded-circle" height="45px" height="45px" src="{{asset('assets/images/'.$user->profil)}}
-                  " alt="Profile image">
-                  <p class="mb-1 mt-3 fw-semibold">{{$user->name}}</p>
-                  <p class="fw-light text-muted mb-0">{{$user->email}}</p>
-                  <p class="fw-light text-muted mb-0"> {{$boutique_nom}}</p>
-                </div>
-                <a class="dropdown-item"><i class="dropdown-item-icon mdi mdi-account-outline text-primary me-2"></i> Mon Profil <span class="badge badge-pill badge-danger">1</span></a>
-                <a class="dropdown-item"><i class="dropdown-item-icon mdi mdi-power text-primary me-2"></i>Deconnexion</a>
-              </div>
-            </li>
-          </ul>
-          <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
-            <span class="mdi mdi-menu"></span>
-          </button>
-        </div>
-      </nav>
+      @include('includes.user_profil_include')
       <div class="container-fluid page-body-wrapper">
-        @include('includes/nav_include')
+        @include('includes.nav_include')
         <div class="main-panel">
           <div class="content-wrapper">
             <div class="row">
@@ -147,46 +108,49 @@
                 </div>
 
                 <div class="modal-body">
-                    <form method="POST" action="{{route('add_gestionnaires')}}" enctype="multipart/form-data" id="formulaireGestionnaires" >
+                    <form method="POST" action="{{route('add_gestionnaires')}}" id="formulaire" enctype="multipart/form-data" >
                         @csrf
+                        <div class="row g-3">
                             <div class="mb-3">
                                 <label for="centreName" class="form-label">Nom Employé </label>
                                 <input type="text" name="name" class="form-control" id="" placeholder="entrer le nom de l'employe ">
                             </div>
-                            <div class="mb-3">
+                            <div class="col-md-6">
                                 <label for="centreName" class="form-label"> adresse </label>
                                 <input type="text" name="adresse" class="form-control" id="" placeholder="entrer la localisation de votre employé ">
                             </div>
-                            <div class="mb-3">
-                                <label for="centreName" class="form-label"> contact </label>
+                            <div class="col-md-6">
+                               <label for="centreName" class="form-label"> contact </label>
                                 <input type="tel" name="contact" class="form-control" id="" placeholder="entrer un contact de l'employé valide ">
                             </div>
-                            <div class="mb-3">
+                            <div class="col-md-6">
                                 <label for="centreName" class="form-label">Email </label>
                                 <input type="email" name="email" placeholder="entrez une adresse email de l'employe valide " class="form-control" >
                             </div>
-                            <div class="mb-3">
-                                <label for="centreName" class="form-label"> Image employe </label>
-                                <input type="file" name="profil"  class="form-control" >
-                            </div>
-                            <div class="mb-3">
-                                <label for="centreName" class="form-label"> Image Piece d'identite </label>
-                                <input type="file" name="piece_identite"  class="form-control" >
-                            </div>
-                            <div class="mb-3">
-                                <label for="centreName" class="form-label"> Role de l'employé </label>
-                                <select name="role" id="categorie_produit" class="form-select">
-                                    <option value="" selected disabled>— Sélectionnez une catégorie —</option>
+                            <div  class="col-md-6">
+                                <label for="categorie_produit" class="form-label"> role de l'employe</label>
+                                <select name="role" id="role" class="form-select text-dark">
+                                    <option value="" selected disabled class="text-dark">— Sélectionnez un role —</option>
                                     @foreach ($roles as $rol)
-                                        <option value="{{ $rol->nom }}">{{ $rol->nom }}</option>
+                                        <option value="{{ $rol->nom }}" class="text-dark">{{ $rol->nom }}</option>
                                     @endforeach
                                 </select>
                             </div>
+                            <div class="col-md-6">
+                                <label for="centreName" class="form-label"> Image employe </label>
+                                <input type="file" name="profil"  class="form-control" >
+                            </div>
+                            <div class="col-md-6">
+                                <label for="centreName" class="form-label"> Image Piece d'identite </label>
+                                <input type="file" name="piece_identite"  class="form-control" >
+                            </div>
                             <div class="button-container">
-                            <button type="submit" id="bouton" class="button btn btn-success" > enregistrer </button>
-                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fermer</button>
+                                <button type="submit" id="bouton" class="button btn btn-success" > enregistrer </button>
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fermer</button>
+                            </div>
                         </div>
                     </form>
+                </div>
                 </div>
             </div>
         </div>
@@ -200,48 +164,49 @@
                     <button type="button" class="btn-close " data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" enctype="multipart/form-data"  action="" id="editForm" >
+                    <form method="POST"  action="" id="editForm" enctype="multipart/form-data" >
                         @csrf
                         @method('PUT')
-
-                        <div class="mb-3">
-                            <label for="centreName" class="form-label">Nom Employé </label>
-                            <input type="text" name="name" class="form-control" id="name" placeholder="entrer le nom de l'employe ">
-                        </div>
-                        <div class="mb-3">
-                            <label for="centreName" class="form-label"> adresse </label>
-                            <input type="text" name="adresse" class="form-control" id="adresse" placeholder="entrer la localisation de votre employé ">
-                        </div>
-                        <div class="mb-3">
-                            <label for="centreName" class="form-label"> contact </label>
-                            <input type="tel" name="contact" class="form-control" id="contact" placeholder="entrer un contact de l'employé valide ">
-                        </div>
-                        <div class="mb-3">
-                            <label for="centreName" class="form-label">Email </label>
-                            <input type="email" name="email" placeholder="entrez une adresse email de l'employe valide " id="email" class="form-control" >
-                        </div>
-                        <div class="mb-3">
-                            <label for="centreName" class="form-label"> Image employe </label>
-                            <input type="file" name="profil" id="" class="form-control" >
-                            <img src="profil" id="profil" width="65px" height="65px" alt="">
-                        </div>
-                        <div class="mb-3">
-                            <label for="centreName" class="form-label"> Image Piece d'identite </label>
-                            <input type="file" name="piece_identite" class="form-control" >
-                            <img src=""  id="piece_identite" height="65px" width="65px" alt="">
-                        </div>
-                        <div class="mb-3">
-                            <label for="centreName" class="form-label"> Role de l'employé </label>
-                            <select name="role" id="categorie_produit" class="form-select">
-                                <option value="" selected disabled>— Sélectionnez un role —</option>
-                                @foreach ($roles as $rol)
-                                    <option value="{{ $rol->nom }}">{{ $rol->nom }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="button-container ">
-                            <button type="submit" id="bouton" class="button btn btn-success" > Modifier </button>
-                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal"> Fermer </button>
+                        <div class="row g-3">
+                            <div class="mb-3">
+                                <label for="centreName" class="form-label">Nom Employé </label>
+                                <input type="text" name="name" class="form-control" id="name" placeholder="entrer le nom de l'employe ">
+                            </div>
+                            <div class="col-md-6">
+                               <label for="centreName" class="form-label"> adresse </label>
+                                <input type="text" name="adresse" class="form-control" id="adresse" placeholder="entrer la localisation de votre employé ">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="centreName" class="form-label"> contact </label>
+                                <input type="tel" name="contact" class="form-control" id="contact" placeholder="entrer un contact de l'employé valide ">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="centreName" class="form-label">Email </label>
+                                <input type="email" name="email" placeholder="entrez une adresse email de l'employe valide " id="email" class="form-control" >
+                            </div>
+                            <div  class="col-md-6">
+                                <label for="centreName" class="form-label"> Role de l'employé </label>
+                                <select name="role" id="role" class="form-select text-dark">
+                                    <option value="" selected disabled class="text-dark">— Sélectionnez un role —</option>
+                                    @foreach ($roles as $rol)
+                                        <option value="{{ $rol->nom }}">{{ $rol->nom }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                               <label for="centreName" class="form-label"> Image Piece d'identite </label>
+                                <input type="file" name="piece_identite" class="form-control" >
+                                <img src=""  id="piece_identite" height="65px" width="65px" alt="">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="centreName" class="form-label"> Image employe </label>
+                                <input type="file" name="profil" id="" class="form-control" >
+                                <img src="profil" id="profil" width="65px" height="65px" alt="">
+                            </div>
+                            <div class="button-container">
+                                <button type="submit" id="bouton" class="button btn btn-success" > enregistrer </button>
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fermer</button>
+                            </div>
                         </div>
                     </form>
                 </div>

@@ -15,17 +15,17 @@ class suggestions extends Mailable
 
     private $nom_admin;
     private $nom_boutique;
-    private $message;
+    private $suggestion;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($nom_admin , $nom_boutique , $message)
+    public function __construct($nom_admin , $nom_boutique , $suggestion)
     {
         //
         $this->nom_admin = $nom_admin;
         $this->nom_boutique = $nom_boutique;
-        $this->message = $message;
+        $this->message = $suggestion;
     }
 
     /**
@@ -48,7 +48,7 @@ class suggestions extends Mailable
             with:[
                 'nom_admin' => $this->nom_admin,
                 'nom_boutique' => $this->nom_boutique,
-                'message' => $this->message,
+                'suggestion' => $this->suggestion,
             ]
         );
     }

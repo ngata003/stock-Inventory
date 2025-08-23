@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Star Admin2 </title>
+    <title> CAMES STOCK  </title>
     <link rel="stylesheet" href="{{asset('assets/vendors/feather/feather.css')}}">
     <link rel="stylesheet" href="{{asset('assets/vendors/mdi/css/materialdesignicons.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/vendors/ti-icons/css/themify-icons.css')}}">
@@ -30,6 +30,57 @@
             <div class="row">
               <div class="col-sm-12">
                 <div class="home-tab">
+                  <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+                    <div>
+                        <div class="btn-wrapper d-flex align-items-center gap-2">
+                            <a href="#" class="btn btn-outline-dark"><i class="icon-printer"></i> Télécharger PDF</a>
+                            <a href="#" class="btn btn-primary text-white me-0"><i class="icon-download"></i> Exporter en Excel</a>
+                            <div class="dropdown">
+                                <a class="btn btn-outline-white dropdown-toggle" href="#" role="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                Selectionner Mois
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="categoryDropdown">
+                                    <li>
+                                        <a class="dropdown-item" href="#"> Janvier </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#"> Fevrier </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#"> Mars </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#"> Avril </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#"> Mai </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#"> Juin </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#"> Juillet </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#"> Aout </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#"> Septembre </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#"> Octobre </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#"> Novembre </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#"> Decembre </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
                   <div class="tab-content tab-content-basic">
                     <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
                       <div class="row">
@@ -71,14 +122,14 @@
                                 <div class="card-body">
                                   <div class="d-sm-flex justify-content-between align-items-start">
                                     <div>
-                                      <h4 class="card-title card-title-dash"> Ventes mensuelles </h4>
-                                      <h5 class="card-subtitle card-subtitle-dash">Résumé de toutes les ventes par mois</h5>
+                                      <h4 class="card-title card-title-dash"> Abonnements mensuels </h4>
+                                      <h5 class="card-subtitle card-subtitle-dash"> total abonnements par mois  </h5>
                                     </div>
                                     <div id="performanceLine-legend"></div>
                                   </div>
-                                   <div class="chartjs-wrapper mt-4">
-                                        <canvas id="ventesParMoisChart" height="160"></canvas>
-                                    </div>
+                                  <div class="chartjs-wrapper mt-4">
+                                    <canvas id="ventesLine" style="width:100% !important; height:300px !important;"></canvas>
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -86,32 +137,28 @@
                         </div>
                         <div class="col-lg-4 d-flex flex-column">
                           <div class="row flex-grow">
-                            <div class="col-md-6 col-lg-12 grid-margin stretch-card">
+                            <div class="col-12 grid-margin stretch-card">
                               <div class="card card-rounded">
                                 <div class="card-body">
                                   <div class="row">
                                     <div class="col-lg-12">
                                       <div class="d-flex justify-content-between align-items-center mb-3">
                                         <div>
-                                          <h4 class="card-title card-title-dash"> Top Produits</h4>
+                                          <h4 class="card-title card-title-dash">Top Produits </h4>
                                         </div>
-                                        <div>
-                                        <div class="dropdown">
-                                            <button class="btn btn-light dropdown-toggle toggle-dark btn-lg mb-0 me-0" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> This month </button>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                                            <h6 class="dropdown-header">Settings</h6>
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <a class="dropdown-item" href="#">Something else here</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Separated link</a>
+                                      </div>
+                                      @foreach ($top_produits as $t_prod)
+                                       <div class="mt-3">
+                                            <div class="wrapper d-flex align-items-center justify-content-between py-2 border-bottom">
+                                                <div class="d-flex">
+                                                    <div class="wrapper ms-3">
+                                                        <p class="ms-1 mb-1 fw-bold">{{$t_prod->nom_produit}}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="text-primary text-small fw-bold">{{$t_prod->total_montant}}</div>
                                             </div>
                                         </div>
-                                    </div>
-                                      </div>
-                                      <div class="mt-3">
-                                        <canvas id="leaveReport"></canvas>
-                                      </div>
+                                      @endforeach
                                     </div>
                                   </div>
                                 </div>
@@ -125,39 +172,17 @@
                           <div class="row flex-grow">
                             <div class="col-12 grid-margin stretch-card">
                               <div class="card card-rounded">
-                                <div class="card-body">
+                               <div class="card-body">
                                   <div class="d-sm-flex justify-content-between align-items-start">
                                     <div>
-                                      <h4 class="card-title card-title-dash">Market Overview</h4>
-                                      <p class="card-subtitle card-subtitle-dash">Lorem ipsum dolor sit amet consectetur adipisicing elit</p>
+                                      <h4 class="card-title card-title-dash"> commandes mensuelles </h4>
+                                      <h5 class="card-subtitle card-subtitle-dash"> produit ventes par mois  </h5>
                                     </div>
-                                    <div>
-                                      <div class="dropdown">
-                                        <button class="btn btn-light dropdown-toggle toggle-dark btn-lg mb-0 me-0" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> This month </button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                                          <h6 class="dropdown-header">Settings</h6>
-                                          <a class="dropdown-item" href="#">Action</a>
-                                          <a class="dropdown-item" href="#">Another action</a>
-                                          <a class="dropdown-item" href="#">Something else here</a>
-                                          <div class="dropdown-divider"></div>
-                                          <a class="dropdown-item" href="#">Separated link</a>
-                                        </div>
-                                      </div>
-                                    </div>
+                                    <div id="performanceLine-legend"></div>
                                   </div>
-                                  <div class="d-sm-flex align-items-center mt-1 justify-content-between">
-                                    <div class="d-sm-flex align-items-center mt-4 justify-content-between">
-                                      <h2 class="me-2 fw-bold">$36,2531.00</h2>
-                                      <h4 class="me-2">USD</h4>
-                                      <h4 class="text-success">(+1.37%)</h4>
-                                    </div>
-                                    <div class="me-3">
-                                      <div id="marketingOverview-legend"></div>
-                                    </div>
-                                  </div>
-                                  <div class="chartjs-bar-wrapper mt-3">
-                                    <canvas id="marketingOverview"></canvas>
-                                  </div>
+                                 <div class="chartjs-wrapper mt-4" style="height: 300px;">
+                                    <canvas id="commandesLine"></canvas>
+                                 </div>
                                 </div>
                               </div>
                             </div>
@@ -165,19 +190,29 @@
                         </div>
                         <div class="col-lg-4 d-flex flex-column">
                           <div class="row flex-grow">
-                            <div class="col-md-6 col-lg-12 grid-margin stretch-card">
+                            <div class="col-12 grid-margin stretch-card">
                               <div class="card card-rounded">
                                 <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-lg-12">
+                                  <div class="row">
+                                    <div class="col-lg-12">
                                       <div class="d-flex justify-content-between align-items-center mb-3">
                                         <div>
                                           <h4 class="card-title card-title-dash">Top Clients</h4>
                                         </div>
                                       </div>
-                                      <div class="mt-3">
-                                        <canvas id="clientsReport"></canvas>
-                                      </div>
+                                      @foreach ($top_clients as $t_clt )
+                                        <div class="mt-3">
+                                            <div class="wrapper d-flex align-items-center justify-content-between py-2 border-bottom">
+                                                <div class="d-flex">
+                                                    <div class="wrapper ms-3">
+                                                    <p class="ms-1 mb-1 fw-bold">{{$t_clt->client_identifiant}}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="text-primary text-small fw-bold">{{$t_clt->total_montant}}</div>
+                                            </div>
+                                       </div>
+                                      @endforeach
+
                                     </div>
                                   </div>
                                 </div>
@@ -207,178 +242,89 @@
     <script src="{{asset('assets/js/todolist.js')}}"></script>
     <script src="{{asset('assets/js/jquery.cookie.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/js/dashboard.js')}}"></script>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script>
-        const ctx = document.getElementById('leaveReport').getContext('2d');
-        const dataLabels = @json($top_produits->pluck('nom_produit'));
-        const dataValues = @json($top_produits->pluck('total_vendus'));
-
-        const chart = new Chart(ctx, {
-            type: 'bar',
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('ventesLine').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
             data: {
-                labels: dataLabels,
+                labels: [
+                    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+                ],
                 datasets: [{
-                    label: 'Quantité vendue',
-                    data: dataValues,
-                    backgroundColor: '#198754',  // vert Bootstrap bg-success
-                    borderColor: '#198754',      // même couleur que fond, sans bordure visible
-                    borderWidth: 0,
-                    barPercentage: 0.8,          // un peu plus large
-                    categoryPercentage: 0.8
+                    label: 'ventes',
+                    data: @json($data),
+                    borderColor: '#0000FF',
+                    borderWidth: 2,
+                    fill: false,
+                    tension: 0.4,
+                    pointRadius: 5,                // points visibles
+                    pointBackgroundColor: '#0000FF'
                 }]
             },
             options: {
-                indexAxis: 'y',
-                scales: {
-                    x: {
-                        beginAtZero: true,
-                        ticks: {
-                            color: '#212529',
-                            font: { size: 14, weight: '600' }
-                        },
-                        grid: {
-                            color: '#e9ecef'
-                        }
-                    },
-                    y: {
-                        ticks: {
-                            color: '#212529',
-                            font: { size: 14, weight: '600' }
-                        },
-                        grid: { display: false }
-                    }
-                },
                 responsive: true,
+                maintainAspectRatio: false,       // permet de bien remplir la card
                 plugins: {
                     legend: { display: false },
                     tooltip: {
                         enabled: true,
-                        backgroundColor: '#333',
-                        titleColor: '#fff',
-                        bodyColor: '#fff',
-                        titleFont: { weight: 'bold' },
                         callbacks: {
-                            label: ctx => ctx.parsed.x + ' FCFA'
-                        }
-                    }
-
-                }
-            }
-        });
-
-    </script>
-    <script>
-        const ctxClients = document.getElementById('clientsReport').getContext('2d');
-
-        const topClientsChart = new Chart(ctxClients, {
-            type: 'bar',
-            data: {
-                labels: @json($labels), // Ces noms apparaîtront en Y (axe vertical)
-                datasets: [{
-                    label: 'Total Achats',
-                    data: @json($montants), // Ces montants apparaîtront en X (axe horizontal)
-                    backgroundColor: 'darkblue', // Bleu foncé
-                    borderRadius: 0, // Pas de coins arrondis
-                    barThickness: 20
-                }]
-            },
-            options: {
-                indexAxis: 'y',
-                responsive: true,
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        enabled: true,
-                        backgroundColor: '#333',
-                        titleColor: '#fff',
-                        bodyColor: '#fff',
-                        callbacks: {
-                            label: ctx => ctx.parsed.x.toLocaleString() + ' FCFA'
+                            label: function(context) {
+                                return context.parsed.y.toLocaleString() + " FCFA"; // formatage
+                            }
                         }
                     }
                 },
                 scales: {
-                    x: {
-                        beginAtZero: true,
-                        ticks: {
-                            callback: value => value.toLocaleString() + ' FCFA'
-                        }
-                    },
-                    y: {
-                        ticks: {
-                            font: {
-                                size: 13
-                            }
-                        }
-                    }
+                    y: { beginAtZero: true }
                 }
             }
         });
     </script>
-
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const moisLabels = @json($labelos);
-            const montantTotaux = @json($totaux);
-
-            const ctx = document.getElementById('ventesParMoisChart').getContext('2d');
-
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: moisLabels,
-                    datasets: [{
-                        label: 'Total des ventes par mois',
-                        data: montantTotaux,
-                        borderColor: '#007bff',
-                        backgroundColor: 'rgba(0, 123, 255, 0.1)',
-                        borderWidth: 3,
-                        tension: 0.5,
-                        fill: true,
-                        pointBackgroundColor: '#007bff',
-                        pointRadius: 5,
-                        pointHoverRadius: 7
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: true,
-                            labels: { color: '#333' }
-                        },
-                        tooltip: {
-                            backgroundColor: '#343a40',
-                            titleColor: '#fff',
-                            bodyColor: '#fff',
-                            callbacks: {
-                                label: ctx => ctx.parsed.y.toLocaleString() + ' FCFA'
-                            }
-                        }
+        document.addEventListener("DOMContentLoaded", function () {
+            const ctx = document.getElementById('commandesLine');
+            if (ctx) {
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: [
+                            'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+                        ],
+                        datasets: [{
+                            label: 'Commandes',
+                            data: @json($donnees),
+                            borderColor: '#0000FF',
+                            borderWidth: 2,
+                            fill: false,
+                            tension: 0.4,
+                            pointRadius: 5,
+                            pointBackgroundColor: '#0000FF'
+                        }]
                     },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                callback: value => value.toLocaleString() + ' FCFA',
-                                color: '#212529'
-                            },
-                            grid: {
-                                color: '#e9ecef'
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                enabled: true,
+                                callbacks: {
+                                    label: function(context) {
+                                        return context.parsed.y.toLocaleString() + " FCFA";
+                                    }
+                                }
                             }
                         },
-                        x: {
-                            ticks: {
-                                color: '#212529'
-                            },
-                            grid: {
-                                display: false
-                            }
+                        scales: {
+                            y: { beginAtZero: true }
                         }
                     }
-                }
-            });
+                });
+            }
         });
     </script>
   </body>
