@@ -2,6 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
+  <meta name="theme-color" content="#0d6efd">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title> CAMES STOCK - Gestion de Stock</title>
   @include('includes.seo')
@@ -9,6 +10,9 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css" rel="stylesheet">
   <link rel="shortcut icon" href="{{asset(path: 'assets/images/cames_favIcon.png')}}"/>
+  <link rel="manifest" href="/manifest.json">
+
+
 
   <style>
     body {
@@ -114,13 +118,10 @@
     <div id="carouselExampleIndicators" class="carousel slide mb-5" data-bs-ride="carousel">
       <div class="carousel-inner">
         <div class="carousel-item active">
-          <img src="{{asset('assets/images/banniere_1.jpg')}}" class="d-block w-100" alt="Gestion de stock - Rapidité" loading="lazy">
+          <img src="{{asset('assets/images/banniere_2.png')}}" class="d-block w-100" alt="Gestion de stock - Rapidité" loading="lazy">
         </div>
         <div class="carousel-item">
-          <img src="{{asset('assets/images/banniere_2.jpg')}}" class="d-block w-100" alt="Sécurité des données" loading="lazy">
-        </div>
-        <div class="carousel-item">
-          <img src="{{asset('assets/images/banniere_3.jpg')}}" class="d-block w-100" alt="Interface responsive" loading="lazy">
+          <img src="{{asset('assets/images/banniere_1.png')}}" class="d-block w-100" alt="Sécurité des données" loading="lazy">
         </div>
       </div>
       <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
@@ -197,6 +198,15 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+   <script>
+        if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("/service-worker.js")
+            .then(() => console.log("Service Worker enregistré"))
+            .catch((err) => console.error("Erreur SW:", err));
+        }
+    </script>
+
 </body>
 </html>
 
