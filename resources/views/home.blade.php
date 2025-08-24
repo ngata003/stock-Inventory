@@ -2,7 +2,6 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="theme-color" content="#0d6efd">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title> CAMES STOCK - Gestion de Stock</title>
   @include('includes.seo')
@@ -11,9 +10,7 @@
   <link href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css" rel="stylesheet">
   <link rel="shortcut icon" href="{{asset(path: 'assets/images/cames_favIcon.png')}}"/>
   <link rel="manifest" href="/manifest.json">
-
-
-
+   <meta name="theme-color" content="#0d6efd">
   <style>
     body {
       background-color: #f8f9fa;
@@ -107,6 +104,9 @@
             <a class="btn btn-outline-primary rounded-pill mb-2 mb-lg-0 me-lg-2" href="{{route('login')}}">Connexion</a>
             <a class="btn btn-primary rounded-pill mb-2 mb-lg-0 me-lg-2" href="{{route('inscription')}}">Inscription</a>
             <a class="btn btn-outline-secondary rounded-pill" href="{{asset('assets/videos/demo.mp4')}}" target="_blank">Demo d'utilisation</a>
+            <button id="installBtn" style="display:none; position:fixed; bottom:20px; right:20px; padding:10px 20px; background:#0d6efd; color:#fff; border:none; border-radius:5px; cursor:pointer; z-index:1000;">
+                Installer l'app
+            </button>
         </div>
     </div>
 
@@ -199,13 +199,33 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-   <script>
-        if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.register("/service-worker.js")
-            .then(() => console.log("Service Worker enregistré"))
-            .catch((err) => console.error("Erreur SW:", err));
-        }
-    </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+        .then(reg => console.log('Service Worker enregistré:', reg))
+        .catch(err => console.error('Erreur SW:', err));
+    });
+    }
+
+    // Gestion du prompt d'installation
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    document.getElementById('installBtn').style.display = 'block';
+    });
+
+    document.getElementById('installBtn').addEventListener('click', async () => {
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        deferredPrompt = null;
+        document.getElementById('installBtn').style.display = 'none';
+        console.log('Installation:', outcome);
+    }
+    });
+</script>
 
 </body>
 </html>
