@@ -97,6 +97,7 @@ Route::middleware(['auth' , 'role:admin', 'check.boutique'])->group(function() {
     Route::get('/suggestions' , [suggestionsController::class , 'suggestions_view'])->name('suggestions');
     Route::post('/add_suggestions' , [suggestionsController::class , 'send_suggestions'])->name('add_suggestions');
     Route::get('/statistiques/{mois?}', [StatistiquesController::class, 'statistiques_admin'])->name('statistiques');
+    Route::get('/notifications' , [SuggestionsController::class , 'notifications'])->name('notifications');
 });
 /*FIN ROUTES ADMIN*/
 
@@ -135,8 +136,7 @@ Route::middleware(['auth' , 'role:admin', 'check.boutique'])->group(function() {
     Route::put('/update_categories/{id}' , [CategorieController::class , 'update_categories'])->name('update_categories');
     Route::delete('/delete_categories/{id}' , [CategorieController::class , 'delete_categories'])->name('delete_categories');
     Route::post('/add_category' , [CategorieController::class , 'add_category'])->name('add_category');
-    Route::get('/boutiques_view', [BoutiquesController::class , 'boutiques_view'])->name('boutiques_user');
-    Route::get('/notifications' , [InventaireController::class, 'notifications'])->name('notifications');
+    Route::get('/boutiques_view', [BoutiquesController::class , 'boutiques_view'])->name('boutiques_user'); 
     Route::get('/boutique' , [BoutiquesController::class , 'boutiques_nav'])->name('boutique');
     Route::get('/boutique_details/{id}', [BoutiquesController::class , 'boutique_details'])->name('boutique_details');
     Route::post('/add_approvisionnement' , [ReapprovisionnementController::class , 'reapprovisionnement'])->name('add_approvisionnement');

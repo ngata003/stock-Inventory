@@ -477,20 +477,18 @@
     </script>
 
     <script>
-    function printQrCode(id) {
-        // récupérer le QR code
-        let qrContent = document.getElementById("qr-code-" + id).innerHTML;
+        function printQrCode(id) {
+            // récupérer le QR code
+            let qrContent = document.getElementById("qr-code-" + id).innerHTML;
 
-        // ouvrir une nouvelle fenêtre d’impression
-        let printWindow = window.open('', '', 'width=400,height=400');
-        printWindow.document.write('<html><head><title>QR Code</title></head><body>');
-        printWindow.document.write(qrContent);
-        printWindow.document.write('</body></html>');
-        printWindow.document.close();
-        printWindow.print();
-    }
+            // ouvrir une nouvelle fenêtre d’impression
+            let printWindow = window.open('', '', 'width=400,height=400');
+            printWindow.document.write('<html><head><title>QR Code</title></head><body>');
+            printWindow.document.write(qrContent);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.print();
+        }
     </script>
-
-
   </body>
 </html>

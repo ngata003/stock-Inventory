@@ -28,7 +28,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('gestionnaires')}}">
+                    <a class="nav-link" href="{{route('notifications')}}">
                     <i class="menu-icon mdi mdi-bell-outline"></i>
                     <span class="menu-title"> Notifications  </span>
                     </a>

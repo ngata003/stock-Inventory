@@ -47,4 +47,9 @@ class suggestionsController extends Controller
 
         return view('SuperAdmin.suggestions' , compact('suggestions'));
     }
+
+    public function notifications(){
+
+        return view('Admin.notifications');
+    }
 }
