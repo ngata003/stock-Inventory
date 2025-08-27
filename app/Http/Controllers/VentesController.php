@@ -38,7 +38,6 @@ class VentesController extends Controller
     public function add_ventes(Request $request)
     {
         $messages = [
-            'nom_client' => '',
             'email_client.email' => 'Veuillez entrer une adresse email valide.',
             'email_client.regex' => 'L\'adresse email doit commencer par une lettre et respecter le format correct (ex: exemple@mail.com).',
             'montant_total.required' => 'Le montant total est obligatoire.',
@@ -68,10 +67,18 @@ class VentesController extends Controller
             $produit = Produit::where('nom_produit', $request->input('nom_produit'.$i))->first();
             $qteDemandee = $request->input('qte'.$i);
 
-            if (!$produit || $produit->qte_commandee < $qteDemandee) {
+            if (!$produit) {
+                    return back()->with("error_produit", "le produit $produit->nom_produit n'existe pas ");
+                }
 
-                return back()->with('error', 'Produit '.$request->input('nom_produit'.$i).' introuvable ou quantité insuffisante.');
+                if ($produit->qte_restante == 0) {
+                    return back()->with("error_produit", " le produit $produit->nom_produit est terminé en stock");
+                }
+
+                if ($produit->qte_restante < $qteDemandee) {
+                    return back()->with("error_produit", "stock insuffisant pour le produit $produit->nom_produit , il vous reste $produit->qte_restante");
             }
+
         }
 
         DB::beginTransaction();
@@ -159,7 +166,7 @@ class VentesController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with('error', 'Une erreur est survenue : '.$e->getMessage());
+            return back()->with('error_produit', 'Une erreur est survenue : '.$e->getMessage());
         }
     }
 
@@ -245,17 +252,16 @@ class VentesController extends Controller
         return $pdf->stream('facture' . $invoice->id_facture . '-' . $toDaydate . '.pdf');
     }
 
-    public function update_ventes(Request $request){
-
+    public function update_ventes(Request $request)
+    {
         $messages = [
-            'nom_client' => '',
             'email_client.email' => 'Veuillez entrer une adresse email valide.',
             'email_client.regex' => 'L\'adresse email doit commencer par une lettre et respecter le format correct (ex: exemple@mail.com).',
             'montant_total.required' => 'Le montant total est obligatoire.',
             'montant_total.numeric' => 'Le montant total doit être un nombre.',
-            'nom_client.regex' => 'le nom du client doit avoir uniquement les lettres',
-            'montant_rembourse.numeric' => 'le montant remboursé doit etre un chiffre',
-            'montant_paye.numeric' => 'le montant payé doit etre un nombre',
+            'nom_client.regex' => 'Le nom du client doit avoir uniquement les lettres',
+            'montant_rembourse.numeric' => 'Le montant remboursé doit être un chiffre',
+            'montant_paye.numeric' => 'Le montant payé doit être un nombre',
         ];
 
         $request->validate([
@@ -268,28 +274,29 @@ class VentesController extends Controller
             'type_operation' => 'required',
             'fk_coursier' => 'nullable',
             'contact_client' => 'nullable|regex:/^\+?[0-9]{7,15}$/',
-        ] , $messages);
+        ], $messages);
 
-
-        $valeur = $request->input('numRows');
+        $valeur = $request->numRows;
         $fk_vente = $request->fk_vente;
         $fk_boutique = session('boutique_active_id');
         $user = Auth::user();
 
-        for ($i = 0; $i < $valeur; $i++) {
-            $produit = Produit::where('nom_produit', $request->input('nom_produit'.$i))->first();
-            $qteDemandee = $request->input('qte'.$i);
-
-            if (!$produit || $produit->qte_commandee < $qteDemandee) {
-
-                return back()->with('error', 'Produit '.$request->input('nom_produit'.$i).' introuvable ou quantité insuffisante.');
-            }
-        }
-
         DB::beginTransaction();
 
         try {
-            $facture = new Vente();
+            $facture = Vente::findOrFail($fk_vente);
+
+            $anciensDetails = Vente_detail::where('fk_vente', $fk_vente)->get();
+            foreach ($anciensDetails as $detail) {
+                $produit = Produit::where('nom_produit', $detail->nom_produit)->first();
+                if ($produit) {
+                    $produit->qte_restante += $detail->qte;
+                    $produit->save();
+                }
+            }
+
+            Vente_detail::where('fk_vente', $fk_vente)->delete();
+
             $facture->nom_client = $request->nom_client;
             $facture->email_client = $request->email_client;
             $facture->montant_total = $request->montant_total;
@@ -301,35 +308,44 @@ class VentesController extends Controller
             $facture->fk_createur = $user->id;
             $facture->fk_coursier = $request->fk_coursier;
             $facture->contact_client = $request->contact_client;
-            if ( $request->type_operation === "vente") {
-                $facture->status = true;
-            }
-            elseif ($request->type_operation === "commande") {
-                $facture->status = false;
-            }
+
+            $facture->status = true;
+
             $facture->date_vente = Carbon::now()->toDateString();
             $facture->save();
 
-            $id_facture = $facture->id;
             $details = [];
 
             for ($i = 0; $i < $valeur; $i++) {
-                $venteDetail = new vente_detail();
+                $produit = Produit::where('nom_produit', $request->input('nom_produit'.$i))->first();
+                $qteDemandee = $request->input('qte'.$i);
+
+                if (!$produit) {
+                    return back()->with("error_produit", "le produit $produit->nom_produit n'existe pas ");
+                }
+
+                if ($produit->qte_restante == 0) {
+                    return back()->with("error_produit", " le produit $produit->nom_produit est terminé en stock");
+                }
+
+                if ($produit->qte_restante < $qteDemandee) {
+                    return back()->with("error_produit", "stock insuffisant pour le produit $produit->nom_produit , il vous reste $produit->qte_restante");
+                }
+
+                $venteDetail = new Vente_detail();
                 $venteDetail->nom_produit = $request->input('nom_produit'.$i);
                 $venteDetail->qte = $request->input('qte'.$i);
                 $venteDetail->prix_unitaire = $request->input('prix_unitaire'.$i);
                 $venteDetail->montant_total = $request->input('montant_total'.$i);
-                $venteDetail->fk_vente = $id_facture;
+                $venteDetail->fk_vente = $facture->id;
                 $venteDetail->fk_createur = $user->id;
                 $venteDetail->fk_boutique = $fk_boutique;
                 $venteDetail->save();
 
                 $details[] = $venteDetail;
 
-                $produit = Produit::where('nom_produit', $venteDetail->nom_produit)->first();
-                $produit->qte_restante -= $venteDetail->qte;
+                $produit->qte_restante -= $qteDemandee;
                 $produit->save();
-
             }
 
             $boutique = Boutique::find($fk_boutique);
@@ -340,7 +356,7 @@ class VentesController extends Controller
                 'contact' => $boutique->telephone,
                 'site_web' => $boutique->site_web,
                 'localisation' => $boutique->adresse,
-                'id_facture' => $id_facture,
+                'id_facture' => $facture->id,
                 'nom_client' => $request->nom_client,
                 'email_client' => $request->email_client,
                 'ventes' => $details,
@@ -350,7 +366,7 @@ class VentesController extends Controller
             ];
 
             $pdf = Pdf::loadView('Users.ventes.facture', ['data' => $data]);
-            $pdfPath = public_path('assets/PDF/facture_'.$id_facture.'.pdf');
+            $pdfPath = public_path('assets/PDF/facture_'.$facture->id.'.pdf');
             $pdf->save($pdfPath);
 
             if ($request->type_operation === "vente" && $request->email_client) {
@@ -359,21 +375,13 @@ class VentesController extends Controller
 
             DB::commit();
 
-            if ($request->type_operation === "vente") {
-                return redirect()->route('liste_ventes')->with('success_transfert' , 'facture enregistrée et envoyée au client avec succès');
-            }
-
-            elseif($request->type_operation === "commande"){
-                return redirect()->route('liste_commandes')->with('success_transfert' , 'facture enregistrée et envoyée au client avec succès');
-            }
-
-
+            return redirect()->route($request->type_operation === "vente" ? 'liste_ventes' : 'liste_commandes')
+                ->with('success_transfert', 'Facture modifiée avec succès et stock mis à jour.');
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with('error', 'Une erreur est survenue : '.$e->getMessage());
+            return back()->with('error_produit', 'Une erreur est survenue : '.$e->getMessage());
         }
-
     }
 
 }

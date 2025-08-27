@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="{{asset('assets/vendors/select2/select2.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/vendors/select2-bootstrap-theme/select2-bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
-    <link rel="shortcut icon" href="{{asset('assets/images/favicon.png')}}" />
+    <link rel="shortcut icon" href="{{asset('assets/images/cames_favIcon.png')}}" />
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   </head>
@@ -114,12 +114,12 @@
 
                         <div class="row align-items-center g-3 mb-3">
                             <div class="col-md-3">
-                                <select class="form-select form-select-sm" name="moyen_paiement">
-                                    <option selected>moyen paiement</option>
-                                    <option value="orange_money">Orange Money</option>
-                                    <option value="mobile_money">Mobile Money</option>
-                                    <option value="cash">Cash</option>
-                                    <option value="paiement_bancaire">Paiement bancaire</option>
+                                <select class="form-select form-select-sm text-dark" name="moyen_paiement">
+                                    <option selected class="text-dark">moyen paiement</option>
+                                    <option value="orange_money" class="text-dark">Orange Money</option>
+                                    <option value="mobile_money" class="text-dark">Mobile Money</option>
+                                    <option value="cash" class="text-dark">Cash</option>
+                                    <option value="paiement_bancaire" class="text-dark">Paiement bancaire</option>
                                 </select>
                             </div>
                             <div class="col-md-3">
@@ -155,8 +155,8 @@
                     <div class="mb-3">
                         <i class="mdi mdi-alert-circle-outline mdi-48px text-danger animate__animated animate__zoomIn"></i>
                     </div>
-                     @if(session('error'))
-                        <h5 class="modal-title" id="deleterModalLabel">{{session('error')}}</h5>
+                     @if(session('error_produit'))
+                        <h5 class="modal-title" id="deleterModalLabel">{{session('error_produit')}}</h5>
                     @endif
                     <button type="button" class="btn btn-danger btn-sm mt-3" data-bs-dismiss="modal">
                         Fermer
@@ -180,7 +180,7 @@
     <script src="{{asset('assets/js/typeahead.js')}}"></script>
     <script src="{{asset('assets/js/select2.js')}}"></script>
     <script>
-           let index = 1;
+        let index = 1;
         const numRows = document.getElementById('numRows');
         numRows.value = 1;
         const divCommande = document.getElementById('commandesContainer');
@@ -230,7 +230,7 @@
             index++;
             numRows.value = index;
         });
-        
+
         function autoCompletion_produits(index) {
             let input = document.getElementById(`nom_produit${index}`);
             let suggestionsContainer = document.getElementById(`suggestions_${index}`);
@@ -348,11 +348,12 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-        @if(session('error'))
+        @if(session('error_produit'))
             var NbModal = new bootstrap.Modal(document.getElementById('errorNbModal'));
             NbModal.show();
         @endif
         });
     </script>
+
   </body>
 </html>

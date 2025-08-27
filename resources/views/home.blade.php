@@ -118,10 +118,10 @@
     <div id="carouselExampleIndicators" class="carousel slide mb-5" data-bs-ride="carousel">
       <div class="carousel-inner">
         <div class="carousel-item active">
-          <img src="{{asset('assets/images/banniere_2.png')}}" class="d-block w-100" alt="Gestion de stock - Rapidité" loading="lazy">
+          <img src="{{asset('assets/images/banni1.png')}}" class="d-block w-100" alt="Gestion de stock - Rapidité" loading="lazy">
         </div>
         <div class="carousel-item">
-          <img src="{{asset('assets/images/banniere_1.png')}}" class="d-block w-100" alt="Sécurité des données" loading="lazy">
+          <img src="{{asset('assets/images/banni2.png')}}" class="d-block w-100" alt="Sécurité des données" loading="lazy">
         </div>
       </div>
       <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">

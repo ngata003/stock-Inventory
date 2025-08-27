@@ -34,6 +34,7 @@
                         <h4 class="card-title card-title-dash">Espace Produits </h4>
                         <p class="card-subtitle card-subtitle-dash">managez vos Produits en toute aisance</p>
                       </div>
+
                         <button class="add btn btn-icons btn-rounded btn-primary todo-list-add-btn text-white me-0 pl-12p"  data-bs-toggle="modal" data-bs-target="#shopModal" type="button"><i class="mdi mdi-plus"></i></button>
                     </div>
                     <div class="table-responsive">

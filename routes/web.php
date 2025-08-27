@@ -79,6 +79,7 @@ Route::middleware(['auth' , 'role:admin'])->group(function () {
     Route::middleware(['auth', 'check.abonnement'])->group(function () {
         Route::get('/boutiques_admin', [BoutiquesController::class, 'store_view'])->name('boutiques_view');
     });
+    Route::post('/update_plan' , [PackageController::class , 'update_plan'])->name('packageUpdate');
     Route::post('/add_package', [PackageController::class,'add_package'])->name('add_package');
     Route::post('add_boutique',[BoutiquesController::class,'add_boutique'])->name('storeBoutiques');
     Route::put('/boutique_update/{id}',[BoutiquesController::class, 'update_boutique'])->name('update_boutique');
@@ -92,7 +93,6 @@ Route::middleware(['auth' , 'role:admin'])->group(function () {
 
 
 Route::middleware(['auth' , 'role:admin', 'check.boutique'])->group(function() {
-    Route::post('/update_plan' , [PackageController::class , 'update_plan'])->name('packageUpdate');
     Route::get('/update_view' , [PackageController::class , 'update_view'])->name('update_view');
     Route::get('/suggestions' , [suggestionsController::class , 'suggestions_view'])->name('suggestions');
     Route::post('/add_suggestions' , [suggestionsController::class , 'send_suggestions'])->name('add_suggestions');
@@ -150,7 +150,7 @@ Route::middleware(['auth' , 'role:admin', 'check.boutique'])->group(function() {
     Route::get('/update_plan' , [PackageController::class , 'update_plan'])->name('update_plan');
     Route::get('/imprimer_factures/{id}' , [VentesController::class , 'imprimer_factures'])->name('imprimer_factures');
     Route::get('/update_vente/{id}' , [VentesController::class ,'update_ventes_view'])->name('update_ventes_view');
-    Route::post('/update_ventes/{id}' , [VentesController::class , 'update_ventes'])->name('update_ventes');
+    Route::post('/update_ventes' , [VentesController::class , 'update_ventes'])->name('update_ventes');
     Route::put('/valid_commandes/{id}' , [CommandesController::class , 'valid_commandes'])->name('valid_commandes');
     Route::delete('/annuler_commandes/{id}' , [VentesController::class , 'delete_ventes'])->name('annuler_commandes');
 });

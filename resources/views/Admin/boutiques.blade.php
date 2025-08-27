@@ -24,6 +24,12 @@
        <div class="container-fluid page-body-wrapper">
         <nav class="sidebar sidebar-offcanvas" id="sidebar">
           <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link" href="{{route('update_view')}}">
+                    <i class="menu-icon mdi mdi-star-outline"></i>
+                    <span class="menu-title"> changer de plan  </span>
+                </a>
+            </li>
           </ul>
         </nav>
         <div class="main-panel">

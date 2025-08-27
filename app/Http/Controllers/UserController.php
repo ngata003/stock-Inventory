@@ -103,7 +103,6 @@ class UserController extends Controller
 
             elseif($user->type === "employe"){
                 $boutique = Boutique::where('id',$user->fk_boutique)->first();
-
                 if($boutique){
                     session([
                         'boutique_active_id' => $boutique->id,
@@ -121,8 +120,6 @@ class UserController extends Controller
             elseif($user->type === "superadmin"){
                 return redirect()->route('statistiques_SA');
             }
-
-
         }
 
         return redirect()->back()->withErrors(['email' => 'Identifiants invalides.']);

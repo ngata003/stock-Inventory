@@ -80,10 +80,10 @@
                           <div class="form-group row">
                             <label class="col-sm-4 col-form-label"> coursier </label>
                             <div class="col-sm-8">
-                                <select class="form-select form-select-sm" name="fk_coursier" id="exampleFormControlSelect3">
-                                    <option selected> selectionnez un coursier </option>
+                                <select class="form-select form-select-sm text-dark" name="fk_coursier" id="exampleFormControlSelect3">
+                                    <option selected class="text-dark"> selectionnez un coursier </option>
                                     @foreach ($coursiers as $cours )
-                                    <option value="{{$cours->id}}"> {{$cours->nom_coursier}} </option>
+                                    <option value="{{$cours->id}}" class="text-dark"> {{$cours->nom_coursier}} </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -117,12 +117,12 @@
 
                         <div class="row align-items-center g-3 mb-3">
                             <div class="col-md-3">
-                                <select class="form-select form-select-sm" name="moyen_paiement">
-                                    <option selected>moyen paiement</option>
-                                    <option value="orange_money">Orange Money</option>
-                                    <option value="mobile_money">Mobile Money</option>
-                                    <option value="cash">Cash</option>
-                                    <option value="paiement_bancaire">Paiement bancaire</option>
+                                <select class="form-select form-select-sm text-dark" name="moyen_paiement">
+                                    <option selected class="text-dark">selectionnez un moyen paiement</option>
+                                    <option value="orange_money" class="text-dark" >Orange Money</option>
+                                    <option value="mobile_money" class="text-dark" >Mobile Money</option>
+                                    <option value="cash" class="text-dark" >Cash</option>
+                                    <option value="paiement_bancaire" class="text-dark" >Paiement bancaire</option>
                                 </select>
                             </div>
                             <div class="col-md-3">
@@ -158,8 +158,8 @@
                     <div class="mb-3">
                         <i class="mdi mdi-alert-circle-outline mdi-48px text-danger animate__animated animate__zoomIn"></i>
                     </div>
-                     @if(session('error'))
-                        <h5 class="modal-title" id="deleterModalLabel">{{session('error')}}</h5>
+                     @if(session('error_produit'))
+                        <h5 class="modal-title" id="deleterModalLabel">{{session('error_produit')}}</h5>
                     @endif
                     <button type="button" class="btn btn-danger btn-sm mt-3" data-bs-dismiss="modal">
                         Fermer
@@ -351,7 +351,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-        @if(session('error'))
+        @if(session('error_produit'))
             var NbModal = new bootstrap.Modal(document.getElementById('errorNbModal'));
             NbModal.show();
         @endif

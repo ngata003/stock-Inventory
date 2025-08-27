@@ -23,7 +23,7 @@
             <div class="col-lg-4 mx-auto">
               <div class="auth-form-light text-left py-5 px-4 px-sm-5">
                 <div class="brand-logo ">
-                  <img src="{{asset('assets/images/exact.png')}}" alt="logo">
+                  <img src="{{asset('assets/images/cames_stock.png')}}" alt="logo">
                 </div>
                 <h4>Hello Deja de retour ?</h4>
                 <h6 class="fw-light">Connectez-vous pour continuer.</h6>
