@@ -14,18 +14,34 @@ class RoleMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, $roles): Response
+    /*public function handle(Request $request, Closure $next, $types): Response
     {
         $user = Auth::user(); // récupère l'utilisateur connecté
 
         // Convertir la chaîne "admin,employe" en tableau ['admin','employe']
-        $rolesArray = is_array($roles) ? $roles : explode(',', $roles);
+        $typesArray = is_array($types) ? $types : explode(',', $types);
 
-        if (!$user || !in_array($user->role, $rolesArray)) {
+        if (!$user || !in_array($user->role, $typesArray)) {
             abort(403, 'Accès interdit');
         }
 
         return $next($request);
+    }*/
+
+     public function handle(Request $request, Closure $next, ...$types)
+    {
+
+        if (Auth::check()) {
+            $user = Auth::user();
+
+            if (!$user || !in_array($user->type, $types)) {
+                abort(403, 'Accès interdit');;
+            }
+
+            return $next($request);
+        }
+
+        return redirect()->route('login');
     }
 
 }

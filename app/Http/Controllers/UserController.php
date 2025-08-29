@@ -78,6 +78,7 @@ class UserController extends Controller
             'password' => 'required',
         ]);
 
+
         $credentials = [
             'email' => $request->input('email'),
             'password' => $request->input('password'),
@@ -103,7 +104,7 @@ class UserController extends Controller
 
             elseif($user->type === "employe"){
                 $boutique = Boutique::where('id',$user->fk_boutique)->first();
-                if($boutique){
+                 if($boutique){
                     session([
                         'boutique_active_id' => $boutique->id,
                         'boutique_nom' => $boutique->nom_boutique,
@@ -300,7 +301,7 @@ class UserController extends Controller
         $utilisateur = Auth::user();
         $user = User::find($utilisateur->id);
 
-        return view('Users.profil_user' , compact('user'));
+        return view('Users.auth.profil_user' , compact('user'));
     }
 
     public function update_profil(Request $request , $id){

@@ -35,71 +35,101 @@
                         <div class="col-lg-7 d-flex flex-column">
                             <div class="row flex-grow">
                                 <div class="col-12 col-lg-12 grid-margin stretch-card">
-                                <div class="card card-rounded">
-                                    <div class="card-body">
-                                    <div class="d-sm-flex justify-content-between align-items-start mb-3">
-                                        <div>
-                                        <h4 class="card-title card-title-dash">Notifications</h4>
+                                    <div class="card card-rounded">
+                                        <div class="card-body">
+                                            <div class="d-sm-flex justify-content-between align-items-start mb-3">
+                                                <div>
+                                                    <h4 class="card-title card-title-dash">Notifications</h4>
+                                                </div>
+                                                <div class="d-flex justify-content-end mb-3 gap-2">
+                                                    <div class="dropdown ms-2">
+                                                        <button class="btn btn-primary dropdown-toggle" type="button" id="categoryDropdown"
+                                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                            Choisir un mois
+                                                        </button>
+                                                        <ul class="dropdown-menu" aria-labelledby="categoryDropdown">
+                                                            @for ($i = 1; $i <= 12; $i++)
+                                                                <li>
+                                                                    <a class="dropdown-item" href="{{ route('statistiques', ['mois' => $i]) }}">
+                                                                        {{ \Carbon\Carbon::create()->month($i)->locale('fr')->monthName }}
+                                                                    </a>
+                                                                </li>
+                                                            @endfor
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="table-responsive">
+                                                <table class="table table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Description</th>
+                                                            <th>Date</th>
+                                                            <th>Statut</th>
+                                                            <th> Actions </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @forelse ($notifications as $notif )
+                                                            <tr>
+                                                                <td>{{$notif->id}}</td>
+                                                                <td>{{$notif->description}}</td>
+                                                                <td>{{$notif->created_at->format('d-m-y')}}</td>
+                                                                <td>
+                                                                    @if ($notif->status === "lu")
+                                                                        <button class="btn btn-success btn-sm"> <span style="color: white"> Déjà lu</span></button>
+                                                                    @elseif ($notif->status === "attente")
+                                                                        <button class="btn btn-primary btn-sm"> <span style="color: white"> Nouveau message</span></button>
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    <button type="button" class="btn btn-danger btn-sm" data-id="{{$notif->id}}" onclick="openSuppModal(this)">
+                                                                        <i class="mdi mdi-trash-can-outline text-white"></i>
+                                                                    </button>
+                                                                    <button class="btn btn-success btn-sm" onclick="showNotif({{ $notif->id }})">
+                                                                        <i class="mdi mdi-eye text-white"></i>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        @empty
+                                                        <tr>
+                                                            <td colspan="5" class="text-center text-muted">Aucune notification enregistrée</td>
+                                                        </tr>
+                                                        @endforelse
+                                                    </tbody>
+                                                </table>
+                                                    <div class="mt-3 d-flex justify-content-center">
+                                                        {{ $notifications->links('pagination::bootstrap-5') }}
+                                                    </div>
+                                            </div>
                                         </div>
-                                        <i class="mdi mdi-bell-outline mdi-24px text-primary"></i>
                                     </div>
-                                    
-                                    <div class="table-responsive">
-                                        <table class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                            <th>#</th>
-                                            <th>Message</th>
-                                            <th>Date</th>
-                                            <th>Statut</th>
-                                            </tr>
-                                        </thead>
-                                            <tbody>
-                                                <tr>
-                                                <td>1</td>
-                                                <td>Nouvelle vente enregistrée</td>
-                                                <td>2025-08-27</td>
-                                                <td><span class="badge bg-success">Vu</span></td>
-                                                </tr>
-                                                <tr>
-                                                <td>2</td>
-                                                <td>Stock faible pour "Produit X"</td>
-                                                <td>2025-08-26</td>
-                                                <td><span class="badge bg-warning text-dark">En attente</span></td>
-                                                </tr>
-                                                <tr>
-                                                <td>3</td>
-                                                <td>Nouvel employé ajouté</td>
-                                                <td>2025-08-25</td>
-                                                <td><span class="badge bg-info text-dark">Nouveau</span></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    </div>
-                                </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-lg-5 d-flex flex-column">
-                          <div class="row flex-grow">
-                            <div class="col-12 grid-margin stretch-card">
-                              <div class="card card-rounded">
-                                <div class="card-body">
-                                  <div class="d-sm-flex justify-content-between align-items-start">
-                                    <div>
-                                      <h4 class="card-title card-title-dash"> Lecture des notifications </h4>
+                        <!-- Lecture notifications -->
+                        <div class="col-lg-5 d-flex flex-column" id="lecture-notif">
+                            <div class="row flex-grow">
+                                <div class="col-12 grid-margin stretch-card">
+                                    <div class="card card-rounded">
+                                        <div class="card-body">
+                                            <div class="d-sm-flex justify-content-between align-items-start">
+                                                <div>
+                                                    <h4 class="card-title card-title-dash">Lecture des notifications</h4>
+                                                </div>
+                                            </div>
+                                            <div id="placeholder" class="text-muted">
+                                                <em>Veuillez cliquer sur une notification pour la lire</em>
+                                            </div>
+                                            <div class="mt-4" id="notif-content" class="d-none">
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div id="performanceLine-legend"></div>
-                                  </div>
-                                  <div class="chartjs-wrapper mt-4">
-                                    <canvas id="ventesLine" width=""></canvas>
-                                  </div>
                                 </div>
-                              </div>
                             </div>
-                          </div>
                         </div>
                       </div>
                     </div>
@@ -112,6 +142,47 @@
         </div>
       </div>
     </div>
+
+    <div class="modal fade" id="deleterModal" tabindex="-1" aria-labelledby="deleterModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content border-danger shadow-lg">
+                <div class="modal-body text-center p-4">
+                    <div class="mb-3">
+                        <i class="mdi mdi-trash-can-outline mdi-48px text-danger animate__animated animate__zoomIn"></i>
+                    </div>
+                    @if(session('notification_deleted'))
+                        <h5 class="modal-title" id="deleterModalLabel">{{session('notification_deleted')}}</h5>
+                    @endif
+                    <button type="button" class="btn btn-danger btn-sm mt-3" data-bs-dismiss="modal">
+                        Fermer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content border-danger shadow-lg">
+                <div class="modal-body text-center p-4">
+                    <div class="mb-3">
+                        <i class="mdi mdi-alert-circle-outline mdi-48px text-danger animate__animated animate__zoomIn"></i>
+                    </div>
+                    <h5 class="text-danger fw-bold mb-3"> Supprimer la notification ?</h5>
+                    <p class="text-muted mb-3">Êtes-vous sûr de vouloir supprimer cette notification ?</p>
+                    <div class="d-flex justify-content-center gap-2">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Non</button>
+                        <form method="POST" id="deleteForm">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm">Oui</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="{{asset('assets/vendors/js/vendor.bundle.base.js')}}"></script>
     <script src="{{asset('assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js')}}"></script>
     <script src="{{asset('assets/vendors/chart.js/chart.umd.js')}}"></script>
@@ -124,5 +195,46 @@
     <script src="{{asset('assets/js/jquery.cookie.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/js/dashboard.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        function showNotif(id) {
+
+            let bloc = document.getElementById('lecture-notif');
+            bloc.classList.remove('d-none');
+
+            fetch(`/notifications_message/${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('notif-content').innerHTML = `
+                        <p><strong>Message :</strong> ${data.message}</p>
+                        `;
+                    })
+                    .catch(error => {
+                        console.error("Erreur :", error);
+                        document.getElementById('notif-content').innerHTML =
+                            `<p class="text-danger">Impossible de charger la notification.</p>`;
+                    });
+        }
+    </script>
+
+    <script>
+        const deleteNotificationsUrl =@json(route('delete_notifications_admin', ['id' => '__ID__'])) ;
+        function openSuppModal(button) {
+            var id = button.getAttribute('data-id');
+            document.getElementById('deleteForm').action = deleteNotificationsUrl.replace('__ID__', id);
+            var deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            deleteModal.show();
+        }
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        @if(session('notification_deleted'))
+            var deleterModal = new bootstrap.Modal(document.getElementById('deleterModal'));
+            deleterModal.show();
+        @endif
+        });
+
+    </script>
   </body>
 </html>

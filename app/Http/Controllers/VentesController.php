@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\FactureClientMail;
 use App\Models\Boutique;
 use App\Models\Coursier;
-use App\Models\Inventaire;
+use App\Models\Suggestion;
 use App\Models\Produit;
 use App\Models\Vente;
 use App\Models\vente_detail;
@@ -96,6 +96,7 @@ class VentesController extends Controller
             $facture->fk_createur = $user->id;
             $facture->fk_coursier = $request->fk_coursier;
             $facture->contact_client = $request->contact_client;
+
             if ( $request->type_operation === "vente") {
                 $facture->status = true;
             }
@@ -126,6 +127,39 @@ class VentesController extends Controller
                 $produit->save();
 
             }
+
+            if($request->type_operation === "vente"){
+
+                $message = "l'utilisateur {$user->name} a enregistré une vente d'un total de {$request->montant_total} du client de nom {$request->nom_client} et de mail: {$request->email_client}";
+                $description = " nouvelle vente ";
+
+                Suggestion::create([
+                    'description' => $description,
+                    'message' => $message,
+                    'fk_boutique' => $fk_boutique,
+                    'fk_createur' => $user->id,
+                    'status' => "attente",
+                    'direction' => "admin",
+                    'type_operation' => "notification",
+                ]);
+            }
+
+            if($request->type_operation === "commande"){
+
+                $message = "l'utilisateur {$user->name} a enregistré une commande d'un total de {$request->montant_total} du client de nom {$request->contact_client}";
+                $description = " nouvelle vente ";
+
+                Suggestion::create([
+                    'description' => $description,
+                    'message' => $message,
+                    'fk_boutique' => $fk_boutique,
+                    'fk_createur' => $user->id,
+                    'status' => "attente",
+                    'direction' => "admin",
+                    'type_operation' => "notification",
+                ]);
+            }
+
 
             $boutique = Boutique::find($fk_boutique);
             $data = [
@@ -179,7 +213,7 @@ class VentesController extends Controller
             $ventes = Vente::where('fk_boutique' , $fk_boutique)->where('type_operation','vente')->orderBy('created_at', 'desc')->paginate(6);
             return view('Users.ventes.liste_ventes' , compact('ventes'));
         }
-        elseif ($user->Type === "employe") {
+        elseif ($user->type === "employe") {
             $ventes = Vente::where('fk_boutique' , $fk_boutique)->where('fk_createur' , $user->id)->where('type_operation','vente')->orderBy('created_at', 'desc')->paginate(6);
             return view('Users.ventes.liste_ventes' , compact('ventes'));
         }
@@ -347,6 +381,7 @@ class VentesController extends Controller
                 $produit->qte_restante -= $qteDemandee;
                 $produit->save();
             }
+
 
             $boutique = Boutique::find($fk_boutique);
             $data = [

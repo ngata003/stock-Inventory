@@ -23,65 +23,69 @@
        @include('includes.user_profil_include')
        <div class="container-fluid page-body-wrapper">
        @include('includes.nav_include')
-
         <div class="main-panel">
           <div class="content-wrapper">
             <div class="row">
-                <div class="col-lg-8 d-flex flex-column">
-                    <div class="row">
-                        <div class="col-lg-12 grid-margin stretch-card">
-                            <div class="card card-rounded">
-                                <div class="card-body">
-                                  <div class="d-sm-flex justify-content-between align-items-start">
-                                    <div>
-                                     <h4 class="card-title card-title-dash">Espace approvisionnement </h4>
-                                     <p class="card-subtitle card-subtitle-dash"> gerez tous les approvisionnements des produits de votre boutique </p>
-                                    </div>
-                                    <div>
-                                      <button class="add btn btn-icons btn-rounded btn-primary todo-list-add-btn text-white me-0 pl-12p" data-bs-toggle="modal" data-bs-target="#shopModal" type="button"><i class=" mdi mdi-plus"></i></i></button>
-                                    </div>
-                                  </div>
-
-                                  <div class="table-responsive  mt-1">
-                                    <table class="table select-table ">
-                                        <thead>
-                                            <tr>
-                                                <th> Produit  </th>
-                                                <th> Fournisseur  </th>
-                                                <th> Qte Ajoutée  </th>
-                                                <th> Actions  </th>
-                                            </tr>
-                                        </thead>
-                                      <tbody>
-                                            @forelse ($approvisionnement as $approv )
-                                                <tr>
-                                                    <td>{{$approv->produit->nom_produit}}</td>
-                                                    <td>{{$approv->fournisseur->nom_fournisseur}}</td>
-                                                    <td>{{$approv->qte_ajoutee}}</td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-success btn-sm me-1" data-id="{{$approv->id}}" onclick="openEditModal(this)"> Modifier </button>
-                                                        <button type="button" class="btn btn-danger btn-sm" data-id="{{$approv->id}}" onclick="openSuppModal(this)"> Supprimer </button>
-                                                    </td>
-                                                </tr>
-                                            @empty
-                                            <tr>
-                                                <td colspan="4" class="text-center text-muted">Aucun approvisionnement enregistré</td>
-                                            </tr>
-                                            @endforelse
-                                      </tbody>
-                                    </table>
-                                     <div class="mt-3 d-flex justify-content-center">
-                                        {{ $approvisionnement->links('pagination::bootstrap-5') }}
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
+              <div class="col-lg-9 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                      <div>
+                        <h4 class="card-title card-title-dash">Espace Fournisseurs </h4>
+                        <p class="card-subtitle card-subtitle-dash">managez vos fournisseurs en toute aisance</p>
+                      </div>
+                       <div class="d-flex justify-content-end mb-3 gap-2">
+                            <form action="{{ route('statistiques') }}" method="GET" class="d-flex align-items-center position-relative" id="searchForm">
+                                <button type="button" id="toggleSearch"class="btn p-2 me-2"
+                                    style="background: transparent; border: none; box-shadow: none;">
+                                    <i class="mdi mdi-magnify fs-5"></i>
+                                </button>
+                                <input type="text" name="q" id="searchInput"
+                                class="form-control border-0 border-bottom shadow-none d-none"
+                                placeholder=" produit ou fournisseur " aria-label="Search"
+                                style="max-width: 200px;">
+                            </form>
+                            <button class="add btn btn-icons btn-rounded btn-primary todo-list-add-btn text-white me-0 pl-12p"  data-bs-toggle="modal" data-bs-target="#shopModal" type="button"><i class="mdi mdi-plus"></i></button>
                         </div>
                     </div>
+                    <div class="table-responsive">
+                      <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th> Produit  </th>
+                                <th> Fournisseur  </th>
+                                <th> Qte Ajoutée  </th>
+                                <th> Actions  </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($approvisionnement as $approv )
+                                <tr>
+                                    <td>{{$approv->produit->nom_produit}}</td>
+                                    <td>{{$approv->fournisseur->nom_fournisseur}}</td>
+                                    <td>{{$approv->qte_ajoutee}}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-success btn-sm me-1" data-id="{{$approv->id}}" onclick="openEditModal(this)"> Modifier </button>
+                                        <button type="button" class="btn btn-danger btn-sm" data-id="{{$approv->id}}" onclick="openSuppModal(this)"> Supprimer </button>
+                                    </td>
+                                    </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted">Aucun approvisionnement enregistré</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                       </table>
+                       <div class="mt-3 d-flex justify-content-center">
+                            {{ $approvisionnement->links('pagination::bootstrap-5') }}
+                        </div>
+                    </div>
+                  </div>
                 </div>
+              </div>
             </div>
-         @include('includes.footer')
+          </div>
+           @include('includes.footer')
         </div>
       </div>
     </div>
@@ -100,19 +104,19 @@
                         @csrf
                             <div class="mb-3">
                                 <label for="categorie_produit" class="form-label">produit</label>
-                                <select name="fk_produit" id="categorie_produit" class="form-select">
-                                    <option value="" id="categorie" selected >— Sélectionnez une produit —</option>
+                                <select name="fk_produit" id="categorie_produit" class="form-select text-dark">
+                                    <option value="" id="categorie" selected class="text-dark" >— Sélectionnez une produit —</option>
                                     @foreach ($produits as $prod)
-                                        <option value="{{ $prod->id }}">{{ $prod->nom_produit }}</option>
+                                        <option value="{{ $prod->id }}" class="text-dark">{{ $prod->nom_produit }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="mb-3">
                                 <label for="categorie_produit" class="form-label">fournisseur</label>
-                                <select name="fk_fournisseur" id="categorie_produit" class="form-select">
-                                    <option value="" id="categorie" selected >— Sélectionnez un fournisseur —</option>
+                                <select name="fk_fournisseur" id="categorie_produit" class="form-select text-dark">
+                                    <option value="" id="categorie" selected class="text-dark" >— Sélectionnez un fournisseur —</option>
                                     @foreach ($fournisseurs as $fournis)
-                                        <option value="{{ $fournis->id }}">{{ $fournis->nom_fournisseur }}</option>
+                                        <option value="{{ $fournis->id }}" class="text-dark">{{ $fournis->nom_fournisseur }}</option>
                                     @endforeach
                                 </select>
 
@@ -131,27 +135,25 @@
         </div>
     </div>
 
-
-
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="deleteModalLabel"> annuler ce reapprovisionnement  </h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content border-danger shadow-lg">
+                <div class="modal-body text-center p-4">
+                    <div class="mb-3">
+                        <i class="mdi mdi-alert-circle-outline mdi-48px text-danger animate__animated animate__zoomIn"></i>
+                    </div>
+                    <h5 class="text-danger fw-bold mb-3"> annuler le reapprovisionnement </h5>
+                    <p class="text-muted mb-3"> Êtes-vous sûr de vouloir annuler ce reapprovisionnement ? </p>
+                    <div class="d-flex justify-content-center gap-2">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Non</button>
+                        <form method="POST" id="deleteForm">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm">Oui</button>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="modal-body">
-              Êtes-vous sûr de vouloir annuler ce reapprovisionnement ?
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Non</button>
-              <form method="POST" id="deleteForm">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-danger">Oui</button>
-              </form>
-            </div>
-          </div>
         </div>
     </div>
 
@@ -308,6 +310,30 @@
             });
         </script>
     @endif
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const toggleBtn = document.getElementById("toggleSearch");
+            const searchInput = document.getElementById("searchInput");
+            const searchForm = document.getElementById("searchForm");
+
+            // toggle au clic sur la loupe
+            toggleBtn.addEventListener("click", function (e) {
+                e.stopPropagation(); // empêche le clic de se propager au document
+                searchInput.classList.toggle("d-none");
+                if (!searchInput.classList.contains("d-none")) {
+                    searchInput.focus(); // focus automatique
+                }
+            });
+
+            // si on clique ailleurs → fermer input
+            document.addEventListener("click", function(e) {
+                if (!searchForm.contains(e.target)) {
+                    searchInput.classList.add("d-none");
+                }
+            });
+        });
+    </script>
 
   </body>
 

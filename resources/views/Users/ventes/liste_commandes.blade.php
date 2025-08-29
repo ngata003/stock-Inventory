@@ -34,11 +34,37 @@
                       <div>
                         <h4 class="card-title card-title-dash"> Espace Commandes </h4>
                         <p class="card-subtitle card-subtitle-dash"> Consultez toutes les commandes effectuées au sein de votre boutique </p>
-                      </div>
-                       <div class="d-flex justify-content-end mb-3">
-                            <a href="#" class="btn btn-success me-1"><i class="icon-printer"></i> Print</a>
-                            <a href="#" class="btn btn-primary text-white me-2"><i class="icon-download"></i> Export</a>
-                        </div>
+                       </div>
+                        <div class="d-flex justify-content-end mb-3 gap-2">
+                            <form action="{{ route('statistiques') }}" method="GET"
+                                class="d-flex align-items-center position-relative" id="searchForm">
+                                <button type="button" id="toggleSearch"
+                                        class="btn p-2 me-2"
+                                        style="background: transparent; border: none; box-shadow: none;">
+                                    <i class="mdi mdi-magnify fs-5"></i>
+                                </button>
+                                <input type="text" name="q" id="searchInput"
+                                    class="form-control border-0 border-bottom shadow-none d-none"
+                                    placeholder="Search Here" aria-label="Search"
+                                    style="max-width: 200px;">
+                            </form>
+
+                            <div class="dropdown ms-2">
+                                <button class="btn btn-primary dropdown-toggle" type="button" id="categoryDropdown"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                    Choisir un mois
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="categoryDropdown">
+                                    @for ($i = 1; $i <= 12; $i++)
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('statistiques', ['mois' => $i]) }}">
+                                                {{ \Carbon\Carbon::create()->month($i)->locale('fr')->monthName }}
+                                            </a>
+                                        </li>
+                                    @endfor
+                                </ul>
+                            </div>
+                       </div>
                     </div>
                     <div class="table-responsive">
                       <table class="table table-striped">
@@ -76,7 +102,7 @@
                                     @endif
                                     <td>
                                     <a href="{{route('update_ventes_view' , ['id' => $cmd->id])}}" class="btn btn-success btn-sm me-1"><i class="mdi mdi-pencil"></i></a>
-                                    <button type="button" class="btn btn-danger btn-sm me-1" data-id="{{$cmd->id}}" onclick="openSuppModal(this)"> <i class="mdi mdi-trash-can-outline"></i> </button>
+                                    <button type="button" class="btn btn-danger btn-sm me-1" data-id="{{$cmd->id}}" onclick="openSuppModal(this)"><i class="mdi mdi-trash-can-outline"></i></button>
                                     <a href="{{route('imprimer_factures' , ['id' => $cmd->id])}}" class=" btn btn-dark btn-sm me-1 "><i class="icon-printer"></i></a>
                                     <button type="button" class="btn btn-primary btn-sm me-1" data-id="{{$cmd->id}}" onclick="openValidModal(this)"> <i class="mdi mdi-check-circle-outline"></i> </button>
                                     </td>
@@ -136,24 +162,24 @@
     </div>
 
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="deleteModalLabel">Annuler la vente </h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content border-danger shadow-lg">
+                <div class="modal-body text-center p-4">
+                    <div class="mb-3">
+                        <i class="mdi mdi-alert-circle-outline mdi-48px text-danger animate__animated animate__zoomIn"></i>
+                    </div>
+                    <h5 class="text-danger fw-bold mb-3"> Annuler la commande </h5>
+                    <p class="text-muted mb-3"> Êtes-vous sûr de vouloir annuler cette commande ? </p>
+                    <div class="d-flex justify-content-center gap-2">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Non</button>
+                        <form method="POST" id="deleteForm">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm">Oui</button>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="modal-body">
-              Êtes-vous sûr de vouloir annuler cette vente ?
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Non</button>
-              <form method="POST" id="deleteForm">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-danger">Oui</button>
-              </form>
-            </div>
-          </div>
         </div>
     </div>
 
@@ -257,7 +283,7 @@
 
     <script>
         const AnnulerCommandsUrl =@json(route('annuler_commandes', ['id' => '__ID__'])) ;
-        function openSuppdModal(button) {
+        function openSuppModal(button) {
             var id = button.getAttribute('data-id');
             document.getElementById('deleteForm').action = AnnulerCommandsUrl.replace('__ID__', id);
             var deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
@@ -291,6 +317,30 @@
             var updateModal = new bootstrap.Modal(document.getElementById('updateModal'));
             updateModal.show();
         @endif
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const toggleBtn = document.getElementById("toggleSearch");
+            const searchInput = document.getElementById("searchInput");
+            const searchForm = document.getElementById("searchForm");
+
+            // toggle au clic sur la loupe
+            toggleBtn.addEventListener("click", function (e) {
+                e.stopPropagation(); // empêche le clic de se propager au document
+                searchInput.classList.toggle("d-none");
+                if (!searchInput.classList.contains("d-none")) {
+                    searchInput.focus(); // focus automatique
+                }
+            });
+
+            // si on clique ailleurs → fermer input
+            document.addEventListener("click", function(e) {
+                if (!searchForm.contains(e.target)) {
+                    searchInput.classList.add("d-none");
+                }
+            });
         });
     </script>
 

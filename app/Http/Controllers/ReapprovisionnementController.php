@@ -6,6 +6,7 @@ use App\Models\Fournisseur;
 use App\Models\Produit;
 use App\Models\Reapprovionnement;
 use App\Models\Reapprovisionnement;
+use App\Models\Suggestion;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -45,7 +46,7 @@ class ReapprovisionnementController extends Controller
             'qte_ajoutee' => 'required',
         ] , $messages);
 
-        Reapprovisionnement::create([
+        $reapprovisionnement = Reapprovisionnement::create([
             'fk_fournisseur' => $validated['fk_fournisseur'],
             'fk_produit' => $validated['fk_produit'],
             'qte_ajoutee' => $validated['qte_ajoutee'],
@@ -58,6 +59,21 @@ class ReapprovisionnementController extends Controller
         $produit = Produit::where('id' , $fk_produit)->first();
         $produit->qte_restante += $request->qte_ajoutee;
         $produit->save();
+
+        $reapprovisionnement->load(['fournisseur' , 'produit']);
+
+        $message = " l'utilisateur {$user->name} a validé un approvisionnement de {$reapprovisionnement->qte_ajoutee} sur le produit {$reapprovisionnement->produit->nom_produit} venant du fournisseur : {$reapprovisionnement->fournisseur->nom_fournisseur}";
+        $description = "reapprovisionnement de produit" ;
+
+        Suggestion::create([
+            "description" => $description,
+            "message" => $message,
+            "direction" => "admin",
+            "type_operation" => "notification",
+            "status" => "attente",
+            'fk_createur' => $user->id,
+            'fk_boutique' => $fk_boutique,
+        ]);
 
 
         return back()->with('approv_success' , 'qte du produit ajoutee avec succes');

@@ -13,6 +13,10 @@ class Suggestion extends Model
         'message',
         'fk_createur',
         'fk_boutique',
+        'type_operation',
+        'description',
+        'status',
+        'direction'
     ];
 
 

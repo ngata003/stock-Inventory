@@ -11,11 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('inventaires', function (Blueprint $table) {
+        Schema::create('suggestions', function (Blueprint $table) {
             $table->id();
+            $table->string('direction')->nullable();
+            $table->string('status');
             $table->string('description');
-            $table->unsignedBigInteger('fk_boutique');
-
+            $table->string('message');
+            $table->string('type_operation');
+            $table->unsignedBigInteger('fk_createur')->nullable();
+            $table->unsignedBigInteger('fk_boutique')->nullable();
+            $table->foreign('fk_createur')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('fk_boutique')->references('id')->on('boutiques')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
@@ -26,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('inventaires');
+        Schema::dropIfExists('suggestions');
     }
 };

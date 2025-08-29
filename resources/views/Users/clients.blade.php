@@ -14,9 +14,16 @@
     <link rel="stylesheet" href="{{asset('assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
     <link rel="shortcut icon" href="{{asset('assets/images/cames_favIcon.png')}}"/>
-
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        #toggleSearch {
+            height: calc(1.5em + .75rem + 2px); /* hauteur standard Bootstrap btn */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
   </head>
   <body>
     <div class="container-scroller">
@@ -27,7 +34,7 @@
         <div class="main-panel">
           <div class="content-wrapper">
             <div class="row">
-              <div class="col-lg-12 grid-margin stretch-card">
+              <div class="col-lg-9 grid-margin stretch-card">
                 <div class="card">
                   <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -35,7 +42,21 @@
                         <h4 class="card-title card-title-dash">Espace clients </h4>
                         <p class="card-subtitle card-subtitle-dash">managez vos clients en toute aisance</p>
                       </div>
-                        <button class="add btn btn-icons btn-rounded btn-primary todo-list-add-btn text-white me-0 pl-12p" data-bs-toggle="modal" data-bs-target="#shopModal" type="button" ><i class="mdi  mdi-plus"></i></button>
+                      <div class="d-flex justify-content-end mb-3 gap-2">
+                            <form action="{{ route('statistiques') }}" method="GET"
+                                class="d-flex align-items-center position-relative" id="searchForm">
+                                <button type="button" id="toggleSearch"
+                                        class="btn p-2 me-2"
+                                        style="background: transparent; border: none; box-shadow: none;">
+                                    <i class="mdi mdi-magnify fs-5"></i>
+                                </button>
+                                <input type="text" name="q" id="searchInput"
+                                    class="form-control border-0 border-bottom shadow-none d-none"
+                                    placeholder="entrez un client " aria-label="Search"
+                                    style="max-width: 200px;">
+                            </form>
+                            <button class="add btn btn-icons btn-rounded btn-primary todo-list-add-btn text-white me-0 pl-12p" data-bs-toggle="modal" data-bs-target="#shopModal" type="button" ><i class="mdi  mdi-plus"></i></button>
+                       </div>
                     </div>
                     <div class="table-responsive">
                       <table class="table table-striped">
@@ -71,7 +92,7 @@
                     </div>
                   </div>
                 </div>
-              </div>
+               </div>
             </div>
           </div>
           @include('includes.footer')
@@ -155,25 +176,25 @@
         </div>
     </div>
 
-     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="deleteModalLabel">Supprimer le client </h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content border-danger shadow-lg">
+                <div class="modal-body text-center p-4">
+                    <div class="mb-3">
+                        <i class="mdi mdi-alert-circle-outline mdi-48px text-danger animate__animated animate__zoomIn"></i>
+                    </div>
+                    <h5 class="text-danger fw-bold mb-3">Supprimer le client ?</h5>
+                    <p class="text-muted mb-3">Êtes-vous sûr de vouloir supprimer ce client ?</p>
+                    <div class="d-flex justify-content-center gap-2">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Non</button>
+                        <form method="POST" id="deleteForm">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm">Oui</button>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="modal-body">
-              Êtes-vous sûr de vouloir supprimer ce client ?
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Non</button>
-              <form method="POST" id="deleteForm">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-danger">Oui</button>
-              </form>
-            </div>
-          </div>
         </div>
     </div>
 
@@ -338,6 +359,30 @@
             });
         </script>
     @endif
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const toggleBtn = document.getElementById("toggleSearch");
+            const searchInput = document.getElementById("searchInput");
+            const searchForm = document.getElementById("searchForm");
+
+            // toggle au clic sur la loupe
+            toggleBtn.addEventListener("click", function (e) {
+                e.stopPropagation(); // empêche le clic de se propager au document
+                searchInput.classList.toggle("d-none");
+                if (!searchInput.classList.contains("d-none")) {
+                    searchInput.focus(); // focus automatique
+                }
+            });
+
+            // si on clique ailleurs → fermer input
+            document.addEventListener("click", function(e) {
+                if (!searchForm.contains(e.target)) {
+                    searchInput.classList.add("d-none");
+                }
+            });
+        });
+    </script>
 
   </body>
 </html>

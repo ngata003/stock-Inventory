@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Package;
 use App\Models\Paiement;
+use App\Models\Suggestion;
 use App\Models\User;
 use Auth;
 use Carbon\Carbon;
@@ -45,6 +46,17 @@ class PaiementController extends Controller
             'date_paiement' => $today,
             'date_expiration' => $expiration,
             'statut' => 'attente',
+        ]);
+
+        $message = " l'utilisateur $request->nom_depositaire a dépensé une somme de $request->montant FCFA pour l'abonnement du mois qui commence le $today et s'achève le $expiration, il est en attente de validation merci!";
+        $description = " nouvel abonnement du mois enregistré";
+
+        Suggestion::create([
+            'message' => $message,
+            'description' => $description,
+            'type_operation' => "notification",
+            'direction' => "superadmin",
+            'status' => "attente"
         ]);
 
         return redirect()->route('verification_paiement')->with('status' , 'enregistrement effectué avec succès , attendez la validation');

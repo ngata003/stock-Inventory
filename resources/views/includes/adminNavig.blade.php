@@ -26,7 +26,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('notifications')}}">
+                    <a class="nav-link" href="{{route('notifications_SA')}}">
                     <i class="menu-icon mdi mdi-clock"></i>
                     <span class="menu-title"> notifications </span>
                     </a>

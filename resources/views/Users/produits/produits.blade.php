@@ -34,8 +34,19 @@
                         <h4 class="card-title card-title-dash">Espace Produits </h4>
                         <p class="card-subtitle card-subtitle-dash">managez vos Produits en toute aisance</p>
                       </div>
-
-                        <button class="add btn btn-icons btn-rounded btn-primary todo-list-add-btn text-white me-0 pl-12p"  data-bs-toggle="modal" data-bs-target="#shopModal" type="button"><i class="mdi mdi-plus"></i></button>
+                       <div class="d-flex justify-content-end mb-3 gap-2">
+                            <form action="{{ route('statistiques') }}" method="GET" class="d-flex align-items-center position-relative" id="searchForm">
+                                <button type="button" id="toggleSearch"class="btn p-2 me-2"
+                                    style="background: transparent; border: none; box-shadow: none;">
+                                    <i class="mdi mdi-magnify fs-5"></i>
+                                </button>
+                                <input type="text" name="q" id="searchInput"
+                                class="form-control border-0 border-bottom shadow-none d-none"
+                                placeholder=" nom ou categorie " aria-label="Search"
+                                style="max-width: 200px;">
+                            </form>
+                            <button class="add btn btn-icons btn-rounded btn-primary todo-list-add-btn text-white me-0 pl-12p"  data-bs-toggle="modal" data-bs-target="#shopModal" type="button"><i class="mdi mdi-plus"></i></button>
+                        </div>
                     </div>
                     <div class="table-responsive">
                       <table class="table table-striped ">
@@ -419,7 +430,6 @@
     </script>
 
     <script>
-
         const deleteProduitsUrl =@json(route('delete_produits', ['id' => '__ID__'])) ;
         function openSuppModal(button) {
             var id = button.getAttribute('data-id');
@@ -436,7 +446,6 @@
             deleterModal.show();
         @endif
         });
-
     </script>
 
     <script>
@@ -489,6 +498,30 @@
             printWindow.document.close();
             printWindow.print();
         }
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const toggleBtn = document.getElementById("toggleSearch");
+            const searchInput = document.getElementById("searchInput");
+            const searchForm = document.getElementById("searchForm");
+
+            // toggle au clic sur la loupe
+            toggleBtn.addEventListener("click", function (e) {
+                e.stopPropagation(); // empêche le clic de se propager au document
+                searchInput.classList.toggle("d-none");
+                if (!searchInput.classList.contains("d-none")) {
+                    searchInput.focus(); // focus automatique
+                }
+            });
+
+            // si on clique ailleurs → fermer input
+            document.addEventListener("click", function(e) {
+                if (!searchForm.contains(e.target)) {
+                    searchInput.classList.add("d-none");
+                }
+            });
+        });
     </script>
   </body>
 </html>

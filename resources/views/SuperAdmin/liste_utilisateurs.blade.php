@@ -105,5 +105,28 @@
     <script src="{{asset('assets/js/settings.js')}}"></script>
     <script src="{{asset('assets/js/hoverable-collapse.js')}}"></script>
     <script src="{{asset('assets/js/todolist.js')}}"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const toggleBtn = document.getElementById("toggleSearch");
+            const searchInput = document.getElementById("searchInput");
+            const searchForm = document.getElementById("searchForm");
+
+            // toggle au clic sur la loupe
+            toggleBtn.addEventListener("click", function (e) {
+                e.stopPropagation(); // empêche le clic de se propager au document
+                searchInput.classList.toggle("d-none");
+                if (!searchInput.classList.contains("d-none")) {
+                    searchInput.focus(); // focus automatique
+                }
+            });
+
+            // si on clique ailleurs → fermer input
+            document.addEventListener("click", function(e) {
+                if (!searchForm.contains(e.target)) {
+                    searchInput.classList.add("d-none");
+                }
+            });
+        });
+    </script>
   </body>
 </html>

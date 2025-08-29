@@ -15,12 +15,14 @@
     <link rel="stylesheet" href="{{asset('assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
     <link rel="shortcut icon" href="{{asset('assets/images/cames_favIcon.png')}}" />
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   </head>
   <body>
     <div class="container-scroller">
-      @include('user_profil_include')
+      @include('includes.user_profil_include')
       <div class="container-fluid page-body-wrapper">
-       @include('nav_include')
+       @include('includes.nav_include')
         <div class="main-panel">
         <div class="content-wrapper">
             <div class="d-flex justify-content-center align-items-center mt-4 mb-5">
@@ -47,7 +49,7 @@
                 </div>
             </div>
         </div>
-        @include('footer')
+        @include('includes.footer')
         </div>
       </div>
     </div>

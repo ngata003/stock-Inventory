@@ -19,7 +19,7 @@ class CommandesController extends Controller
             $commandes = Vente::where('fk_boutique' , $fk_boutique)->where('type_operation','commande')->orderBy('created_at', 'desc')->get();
             return view('Users.ventes.liste_commandes' , compact('commandes'));
         }
-        elseif ($user->Type === "employe") {
+        elseif ($user->type === "employe") {
             $commandes = Vente::where('fk_boutique' , $fk_boutique)->where('fk_createur' , $user->id)->where('type_operation','commande')->orderBy('created_at', 'desc')->get();
             return view('Users.ventes.liste_commandes' , compact('commandes'));
         }

@@ -8,6 +8,7 @@ use App\Models\Client;
 use App\Models\Fournisseur;
 use App\Models\Inventaire;
 use App\Models\Produit;
+use App\Models\Suggestion;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -110,10 +111,16 @@ class ProductController extends Controller
         ]);
 
         $message = " $user->name  a enregistré une quantité de $request->qte_commandee du produit $request->nom_produit ";
+        $description = " nouvel enregistrement de produit";
 
-        Inventaire::create([
+        Suggestion::create([
             'fk_boutique' => $fk_boutique,
-            'description' => $message,
+            'message' => $message,
+            'description' => $description,
+            'fk_createur' => $user->id,
+            "direction" => "admin",
+            "status" => "attente",
+            'type_operation' => "notification",
         ]);
 
         $clients = Client::where('fk_boutique', $fk_boutique)->get();

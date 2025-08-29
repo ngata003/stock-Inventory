@@ -29,12 +29,14 @@ class suggestionsController extends Controller
 
         $validated = $request->validate([
             'message' =>'required|string|max:255|regex:/^[A-Za-zÀ-ÖØ-öø-ÿ0-9\s.,!?;:()\'"-]+$/u',
+            'type_operation' => 'required',
         ] , $messages);
 
         Suggestion::create([
             'message' => $validated['message'],
             'fk_createur' => $fk_createur,
             'fk_boutique' => $fk_boutique,
+            'type_operation' => $validated['type_operation'],
         ]);
 
         Mail::to('storecames@gmail.com')->send( new suggestions($request->nom_admin,$request->nom_boutique,  $request->message));
@@ -49,7 +51,23 @@ class suggestionsController extends Controller
     }
 
     public function notifications(){
+        $fk_boutique = session('boutique_active_id');
+        $notifications = Suggestion::where('fk_boutique' , $fk_boutique)->orderBy('created_at','desc')->where('direction' ,'admin')->where('type_operation' , 'notification')->paginate(6);
 
-        return view('Admin.notifications');
+        return view('Admin.notifications' , compact('notifications'));
+    }
+
+    public function show_message($id){
+        $notif = Suggestion::findOrFail($id);
+        $notif->status = "lu";
+        $notif->save();
+        return response()->json($notif);
+    }
+
+    public function delete_notifications_admin($id){
+        $notification = Suggestion::find($id);
+        $notification->delete();
+
+        return back()->with('notification_deleted' , 'notification supprimée');
     }
 }

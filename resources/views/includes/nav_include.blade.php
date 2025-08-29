@@ -14,12 +14,6 @@
                     <span class="menu-title"> mes paiements </span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{route('clients')}}">
-                    <i class="menu-icon mdi mdi-account-tie-outline"></i>
-                    <span class="menu-title"> clients </span>
-                    </a>
-                </li>
 
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('gestionnaires')}}">
@@ -28,9 +22,22 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('notifications')}}">
-                    <i class="menu-icon mdi mdi-bell-outline"></i>
-                    <span class="menu-title"> Notifications  </span>
+                    <a class="nav-link d-flex align-items-center" href="{{ route('notifications') }}">
+                        <div class="position-relative">
+                            <i class="menu-icon mdi mdi-bell-outline fs-4"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                {{ $notifications_non_lues ?? 0 }}
+                            </span>
+                        </div>
+                        <span class="menu-title ms-2">Notifications</span>
+                    </a>
+                </li>
+
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('coursiers')}}">
+                    <i class="menu-icon mdi mdi-truck"></i>
+                    <span class="menu-title"> coursiers </span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -43,15 +50,15 @@
 
             @if (in_array(Auth::user()->role, ['admin', 'employe']))
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('categories')}}">
-                    <i class=" menu-icon mdi mdi-tag-multiple-outline"></i>
-                    <span class="menu-title"> categories produits </span>
+                    <a class="nav-link" href="{{route('clients')}}">
+                    <i class="menu-icon mdi mdi-account-tie-outline"></i>
+                    <span class="menu-title"> clients </span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('coursiers')}}">
-                    <i class="menu-icon mdi mdi-truck"></i>
-                    <span class="menu-title"> coursiers </span>
+                    <a class="nav-link" href="{{route('categories')}}">
+                    <i class=" menu-icon mdi mdi-tag-multiple-outline"></i>
+                    <span class="menu-title"> categories produits </span>
                     </a>
                 </li>
                 <li class="nav-item">

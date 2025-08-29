@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Suggestion;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -26,6 +27,19 @@ class AppServiceProvider extends ServiceProvider
             $view->with('boutique_nom', session('boutique_nom'));
             $view->with('boutique_logo', session('boutique_logo'));
             $view->with('boutique_id' , session('boutique_active_id'));
+        });
+
+        View::composer('*', function ($view) {
+
+            $fk_boutique = session('fk_boutique');
+            $notifications_non_lues = Suggestion::where('fk_boutique', $fk_boutique)
+                ->where('direction', 'admin')
+                ->where('type_operation', 'notification')
+                ->where('status', 'attente')
+                ->whereYear('created_at' , now()->year)
+                ->count();
+
+            $view->with('notifications_non_lues', $notifications_non_lues);
         });
     }
 }
