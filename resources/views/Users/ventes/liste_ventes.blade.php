@@ -52,16 +52,16 @@
                         <p class="card-subtitle card-subtitle-dash"> Consultez toutes les ventes effectuées au sein de votre boutique </p>
                       </div>
                        <div class="d-flex justify-content-end mb-3 gap-2">
-                            <form action="{{ route('statistiques') }}" method="GET"
+                            <form action="" method="GET"
                                 class="d-flex align-items-center position-relative" id="searchForm">
                                 <button type="button" id="toggleSearch"
                                         class="btn p-2 me-2"
                                         style="background: transparent; border: none; box-shadow: none;">
                                     <i class="mdi mdi-magnify fs-5"></i>
                                 </button>
-                                <input type="text" name="q" id="searchInput"
+                                <input type="text" name="vente" id="searchInput"
                                     class="form-control border-0 border-bottom shadow-none d-none"
-                                    placeholder="Search Here" aria-label="Search"
+                                    placeholder="entrez le nom" aria-label="Search"
                                     style="max-width: 200px;">
                             </form>
 
@@ -73,7 +73,7 @@
                                 <ul class="dropdown-menu" aria-labelledby="categoryDropdown">
                                     @for ($i = 1; $i <= 12; $i++)
                                         <li>
-                                            <a class="dropdown-item" href="{{ route('statistiques', ['mois' => $i]) }}">
+                                            <a class="dropdown-item" href="{{ route('liste_ventes', ['mois' => $i]) }}">
                                                 {{ \Carbon\Carbon::create()->month($i)->locale('fr')->monthName }}
                                             </a>
                                         </li>
@@ -96,7 +96,7 @@
                             <th> Action </th>
                           </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="ventesTableBody">
                             @forelse ($ventes as $vt )
                                 <tr>
                                     <td>{{$vt->id}}</td>
@@ -113,7 +113,7 @@
                                     </td>
                                 </tr>
                             @empty
-                                <td colspan="7" class="text-center text-muted">Aucune vente enregistrée</td>
+                                <td colspan="8" class="text-center text-muted">Aucune vente enregistrée</td>
                             @endforelse
                         </tbody>
                       </table>
@@ -313,6 +313,30 @@
                     searchInput.classList.add("d-none");
                 }
             });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#searchInput').on('keyup', function () {
+                let query = $(this).val();
+                fetchProducts(query);
+            });
+
+            function fetchProducts(query = '') {
+                $.ajax({
+                    url: "{{ route('liste_ventes') }}",
+                    type: "GET",
+                    data: { vente: query },
+                    success: function (data) {
+                        let newTbody = $(data.html).find('#ventesTableBody').html();
+                        $('#ventesTableBody').html(newTbody);
+                    },
+                    error: function () {
+                        alert("Erreur lors du chargement des ventes");
+                    }
+                });
+            }
         });
     </script>
 

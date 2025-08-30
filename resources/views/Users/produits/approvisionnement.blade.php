@@ -31,21 +31,36 @@
                   <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                       <div>
-                        <h4 class="card-title card-title-dash">Espace Fournisseurs </h4>
-                        <p class="card-subtitle card-subtitle-dash">managez vos fournisseurs en toute aisance</p>
+                        <h4 class="card-title card-title-dash">Espace Reapprovisionnement </h4>
+                        <p class="card-subtitle card-subtitle-dash"> managez vos ajouts de produits en toute aisance</p>
                       </div>
                        <div class="d-flex justify-content-end mb-3 gap-2">
-                            <form action="{{ route('statistiques') }}" method="GET" class="d-flex align-items-center position-relative" id="searchForm">
+                            <form action="" method="GET" class="d-flex align-items-center position-relative" id="searchForm">
                                 <button type="button" id="toggleSearch"class="btn p-2 me-2"
                                     style="background: transparent; border: none; box-shadow: none;">
                                     <i class="mdi mdi-magnify fs-5"></i>
                                 </button>
-                                <input type="text" name="q" id="searchInput"
+                                <input type="text" name="approv" id="searchInput"
                                 class="form-control border-0 border-bottom shadow-none d-none"
                                 placeholder=" produit ou fournisseur " aria-label="Search"
                                 style="max-width: 200px;">
                             </form>
                             <button class="add btn btn-icons btn-rounded btn-primary todo-list-add-btn text-white me-0 pl-12p"  data-bs-toggle="modal" data-bs-target="#shopModal" type="button"><i class="mdi mdi-plus"></i></button>
+                            <div class="dropdown ms-2">
+                                <button class="btn btn-primary dropdown-toggle" type="button" id="categoryDropdown"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                    Choisir un mois
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="categoryDropdown">
+                                    @for ($i = 1; $i <= 12; $i++)
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('approvisionnement', ['mois' => $i]) }}">
+                                                {{ \Carbon\Carbon::create()->month($i)->locale('fr')->monthName }}
+                                            </a>
+                                        </li>
+                                    @endfor
+                                </ul>
+                            </div>
                         </div>
                     </div>
                     <div class="table-responsive">
@@ -58,15 +73,15 @@
                                 <th> Actions  </th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="approvTableBody">
                             @forelse ($approvisionnement as $approv )
                                 <tr>
                                     <td>{{$approv->produit->nom_produit}}</td>
                                     <td>{{$approv->fournisseur->nom_fournisseur}}</td>
                                     <td>{{$approv->qte_ajoutee}}</td>
                                     <td>
-                                        <button type="button" class="btn btn-success btn-sm me-1" data-id="{{$approv->id}}" onclick="openEditModal(this)"> Modifier </button>
-                                        <button type="button" class="btn btn-danger btn-sm" data-id="{{$approv->id}}" onclick="openSuppModal(this)"> Supprimer </button>
+                                        <button type="button" class="btn btn-success btn-sm me-1" data-id="{{$approv->id}}" onclick="openEditModal(this)">  <i class="mdi mdi-pencil"></i> </button>
+                                        <button type="button" class="btn btn-danger btn-sm" data-id="{{$approv->id}}" onclick="openSuppModal(this)">  <i class="mdi mdi-trash-can-outline"></i> </button>
                                     </td>
                                     </tr>
                             @empty
@@ -332,6 +347,30 @@
                     searchInput.classList.add("d-none");
                 }
             });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#searchInput').on('keyup', function () {
+                let query = $(this).val();
+                fetchProducts(query);
+            });
+
+            function fetchProducts(query = '') {
+                $.ajax({
+                    url: "{{ route('approvisionnement') }}",
+                    type: "GET",
+                    data: { approv: query },
+                    success: function (data) {
+                        let newTbody = $(data.html).find('#approvTableBody').html();
+                        $('#approvTableBody').html(newTbody);
+                    },
+                    error: function () {
+                        alert("Erreur lors du chargement des approvisionnements");
+                    }
+                });
+            }
         });
     </script>
 

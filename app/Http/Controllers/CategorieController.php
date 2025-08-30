@@ -10,24 +10,38 @@ use Illuminate\Validation\Rule;
 class CategorieController extends Controller
 {
     //
-    public function categories_view(){
+    public function categories_view(Request $request){
 
         $user = Auth::user();
         $fk_boutique = session('boutique_active_id');
+        $query = Categorie::where('fk_boutique' , $fk_boutique);
+
+         $search = $request->categorie;
+
+        if($search){
+            $query->where(function ($q) use ($search) {
+                $q->where('categorie', 'LIKE', "%{$search}%")
+                ->orWhere('description', 'LIKE', "%{$search}%");
+            });
+        }
 
         if($user->type === "employe"){
-
-            $categories = Categorie::where('fk_createur' , $user->id)->where('fk_boutique' , $fk_boutique)->paginate(6);
-            return view('Users.produits.categories', compact('categories'));
+            $categories = $query->where('fk_createur' , $user->id)->paginate(6);
 
         }
 
         elseif($user->type === "admin"){
-
-            $categories = Categorie::paginate(6);
-            return view('Users.produits.categories', compact('categories'));
+            $categories = $query->paginate(6);
 
         }
+
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('Users.produits.categories', compact('categories'))->render(),
+            ]);
+        }
+
+        return view('Users.produits.categories', compact('categories'));
     }
 
     public function add_category(Request $request){

@@ -11,17 +11,35 @@ class clientsController extends Controller
 {
     //
 
-    public function clients_view(){
+    public function clients_view(Request $request){
 
         $fk_boutique = session('boutique_active_id');
         $user = Auth::user();
 
+        $query = Client::where('fk_boutique' , $fk_boutique);
+
+        $search = $request->client;
+
+        if($search){
+            $query->where(function ($q) use ($search) {
+                $q->where('nom_client', 'LIKE', "%{$search}%")
+                ->orWhere('telephone', 'LIKE', "%{$search}%");
+            });
+        }
+
         if ($user->type === "admin") {
-            $clients = Client::where('fk_boutique' , $fk_boutique)->paginate(6);
+            $clients = $query->paginate(6);
         }
         else {
-            $clients = Client::where('fk_createur' , $user->id)->where('fk_boutique' , $fk_boutique)->paginate(6);
+            $clients = $query->where('fk_createur' , $user->id)->paginate(6);
         }
+
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('Users.clients', compact('clients'))->render(),
+            ]);
+        }
+
         return view('Users.clients', compact('clients'));
     }
 

@@ -21,23 +21,38 @@ class ProductController extends Controller
 {
     //
 
-    public function product_view(){
+    public function product_view(Request $request){
 
         $user = Auth::user();
         $fk_boutique = session('boutique_active_id');
         $categories = Categorie::where('fk_boutique' , $fk_boutique)->get();
         $fournisseurs = Fournisseur::where('fk_boutique' , $fk_boutique)->get();
 
-        if($user->type === "admin"){
+        $search = $request->produit;
+        $query = Produit::with(['categorie' , 'fournisseur'])->where('fk_boutique' , $fk_boutique);
 
-            $produits = Produit::with(['categorie' , 'fournisseur'])->where('fk_boutique' , $fk_boutique)->paginate(6);
-            return view('Users.produits.produits', compact('produits' , 'categories','fournisseurs'));
+        if($search){
+            $query->where(function ($q) use ($search) {
+                $q->where('nom_produit', 'LIKE', "%{$search}%")
+                ->orWhere('description', 'LIKE', "%{$search}%");
+            });
+        }
+
+
+        if($user->type === "admin"){
+            $produits = $query->paginate(6);
         }
         else{
-
-            $produits = Produit::with(['categorie' ,'fournisseur'])->where('fk_createur' , $user->id)->where('fk_boutique' , $fk_boutique)->paginate(6);
-            return view('Users.produits.produits', compact('produits' , 'categories','fournisseurs'));
+            $produits = $query->where('fk_createur' , $user->id)->paginate(6);
         }
+
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('Users.produits.produits', compact('produits' , 'categories','fournisseurs'))->render(),
+            ]);
+        }
+
+        return view('Users.produits.produits', compact('produits' , 'categories','fournisseurs'));
     }
 
     public function add_products(Request $request)

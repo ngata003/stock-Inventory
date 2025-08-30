@@ -13,21 +13,52 @@ use Illuminate\Http\Request;
 class ReapprovisionnementController extends Controller
 {
     //
-    public function approvisionnement() {
+    public function approvisionnement(Request $request , $mois = null) {
+
         $fk_boutique = session('boutique_active_id');
         $user = Auth::user();
+
+        $search = $request->approv ;
+
+        $mois = $request->mois ?? $mois ;
+
+        $produits = Produit::where('fk_boutique' , $fk_boutique)->get();
+        $fournisseurs = Fournisseur::where('fk_boutique', $fk_boutique)->get();
+
+        $query = Reapprovisionnement::with(['fournisseur' , 'produit'])
+        ->where('fk_boutique' , $fk_boutique)
+        ->when($mois, function ($query, $mois) {
+            return $query->whereMonth('created_at', $mois);
+        });
+;
+
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->whereHas('produit', function ($q2) use ($search) {
+                    $q2->where('nom_produit', 'LIKE', "%{$search}%");
+                })
+                ->orWhereHas('fournisseur', function ($q2) use ($search) {
+                    $q2->where('nom_fournisseur', 'LIKE', "%{$search}%");
+                });
+            });
+        }
+
         if ($user->type === "admin") {
-            $approvisionnement = Reapprovisionnement::with(['fournisseur' , 'produit'])->where('fk_boutique' , $fk_boutique)->paginate(6);
-            $produits = Produit::where('fk_boutique' , $fk_boutique)->get();
-            $fournisseurs = Fournisseur::where('fk_boutique', $fk_boutique)->get();
-            return view('Users.produits.approvisionnement' , compact('approvisionnement', 'fournisseurs' , 'produits'));
+            $approvisionnement = $query->paginate(6);
         }
+
         elseif ($user->type === "employe") {
-            $approvisionnement = Reapprovisionnement::with(['produit' , 'fournisseur'])->where('fk_boutique' , $fk_boutique)->where('fk_createur' ,$user->id)->paginate(6);
-            $produits = Produit::where('fk_boutique' , $fk_boutique)->get();
-            $fournisseurs = Fournisseur::where('fk_boutique', $fk_boutique)->get();
-            return view('Users.produits.approvisionnement' , compact('approvisionnement' , 'produits' , 'fournisseurs'));
+            $approvisionnement = $query->where('fk_createur' ,$user->id)->paginate(6);
         }
+
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('Users.produits.approvisionnement', compact('approvisionnement', 'fournisseurs' , 'produits'))->render(),
+            ]);
+        }
+
+        return view('Users.produits.approvisionnement' , compact('approvisionnement', 'fournisseurs' , 'produits'));
     }
 
     public function reapprovisionnement(Request $request){

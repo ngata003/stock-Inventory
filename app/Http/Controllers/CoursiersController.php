@@ -13,10 +13,27 @@ class CoursiersController extends Controller
 {
     //
 
-    public function coursiers_view(){
+    public function coursiers_view(Request $request){
         $user = Auth::user();
         $fk_boutique = session('boutique_active_id');
-        $coursiers = Coursier::where('fk_boutique', $fk_boutique)->where('fk_createur', $user->id)->paginate(6);
+        $search = $request->input('coursier');
+        $query =  Coursier::where('fk_boutique', $fk_boutique) ;
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('nom_coursier', 'LIKE', "%{$search}%")
+                ->orWhere('contact', 'LIKE', "%{$search}%");
+            });
+        }
+
+
+        $coursiers = $query->where('fk_createur', $user->id)->paginate(6);
+
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('Users.coursiers', compact('coursiers'))->render(),
+            ]);
+        }
 
         return view('Users.coursiers', compact('coursiers'));
     }

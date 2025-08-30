@@ -35,12 +35,12 @@
                         <p class="card-subtitle card-subtitle-dash">managez vos Produits en toute aisance</p>
                       </div>
                        <div class="d-flex justify-content-end mb-3 gap-2">
-                            <form action="{{ route('statistiques') }}" method="GET" class="d-flex align-items-center position-relative" id="searchForm">
+                            <form action="" method="GET" class="d-flex align-items-center position-relative" id="searchForm">
                                 <button type="button" id="toggleSearch"class="btn p-2 me-2"
                                     style="background: transparent; border: none; box-shadow: none;">
                                     <i class="mdi mdi-magnify fs-5"></i>
                                 </button>
-                                <input type="text" name="q" id="searchInput"
+                                <input type="text" name="produit" id="searchInput"
                                 class="form-control border-0 border-bottom shadow-none d-none"
                                 placeholder=" nom ou categorie " aria-label="Search"
                                 style="max-width: 200px;">
@@ -62,7 +62,7 @@
                             <th> Action </th>
                           </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="produitsTableBody">
                             @php
                                 use SimpleSoftwareIO\QrCode\Facades\QrCode;
                             @endphp
@@ -384,6 +384,7 @@
     <script src="{{asset('assets/js/settings.js')}}"></script>
     <script src="{{asset('ssets/js/hoverable-collapse.js')}}"></script>
     <script src="{{asset('assets/js/todolist.js')}}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
         function openEditModal(button) {
@@ -523,5 +524,30 @@
             });
         });
     </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#searchInput').on('keyup', function () {
+                let query = $(this).val();
+                fetchProducts(query);
+            });
+
+            function fetchProducts(query = '') {
+                $.ajax({
+                    url: "{{ route('produits') }}",
+                    type: "GET",
+                    data: { produit: query },
+                    success: function (data) {
+                        let newTbody = $(data.html).find('#produitsTableBody').html();
+                        $('#produitsTableBody').html(newTbody);
+                    },
+                    error: function () {
+                        alert("Erreur lors du chargement des produits");
+                    }
+                });
+            }
+        });
+    </script>
+
   </body>
 </html>

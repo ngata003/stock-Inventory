@@ -12,12 +12,35 @@ class FournisseursController extends Controller
     //
 
 
-    public function fournisseurs_view(){
+    public function fournisseurs_view(Request $request){
 
-        $fk_createur = Auth::user()->id;
+        $user = Auth::user();
         $fk_boutique = session('boutique_active_id');
-        $fournisseurs = Fournisseur::where('fk_createur' , $fk_createur)->where('fk_boutique',$fk_boutique )->paginate(6);
 
+        $search = $request->fournisseur ;
+        $query = Fournisseur::where('fk_boutique',$fk_boutique );
+
+        if($search){
+            $query->where(function ($q) use ($search) {
+                $q->where('nom_fournisseur', 'LIKE', "%{$search}%")
+                ->orWhere('email', 'LIKE', "%{$search}%")
+                ->orWhere('telephone', 'LIKE', "%{$search}%");
+            });
+        }
+
+        if ($user->type === "admin") {
+            $fournisseurs = $query->paginate(6);
+        }
+
+        elseif($user->type === "employe" ){
+            $fournisseurs = $query->where('fk_createur' , $user->id)->paginate(6);
+        }
+
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('Users.produits.fournisseurs', compact('fournisseurs'))->render(),
+            ]);
+        }
 
         return view('Users.produits.fournisseurs' , compact('fournisseurs'));
     }

@@ -89,10 +89,16 @@ class PaiementController extends Controller
         return redirect()->back()->with('success_pay', 'Paiement validé avec succès.');
     }
 
-    public function mes_paiements(){
+    public function mes_paiements(Request $request , $mois = null){
 
         $user = Auth::user();
-        $paiements = Paiement::where('user_id' , $user->id)->paginate(6);
+        $request = $request->mois ?? $mois ;
+
+        $paiements = Paiement::where('user_id' , $user->id)
+        ->when($mois, function ($query, $mois) {
+            return $query->whereMonth('created_at', $mois);
+        })
+        ->paginate(6);
         return view('Admin.mes_paiements' , compact('paiements'));
     }
 

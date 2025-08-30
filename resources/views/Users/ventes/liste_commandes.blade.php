@@ -43,7 +43,7 @@
                                         style="background: transparent; border: none; box-shadow: none;">
                                     <i class="mdi mdi-magnify fs-5"></i>
                                 </button>
-                                <input type="text" name="q" id="searchInput"
+                                <input type="text" name="commande" id="searchInput"
                                     class="form-control border-0 border-bottom shadow-none d-none"
                                     placeholder="Search Here" aria-label="Search"
                                     style="max-width: 200px;">
@@ -57,7 +57,7 @@
                                 <ul class="dropdown-menu" aria-labelledby="categoryDropdown">
                                     @for ($i = 1; $i <= 12; $i++)
                                         <li>
-                                            <a class="dropdown-item" href="{{ route('statistiques', ['mois' => $i]) }}">
+                                            <a class="dropdown-item" href="{{ route('liste_commandes', ['mois' => $i]) }}">
                                                 {{ \Carbon\Carbon::create()->month($i)->locale('fr')->monthName }}
                                             </a>
                                         </li>
@@ -81,7 +81,7 @@
                             <th > Action </th>
                           </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="commandesTableBody">
                             @forelse ($commandes as $cmd )
                                 <tr>
                                     <td >{{$cmd->contact_client}}</td>
@@ -101,10 +101,10 @@
                                         </td>
                                     @endif
                                     <td>
-                                    <a href="{{route('update_ventes_view' , ['id' => $cmd->id])}}" class="btn btn-success btn-sm me-1"><i class="mdi mdi-pencil"></i></a>
-                                    <button type="button" class="btn btn-danger btn-sm me-1" data-id="{{$cmd->id}}" onclick="openSuppModal(this)"><i class="mdi mdi-trash-can-outline"></i></button>
-                                    <a href="{{route('imprimer_factures' , ['id' => $cmd->id])}}" class=" btn btn-dark btn-sm me-1 "><i class="icon-printer"></i></a>
-                                    <button type="button" class="btn btn-primary btn-sm me-1" data-id="{{$cmd->id}}" onclick="openValidModal(this)"> <i class="mdi mdi-check-circle-outline"></i> </button>
+                                        <a href="{{route('update_ventes_view' , ['id' => $cmd->id])}}" class="btn btn-success btn-sm me-1"><i class="mdi mdi-pencil"></i></a>
+                                        <button type="button" class="btn btn-danger btn-sm me-1" data-id="{{$cmd->id}}" onclick="openSuppModal(this)"><i class="mdi mdi-trash-can-outline"></i></button>
+                                        <a href="{{route('imprimer_factures' , ['id' => $cmd->id])}}" class=" btn btn-dark btn-sm me-1 "><i class="icon-printer"></i></a>
+                                        <button type="button" class="btn btn-primary btn-sm me-1" data-id="{{$cmd->id}}" onclick="openValidModal(this)"> <i class="mdi mdi-check-circle-outline"></i> </button>
                                     </td>
                                 </tr>
                             @empty
@@ -341,6 +341,30 @@
                     searchInput.classList.add("d-none");
                 }
             });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#searchInput').on('keyup', function () {
+                let query = $(this).val();
+                fetchProducts(query);
+            });
+
+            function fetchProducts(query = '') {
+                $.ajax({
+                    url: "{{ route('liste_commandes') }}",
+                    type: "GET",
+                    data: { commande: query },
+                    success: function (data) {
+                        let newTbody = $(data.html).find('#commandesTableBody').html();
+                        $('#commandesTableBody').html(newTbody);
+                    },
+                    error: function () {
+                        alert("Erreur lors du chargement des commandes");
+                    }
+                });
+            }
         });
     </script>
 

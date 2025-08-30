@@ -35,12 +35,12 @@
                         <p class="card-subtitle card-subtitle-dash">managez vos fournisseurs en toute aisance</p>
                       </div>
                       <div class="d-flex justify-content-end mb-3 gap-2">
-                            <form action="{{ route('statistiques') }}" method="GET" class="d-flex align-items-center position-relative" id="searchForm">
+                            <form action="" method="GET" class="d-flex align-items-center position-relative" id="searchForm">
                                 <button type="button" id="toggleSearch"class="btn p-2 me-2"
                                     style="background: transparent; border: none; box-shadow: none;">
                                     <i class="mdi mdi-magnify fs-5"></i>
                                 </button>
-                                <input type="text" name="q" id="searchInput"
+                                <input type="text" name="fournisseur" id="searchInput"
                                 class="form-control border-0 border-bottom shadow-none d-none"
                                 placeholder=" nom ou mail " aria-label="Search"
                                 style="max-width: 200px;">
@@ -59,7 +59,7 @@
                             <th> Action </th>
                           </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="fournisseursTableBody">
                             @forelse ($fournisseurs as $fournis  )
                                 <tr>
                                     <td>{{$fournis->nom_fournisseur}}</td>
@@ -373,6 +373,30 @@
                     searchInput.classList.add("d-none");
                 }
             });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#searchInput').on('keyup', function () {
+                let query = $(this).val();
+                fetchProducts(query);
+            });
+
+            function fetchProducts(query = '') {
+                $.ajax({
+                    url: "{{ route('fournisseurs') }}",
+                    type: "GET",
+                    data: { fournisseur: query },
+                    success: function (data) {
+                        let newTbody = $(data.html).find('#fournisseursTableBody').html();
+                        $('#fournisseursTableBody').html(newTbody);
+                    },
+                    error: function () {
+                        alert("Erreur lors du chargement des fournisseurs");
+                    }
+                });
+            }
         });
     </script>
 

@@ -55,6 +55,21 @@
                                     placeholder="Search Here" aria-label="Search"
                                     style="max-width: 200px;">
                             </form>
+                            <div class="dropdown ms-2">
+                                <button class="btn btn-primary dropdown-toggle" type="button" id="categoryDropdown"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                    Choisir un mois
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="categoryDropdown">
+                                    @for ($i = 1; $i <= 12; $i++)
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('mes_paiements', ['mois' => $i]) }}">
+                                                {{ \Carbon\Carbon::create()->month($i)->locale('fr')->monthName }}
+                                            </a>
+                                        </li>
+                                    @endfor
+                                </ul>
+                            </div>
                        </div>
                     </div>
                     <div class="table-responsive">

@@ -50,9 +50,17 @@ class suggestionsController extends Controller
         return view('SuperAdmin.suggestions' , compact('suggestions'));
     }
 
-    public function notifications(){
+    public function notifications  (Request $request , $mois = null){
         $fk_boutique = session('boutique_active_id');
-        $notifications = Suggestion::where('fk_boutique' , $fk_boutique)->orderBy('created_at','desc')->where('direction' ,'admin')->where('type_operation' , 'notification')->paginate(6);
+        
+        $mois = $request->mois ?? $mois;
+
+        $notifications = Suggestion::where('fk_boutique' , $fk_boutique)
+        ->orderBy('created_at','desc')->where('direction' ,'admin')
+        ->when($mois, function ($query, $mois) {
+            return $query->whereMonth('created_at', $mois);
+        })
+        ->where('type_operation' , 'notification')->paginate(6);
 
         return view('Admin.notifications' , compact('notifications'));
     }

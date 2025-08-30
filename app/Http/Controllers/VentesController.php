@@ -205,18 +205,44 @@ class VentesController extends Controller
     }
 
 
-    public function liste_ventes(){
+    public function liste_ventes( Request $request , $mois = null){
         $user = Auth::user();
         $fk_boutique = session('boutique_active_id');
 
+        $mois = $request->mois ?? $mois ;
+
+        $search = $request->vente ;
+
+        $query = Vente::where('fk_boutique' , $fk_boutique)
+        ->where('type_operation','vente')
+        ->whereYear('created_at' , now()->year)
+        ->orderBy('created_at', 'desc')
+        ->when($mois, function ($query, $mois) {
+            return $query->whereMonth('created_at', $mois);
+        });
+
+
+        if($search){
+            $query->where(function ($q) use ($search) {
+                $q->where('nom_client', 'LIKE', "%{$search}%");
+            });
+        }
+
         if($user->type === "admin"){
-            $ventes = Vente::where('fk_boutique' , $fk_boutique)->where('type_operation','vente')->orderBy('created_at', 'desc')->paginate(6);
-            return view('Users.ventes.liste_ventes' , compact('ventes'));
+            $ventes = $query->paginate(6);
         }
         elseif ($user->type === "employe") {
-            $ventes = Vente::where('fk_boutique' , $fk_boutique)->where('fk_createur' , $user->id)->where('type_operation','vente')->orderBy('created_at', 'desc')->paginate(6);
-            return view('Users.ventes.liste_ventes' , compact('ventes'));
+            $ventes = $query->where('fk_createur' , $user->id)->paginate(6);
         }
+
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('Users.ventes.liste_ventes', compact('ventes'))->render(),
+            ]);
+        }
+
+
+        return view('Users.ventes.liste_ventes' , compact('ventes'));
     }
 
     public function delete_ventes($id)

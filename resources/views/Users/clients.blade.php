@@ -43,7 +43,7 @@
                         <p class="card-subtitle card-subtitle-dash">managez vos clients en toute aisance</p>
                       </div>
                       <div class="d-flex justify-content-end mb-3 gap-2">
-                            <form action="{{ route('statistiques') }}" method="GET"
+                            <form action="" method="GET"
                                 class="d-flex align-items-center position-relative" id="searchForm">
                                 <button type="button" id="toggleSearch"
                                         class="btn p-2 me-2"
@@ -69,7 +69,7 @@
                             <th> Action </th>
                           </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="clientsTableBody">
                             @forelse ($clients as $clt )
                                 <tr>
                                     <td >{{$clt->nom_client}}</td>
@@ -284,6 +284,7 @@
     <script src="{{asset('assets/js/settings.js')}}"></script>
     <script src="{{asset('ssets/js/hoverable-collapse.js')}}"></script>
     <script src="{{asset('assets/js/todolist.js')}}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
         function openEditModal(button) {
@@ -381,6 +382,30 @@
                     searchInput.classList.add("d-none");
                 }
             });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#searchInput').on('keyup', function () {
+                let query = $(this).val();
+                fetchProducts(query);
+            });
+
+            function fetchProducts(query = '') {
+                $.ajax({
+                    url: "{{ route('clients') }}",
+                    type: "GET",
+                    data: { client: query }, // ✅ correction ici
+                    success: function (data) {
+                        let newTbody = $(data.html).find('#clientsTableBody').html();
+                        $('#clientsTableBody').html(newTbody);
+                    },
+                    error: function () {
+                        alert("Erreur lors du chargement des clients");
+                    }
+                });
+            }
         });
     </script>
 

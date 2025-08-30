@@ -50,7 +50,7 @@
                                                         <ul class="dropdown-menu" aria-labelledby="categoryDropdown">
                                                             @for ($i = 1; $i <= 12; $i++)
                                                                 <li>
-                                                                    <a class="dropdown-item" href="{{ route('statistiques', ['mois' => $i]) }}">
+                                                                    <a class="dropdown-item" href="{{ route('notifications', ['mois' => $i]) }}">
                                                                         {{ \Carbon\Carbon::create()->month($i)->locale('fr')->monthName }}
                                                                     </a>
                                                                 </li>

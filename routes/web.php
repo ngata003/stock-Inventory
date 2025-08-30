@@ -89,7 +89,7 @@ Route::put('/update_profil/{id}' , [UserController::class , 'update_profil'])->n
         Route::put('/boutique_update/{id}',[BoutiquesController::class, 'update_boutique'])->name('update_boutique');
         Route::delete('/delete_boutique/{id}',[BoutiquesController::class , 'boutique_delete'])->name( 'delete_boutiques');
         Route::get('packages', function(){ return view('Admin.packages');})->name('packages');
-        Route::get('/mes_paiements' , [PaiementController::class , 'mes_paiements'])->name('mes_paiements');
+        Route::get('/mes_paiements/{mois?}' , [PaiementController::class , 'mes_paiements'])->name('mes_paiements');
         Route::get('verification_paiement', function(){return view('verification_paiement');})->name('verification_paiement');
         Route::get('/export_ventes' , function(){ return Excel::download(new VentesExport , 'ventes_annuelles.xlsx');})->name('ventes_annuelles');
         Route::get('/export_commandes' , function(){ return Excel::download(new CommandesExport , 'commandes_annuelles.xlsx');})->name('export_commandes');
@@ -101,7 +101,7 @@ Route::put('/update_profil/{id}' , [UserController::class , 'update_profil'])->n
         Route::get('/suggestions' , [suggestionsController::class , 'suggestions_view'])->name('suggestions');
         Route::post('/add_suggestions' , [suggestionsController::class , 'send_suggestions'])->name('add_suggestions');
         Route::get('/statistiques/{mois?}', [StatistiquesController::class, 'statistiques_admin'])->name('statistiques');
-        Route::get('/notifications' , [SuggestionsController::class , 'notifications'])->name('notifications');
+        Route::get('/notifications/{mois?}' , [SuggestionsController::class , 'notifications'])->name('notifications');
         Route::get('/notifications_message/{id}' , [SuggestionsController::class , 'show_message'])->name('show_message');
         Route::delete('/delete_notifications_admin/{id}' , [SuggestionsController::class , 'delete_notifications_admin'])->name('delete_notifications_admin');
     });
@@ -113,7 +113,7 @@ Route::middleware(['auth', 'check.abonnement', 'check.boutique'])->group(functio
 
     Route::get('/clients' , [clientsController::class , 'clients_view'])->name('clients')->middleware('type:admin,employe');
     Route::get('/fournisseurs' , [FournisseursController::class , 'fournisseurs_view'])->name('fournisseurs')->middleware('type:admin,employe');
-    Route::get('/approvisionnement',[ReapprovisionnementController::class, 'approvisionnement'])->name('approvisionnement')->middleware('type:admin,employe');
+    Route::get('/approvisionnement/{mois?}',[ReapprovisionnementController::class, 'approvisionnement'])->name('approvisionnement')->middleware('type:admin,employe');
     Route::post('/add_fournisseurs', [FournisseursController::class , 'add_fournisseurs'])->name('add_fournisseurs')->middleware('type:admin,employe');
     Route::get('/produits' , [ProductController::class ,'product_view'])->name('produits')->middleware('type:admin,employe');
     Route::put('/fournisseurs/{id}' , [FournisseursController::class , 'update_fournisseurs'])->name('update_fournisseurs')->middleware('type:admin,employe');
@@ -146,8 +146,8 @@ Route::middleware(['auth', 'check.abonnement', 'check.boutique'])->group(functio
     Route::get('/autocompletion_produits',[ProductController::class,'autocompletion_produits'])->middleware('type:admin,employe');
     Route::get('/commandes' , [VentesController::class , 'commandes_view'])->name('commandes')->middleware('type:admin,employe');
     Route::post('/add_ventes' , [VentesController::class , 'add_ventes'])->name('add_ventes')->middleware('type:admin,employe');
-    Route::get('/liste_ventes' , [VentesController::class , 'liste_ventes'])->name('liste_ventes')->middleware('type:admin,employe');
-    Route::get('/liste_commandes' , [CommandesController::class , 'liste_commandes'])->name('liste_commandes')->middleware('type:admin,employe');
+    Route::get('/liste_ventes/{mois?}' , [VentesController::class , 'liste_ventes'])->name('liste_ventes')->middleware('type:admin,employe');
+    Route::get('/liste_commandes/{mois?}' , [CommandesController::class , 'liste_commandes'])->name('liste_commandes')->middleware('type:admin,employe');
     Route::get('/update_plan' , [PackageController::class , 'update_plan'])->name('update_plan')->middleware('type:admin,employe');
     Route::get('/imprimer_factures/{id}' , [VentesController::class , 'imprimer_factures'])->name('imprimer_factures')->middleware('type:admin,employe');
     Route::get('/update_vente/{id}' , [VentesController::class ,'update_ventes_view'])->name('update_ventes_view')->middleware('type:admin,employe');

@@ -44,14 +44,14 @@
                         <p class="card-subtitle card-subtitle-dash">managez vos coursiers en toute aisance</p>
                       </div>
                        <div class="d-flex justify-content-end mb-3 gap-2">
-                            <form action="{{ route('statistiques') }}" method="GET"
+                            <form action="" method="GET"
                                 class="d-flex align-items-center position-relative" id="searchForm">
                                 <button type="button" id="toggleSearch"
                                         class="btn p-2 me-2"
                                         style="background: transparent; border: none; box-shadow: none;">
                                     <i class="mdi mdi-magnify fs-5"></i>
                                 </button>
-                                <input type="text" name="q" id="searchInput"
+                                <input type="text" name="coursier" id="searchInput"
                                     class="form-control border-0 border-bottom shadow-none d-none"
                                     placeholder="entrez un nom ou  tel" aria-label="Search"
                                     style="max-width: 200px;">
@@ -70,7 +70,7 @@
                             <th> Action </th>
                           </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="coursiersTableBody">
                         @forelse ($coursiers as $cours )
                             <tr>
                                 <td>{{$cours->nom_coursier}}</td>
@@ -411,6 +411,30 @@
                     searchInput.classList.add("d-none");
                 }
             });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#searchInput').on('keyup', function () {
+                let query = $(this).val();
+                fetchProducts(query);
+            });
+
+            function fetchProducts(query = '') {
+                $.ajax({
+                    url: "{{ route('coursiers') }}",
+                    type: "GET",
+                    data: { coursier: query }, // ✅ correction ici
+                    success: function (data) {
+                        let newTbody = $(data.html).find('#coursiersTableBody').html();
+                        $('#coursiersTableBody').html(newTbody);
+                    },
+                    error: function () {
+                        alert("Erreur lors du chargement des coursiers");
+                    }
+                });
+            }
         });
     </script>
 
