@@ -31,6 +31,15 @@
                 <h6 class="fw-light"> Inscrivez-vous en suivant progressivement les etapes du formulaire </h6>
                 <form class="pt-3" action="{{route('signup')}}" method="POST" enctype="multipart/form-data">
                     @csrf
+                   <div class="form-group text-center">
+                        <label for="profil" class="d-inline-block position-relative" style="cursor: pointer;">
+                            <div id="imagePreview" class="rounded-circle d-flex align-items-center justify-content-center"
+                                style="width: 90px; height: 90px; border: 2px dashed #0d6efd; overflow: hidden; position: relative;">
+                                <i class="bi bi-plus-lg text-primary fs-1"></i>
+                            </div>
+                        </label>
+                        <input type="file" name="profil" id="profil" class="d-none" accept="image/*">
+                  </div>
                   <div class="form-group">
                     <input type="text" class="form-control form-control-lg" name="name" id="exampleInputUsername1" placeholder="Saisissez votre nom">
                   </div>
@@ -39,9 +48,6 @@
                   </div>
                   <div class="form-group">
                     <input type="tel" class="form-control form-control-lg" name="contact" id="exampleInputUsername1" placeholder="Saisissez votre contact">
-                  </div>
-                  <div class="form-group">
-                    <input type="file" class="form-control form-control-lg" name="profil" id="exampleInputUsername1">
                   </div>
                   <div class="form-group position-relative">
                     <input type="password" name="password" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="Password">
@@ -115,6 +121,25 @@
             });
         </script>
     @endif
+
+    <script>
+        document.getElementById('profil').addEventListener('change', function (event) {
+            let preview = document.getElementById('imagePreview');
+            let file = event.target.files[0];
+
+            if (file) {
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.innerHTML = ''; // Supprime l’icône +
+                    preview.style.backgroundImage = `url(${e.target.result})`;
+                    preview.style.backgroundSize = 'cover';
+                    preview.style.backgroundPosition = 'center';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+
 
   </body>
 </html>

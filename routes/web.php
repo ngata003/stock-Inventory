@@ -35,16 +35,17 @@ use Maatwebsite\Excel\Facades\Excel;
 |
 */
 
-Route::get('/', function () {return view('home');})->name('accueil');
+Route::get('/', function () {return view('home');})->name('accueil')->middleware('controleConnexion');
 Route::get('/profil' , [UserController::class , 'profil_user'])->name('profil');
 Route::put('/update_profil/{id}' , [UserController::class , 'update_profil'])->name('update_profil');
+
 /*ROUTES AUTHENTIFICATION*/
     Route::post('/send-reset-link', [UserController::class, 'sendResetLinkEmail'])->name('sendResetLinkEmail');
-    Route::get('/reset-password-form/{token}', [UserController::class, 'showResetForm'])->name('reset.password.form');
+    Route::get('/reset-password-form/{token}', action: [UserController::class, 'showResetForm'])->name('reset.password.form');
     Route::post('/reset-password', [UserController::class, 'resetPassword'])->name('reset.password');
     Route::get('/password_forget', [UserController::class , 'reset_password'])->name('reset_password');
-    Route::get('/sign_up', function () {return view('Users.auth.inscription');})->name('inscription');
-    Route::get('/login', function () {return view('Users.auth.connexion');})->name('login');
+    Route::get('/sign_up', function () {return view('Users.auth.inscription');})->name('inscription')->middleware('controleConnexion');
+    Route::get('/login', function () {return view('Users.auth.connexion');})->name('login')->middleware('controleConnexion');
     Route::post('signup' , [UserController::class, 'signup'])->name('signup');
     Route::post('login' , [UserController::class, 'login_post'])->name('login_post');
     Route::post('/logout' , [UserController::class , 'logout'])->name('logout');

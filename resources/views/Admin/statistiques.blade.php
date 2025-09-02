@@ -204,6 +204,23 @@
         </div>
       </div>
     </div>
+    <div class="modal fade" id="deleterModal" tabindex="-1" aria-labelledby="deleterModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content border-danger shadow-lg">
+                <div class="modal-body text-center p-4">
+                    <div class="mb-3">
+                        <i class="mdi mdi-power mdi-48px text-danger animate__animated animate__zoomIn"></i>
+                    </div>
+                    @if(session('status'))
+                        <h5 class="modal-title" id="deleterModalLabel">{{session('status')}}</h5>
+                    @endif
+                    <button type="button" class="btn btn-danger btn-sm mt-3" data-bs-dismiss="modal">
+                        Fermer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="{{asset('assets/vendors/js/vendor.bundle.base.js')}}"></script>
     <script src="{{asset('assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js')}}"></script>
     <script src="{{asset('assets/vendors/chart.js/chart.umd.js')}}"></script>
@@ -300,6 +317,15 @@
                 });
             }
         });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        @if(session('status'))
+            var deleterModal = new bootstrap.Modal(document.getElementById('deleterModal'));
+            deleterModal.show();
+        @endif
+        });
+
     </script>
   </body>
 </html>

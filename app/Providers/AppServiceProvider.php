@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Suggestion;
+use Auth;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -40,6 +41,26 @@ class AppServiceProvider extends ServiceProvider
                 ->count();
 
             $view->with('notifications_non_lues', $notifications_non_lues);
+        });
+
+        View::composer('*' , function($view){
+            $suggestions_attentes = Suggestion::where('type_operation' , 'suggestion')
+            ->where('direction', 'superadmin')
+            ->where('status', 'attente')
+            ->whereYear('created_at' , now()->year)
+            ->count();
+
+            $view->with('notifications_non_lues', $suggestions_attentes);
+        });
+
+        View::composer('*' , function($view){
+            $notifications_attentes = Suggestion::where('type_operation' , 'notification')
+            ->where('direction', 'superadmin')
+            ->where('status', 'attente')
+            ->whereYear('created_at' , now()->year)
+            ->count();
+
+            $view->with('notifications_non_lues', $notifications_attentes);
         });
     }
 }

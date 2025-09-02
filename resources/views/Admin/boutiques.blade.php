@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title> CAMES STOCK </title>
@@ -18,10 +17,10 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   </head>
-  <body>
+  <body class="with-welcome-text">
     <div class="container-scroller">
-       @include('includes.user_profil_include')
-       <div class="container-fluid page-body-wrapper">
+      @include('includes.user_profil_include')
+      <div class="container-fluid page-body-wrapper">
         <nav class="sidebar sidebar-offcanvas" id="sidebar">
           <ul class="nav">
             <li class="nav-item">
@@ -35,65 +34,113 @@
         <div class="main-panel">
           <div class="content-wrapper">
             <div class="row">
-              <div class="col-lg-12 grid-margin stretch-card">
-                <div class="card">
-                  <div class="card-body">
-                    <div class="d-sm-flex justify-content-between align-items-start">
-                        <div>
-                          <h4 class="card-title card-title-dash"> Espace Boutiques </h4>
-                          <p class="card-subtitle card-subtitle-dash"> managez vos boutiques  en toute aisance  </p>
+              <div class="col-sm-12">
+                <div class="home-tab">
+                  <div class="tab-content tab-content-basic">
+                    <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <div class="statistics-details d-flex align-items-center justify-content-between">
+                             <div>
+                              <p class="statistics-title"> nbre de coursiers </p>
+                              <h3 class="rate-percentage">{{$nbre_coursiers}}</h3>
+                            </div>
+                            <div>
+                              <p class="statistics-title"> nbre d'employes </p>
+                              <h3 class="rate-percentage">{{$nbre_employes}}</h3>
+                            </div>
+                            <div>
+                              <p class="statistics-title"> nbre de boutiques </p>
+                              <h3 class="rate-percentage">{{$nbre_boutiques}}</h3>
+                            </div>
+                            <div class="d-none d-md-block">
+                              <p class="statistics-title"> nbre de clients enregistres </p>
+                              <h3 class="rate-percentage">{{$nbre_clients}}</h3>
+                            </div>
+                            <div class="d-none d-md-block">
+                              <p class="statistics-title"> nbre fournisseurs </p>
+                              <h3 class="rate-percentage">{{$nbre_fournisseurs}}</h3>
+                            </div>
+                          </div>
                         </div>
-                        <div>
-                            <button class="add btn btn-icons btn-rounded btn-primary todo-list-add-btn text-white me-0 pl-12p" data-bs-toggle="modal" data-bs-target="#shopModal" type="button"><i class="mdi mdi-plus"></i></button>
+                      </div>
+                        <div class="row">
+                            <div class="col-lg-12 grid-margin stretch-card">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <div>
+                                            <h4 class="card-title card-title-dash"> Espace Boutiques </h4>
+                                            <p class="card-subtitle card-subtitle-dash"> managez vos boutiques  en toute aisance  </p>
+                                        </div>
+                                        <div class="d-flex justify-content-end mb-3 gap-2">
+                                                <form action="" method="GET" class="d-flex align-items-center position-relative" id="searchForm">
+                                                    <button type="button" id="toggleSearch"class="btn p-2 me-2"
+                                                        style="background: transparent; border: none; box-shadow: none;">
+                                                        <i class="mdi mdi-magnify fs-5"></i>
+                                                    </button>
+                                                    <input type="text" name="produit" id="searchInput"
+                                                    class="form-control border-0 border-bottom shadow-none d-none"
+                                                    placeholder=" nom ou categorie " aria-label="Search"
+                                                    style="max-width: 200px;">
+                                                </form>
+                                                <button class="add btn btn-icons btn-rounded btn-primary todo-list-add-btn text-white me-0 pl-12p"  data-bs-toggle="modal" data-bs-target="#shopModal" type="button"><i class="mdi mdi-plus"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-striped ">
+                                                <thead>
+                                                    <tr>
+                                                        <th> Nom Boutique </th>
+                                                        <th> Email </th>
+                                                        <th> Telephone </th>
+                                                        <th> Localisation </th>
+                                                        <th> Site web </th>
+                                                        <th> Logo</th>
+                                                        <th> actions </th>
+                                                    </tr>
+                                                </thead>
+                                                 <tbody>
+                                                    @forelse ( $inf_boutiques as $inf_store )
+                                                        <tr>
+                                                            <td > {{$inf_store->nom_boutique }}</td>
+                                                            <td> {{$inf_store->email}} </td>
+                                                            <td> {{$inf_store->telephone}} </td>
+                                                            <td> {{$inf_store->adresse}} </td>
+                                                            <td> {{$inf_store->site_web}} </td>
+                                                            <td> <img src="{{asset('assets/images/'.$inf_store->logo)}}" alt=""> </td>
+                                                            <td>
+                                                                <button class="btn btn-secondary  btn-sm text-white" data-id="{{$inf_store->id}}" data-nom="{{$inf_store->nom_boutique}}" data-email="{{$inf_store->email}}" data-telephone="{{$inf_store->telephone}}" data-adresse="{{$inf_store->adresse}}" data-site_web="{{$inf_store->site_web}}" data-logo="{{$inf_store->logo}}" onclick="openEditModal(this)" > <i class=" mdi mdi-pencil"></i> </button>
+                                                                <button class="btn btn-danger btn-sm  text-white" data-id="{{$inf_store->id}}" onclick="openSuppModal(this)"> <i class="mdi mdi-trash-can-outline "></i> </button>
+                                                                <a href="{{route('boutique_activation',[$inf_store->id])}}" class="btn btn-success btn-sm me-1 text-white"><i class="mdi mdi-eye"></i></a>
+                                                            </td>
+                                                        </tr>
+                                                    @empty
+                                                    <tr>
+                                                        <td colspan="7" class="text-center text-muted"> aucune boutique crée pour le moment </td>
+                                                    </tr>
+                                                    @endforelse
+                                                </tbody>
+                                            </table>
+                                            <div class="mt-3 d-flex justify-content-center">
+                                                {{ $inf_boutiques->links('pagination::bootstrap-5') }}
+                                            </div>
+                                        </div>
+                                     </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="table-responsive">
-                      <table class="table table-striped">
-                        <thead>
-                          <tr>
-                            <th> Nom Boutique </th>
-                            <th> Email </th>
-                            <th> Telephone </th>
-                            <th> Localisation </th>
-                            <th> Site web </th>
-                            <th> Logo</th>
-                            <th> actions </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                            @forelse ( $inf_boutiques as $inf_store )
-                                <tr>
-                                    <td > {{$inf_store->nom_boutique }}</td>
-                                    <td> {{$inf_store->email}} </td>
-                                    <td> {{$inf_store->telephone}} </td>
-                                    <td> {{$inf_store->adresse}} </td>
-                                    <td> {{$inf_store->site_web}} </td>
-                                    <td> <img src="{{asset('assets/images/'.$inf_store->logo)}}" alt=""> </td>
-                                    <td>
-                                        <button class="btn btn-secondary text-white" data-id="{{$inf_store->id}}" data-nom="{{$inf_store->nom_boutique}}" data-email="{{$inf_store->email}}" data-telephone="{{$inf_store->telephone}}" data-adresse="{{$inf_store->adresse}}" data-site_web="{{$inf_store->site_web}}" data-logo="{{$inf_store->logo}}" onclick="openEditModal(this)" > <i class="fas fa-edit"></i> </button>
-                                        <button class="btn btn-danger text-white" data-id="{{$inf_store->id}}" onclick="openSuppModal(this)"> <i class="fas fa-trash"></i> </button>
-                                        <a href="{{route('boutique_activation',[$inf_store->id])}}" class="btn btn-success text-white"><i class="fas fa-eye"></i></a>
-                                    </td>
-                                </tr>
-                            @empty
-                            <tr>
-                                <td colspan="7" class="text-center text-muted"> aucune boutique crée pour le moment </td>
-                            </tr>
-                            @endforelse
-                        </tbody>
-                      </table>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-         @include('includes/footer')
+         @include('includes.footer')
         </div>
       </div>
     </div>
-
-    <div class="modal fade" id="shopModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="shopModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
 
@@ -226,8 +273,6 @@
         </div>
     </div>
 
-
-        <!-- Success Modal -->
     <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-sm">
             <div class="modal-content border-success shadow-lg">
@@ -264,7 +309,6 @@
         </div>
     </div>
 
-    <!-- Modal de succès après édition -->
     <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-sm">
             <div class="modal-content border-primary shadow-lg">
@@ -305,7 +349,6 @@
             </div>
         </div>
     @endif
-
     <script src="{{asset('assets/vendors/js/vendor.bundle.base.js')}}"></script>
     <script src="{{asset('assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js')}}"></script>
     <script src="{{asset('assets/js/off-canvas.js')}}"></script>
@@ -398,8 +441,6 @@
         </script>
     @endif
 
-
   </body>
-
 </html>
 

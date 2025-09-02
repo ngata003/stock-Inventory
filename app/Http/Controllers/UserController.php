@@ -73,10 +73,16 @@ class UserController extends Controller
     //code du login
     public function login_post(Request $request)
     {
+        $messages = [
+            'email.required' => 'veuillez remplir la case de l\'email',
+            'email.email' => 'veuillez une adresse email valide',
+            'password.required' => 'veuillez entrer un mot de passe pour vous connecter',
+        ] ;
+
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
-        ]);
+        ] , $messages);
 
 
         $credentials = [
@@ -85,6 +91,22 @@ class UserController extends Controller
         ];
 
         $remember = $request->has('remember');
+
+        $user = User::where('email' , $request->email)->first();
+
+        if(!$user){
+            return back()->withErrors([
+                'email' => 'Cet email n\'existe pas , veuillez mettre votre email.',
+            ])->withInput();
+        }
+
+        if (!Hash::check($request->password, $user->password)) {
+            return back()->withErrors([
+                'password' => 'Le mot de passe est incorrect.',
+            ])->withInput();
+        }
+
+
 
         if (auth()->attempt($credentials, $remember)) {
             $user = Auth::user();

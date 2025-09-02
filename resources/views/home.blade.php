@@ -6,11 +6,22 @@
   <title> CAMES STOCK - Gestion de Stock</title>
   @include('includes.seo')
 
+    <!-- iOS / macOS -->
+    <link rel="apple-touch-icon" href="{{ asset('assets/images/cames_favIcon.png') }}">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="CAMES STOCK">
+
+    <!-- Windows -->
+    <meta name="msapplication-TileColor" content="#0d6efd">
+    <meta name="msapplication-TileImage" content="{{ asset('assets/images/cames_favIcon.png') }}">
+
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css" rel="stylesheet">
   <link rel="shortcut icon" href="{{asset(path: 'assets/images/cames_favIcon.png')}}"/>
   <link rel="manifest" href="/manifest.json">
-   <meta name="theme-color" content="#0d6efd">
+  <meta name="theme-color" content="#0d6efd">
   <style>
     body {
       background-color: #f8f9fa;
@@ -22,6 +33,37 @@
       padding-top: 1.2rem;
       padding-bottom: 1.2rem;
     }
+
+        /* Bouton d'installation PWA */
+    .install-pwa-btn {
+      background: linear-gradient(45deg, #0d6efd 0%, #6610f2 100%);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 25px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: none; /* Caché par défaut */
+      text-decoration: none;
+    }
+
+    .install-pwa-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+      color: white;
+      text-decoration: none;
+    }
+
+    .install-pwa-btn:active {
+      transform: translateY(0);
+    }
+
+    .install-pwa-btn i {
+      margin-right: 8px;
+    }
+
 
     .navbar-brand span {
       font-weight: bold;
@@ -101,12 +143,12 @@
 
     <div class="collapse navbar-collapse justify-content-end" id="navMenu">
         <div class="d-flex flex-column flex-lg-row align-items-lg-center">
+            <button id="installBtn" class="install-pwa-btn me-lg-2">
+                <i class="mdi mdi-download"></i>Installer l'application
+            </button>
             <a class="btn btn-outline-primary rounded-pill mb-2 mb-lg-0 me-lg-2" href="{{route('login')}}">Connexion</a>
             <a class="btn btn-primary rounded-pill mb-2 mb-lg-0 me-lg-2" href="{{route('inscription')}}">Inscription</a>
             <a class="btn btn-outline-secondary rounded-pill" href="{{asset('assets/videos/demo.mp4')}}" target="_blank">Demo d'utilisation</a>
-            <button id="installBtn" style="display:none; position:fixed; bottom:20px; right:20px; padding:10px 20px; background:#0d6efd; color:#fff; border:none; border-radius:5px; cursor:pointer; z-index:1000;">
-                Installer l'app
-            </button>
         </div>
     </div>
 
@@ -197,35 +239,92 @@
     </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-  <script>
-    if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js')
-        .then(reg => console.log('Service Worker enregistré:', reg))
-        .catch(err => console.error('Erreur SW:', err));
-    });
-    }
+    <script>
+        let deferredPrompt;
+        let installButton = document.getElementById('installBtn');
 
-    // Gestion du prompt d'installation
-    let deferredPrompt;
-    window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    document.getElementById('installBtn').style.display = 'block';
-    });
+        if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+            .then(registration => {
+                console.log('Service Worker enregistré avec succès:', registration);
+            })
+            .catch(registrationError => {
+                console.log('Erreur lors de l\'enregistrement du Service Worker:', registrationError);
+            });
+        });
+        }
 
-    document.getElementById('installBtn').addEventListener('click', async () => {
-    if (deferredPrompt) {
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        deferredPrompt = null;
-        document.getElementById('installBtn').style.display = 'none';
-        console.log('Installation:', outcome);
-    }
-    });
-</script>
+        window.addEventListener('beforeinstallprompt', (e) => {
+        console.log('Prompt d\'installation PWA disponible');
+
+        e.preventDefault();
+
+        deferredPrompt = e;
+
+        if (installButton) {
+            installButton.style.display = 'inline-block';
+        }
+        });
+
+        if (installButton) {
+        installButton.addEventListener('click', async () => {
+            if (deferredPrompt) {
+            // Affiche le prompt d'installation
+            deferredPrompt.prompt();
+
+            // Attend la réponse de l'utilisateur
+            const { outcome } = await deferredPrompt.userChoice;
+
+            console.log(`Résultat de l'installation: ${outcome}`);
+
+            // Reset de la variable
+            deferredPrompt = null;
+
+            // Cache le bouton
+            installButton.style.display = 'none';
+
+            if (outcome === 'accepted') {
+                console.log('L\'utilisateur a accepté l\'installation de la PWA');
+            } else {
+                console.log('L\'utilisateur a refusé l\'installation de la PWA');
+            }
+            }
+        });
+        }
+
+        // Détecte si l'app est installée
+        window.addEventListener('appinstalled', (evt) => {
+        console.log('PWA a été installée avec succès');
+
+        // Cache le bouton d'installation
+        if (installButton) {
+            installButton.style.display = 'none';
+        }
+        });
+
+        // Vérifie si l'app est déjà en mode standalone (installée)
+        if (window.matchMedia('(display-mode: standalone)').matches) {
+        console.log('L\'application fonctionne en mode PWA installée');
+
+        // Cache le bouton d'installation
+        if (installButton) {
+            installButton.style.display = 'none';
+        }
+        }
+
+        // Gestion des notifications push (optionnel)
+        if ('Notification' in window && navigator.serviceWorker) {
+        // Demande la permission pour les notifications
+        Notification.requestPermission().then(permission => {
+            if (permission === 'granted') {
+            console.log('Permission accordée pour les notifications');
+            }
+        });
+        }
+   </script>
 
 </body>
 </html>

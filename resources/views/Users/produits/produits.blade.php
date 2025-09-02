@@ -153,9 +153,22 @@
                                 <label for="centreName" class="form-label"> Image du produit </label>
                                 <input type="file" name="image_produit" class="form-control" >
                             </div>
-                            <div  class="col-12">
+                           <div class="col-12">
                                 <label for="categorie_produit" class="form-label">Catégorie du produit</label>
-                                <select name="fk_categorie" id="categorie_produit" class="form-select text-dark">
+
+                                <!-- Input de recherche -->
+                                <div class="search-input-container">
+                                    <i class="mdi mdi-magnify search-icon"></i>
+                                    <input
+                                        type="text"
+                                        class="form-control search-input search-input-with-icon"
+                                        placeholder="Rechercher dans les catégories..."
+                                        id="searchCategorie"
+                                    >
+                                </div>
+
+                                <!-- Votre select original -->
+                                <select name="fk_categorie" id="categorie_produit" class="form-select text-dark filtered-select">
                                     <option value="" selected disabled class="text-dark">— Sélectionnez une catégorie —</option>
                                     @foreach ($categories as $cat)
                                         <option value="{{ $cat->id }}">{{ $cat->categorie }}</option>
@@ -226,6 +239,19 @@
                                 <input type="file" name="image_produit" class="form-control" id="image_produit_input">
                                 <img src="" id="image_produit" alt="" class="img-fluid mt-2" height="65px" width="65px"  style="">
                             </div>
+
+                            <div class="col-12">
+                                <label for="categorie_input" class="form-label">Catégorie du produit</label>
+                                <input type="text" id="categorie_input" class="form-control text-dark mb-2" placeholder="Tapez pour filtrer la catégorie">
+
+                                <select name="fk_categorie" id="categorie_produit" class="form-select text-dark">
+                                    <option value="" selected class="text-dark">— Sélectionnez une catégorie —</option>
+                                    @foreach ($categories as $cat)
+                                        <option value="{{ $cat->id }}">{{ $cat->categorie }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
 
                             <div class="col-12">
                                 <label for="categorie_produit" class="form-label">Catégorie du produit</label>
@@ -545,6 +571,20 @@
                         alert("Erreur lors du chargement des produits");
                     }
                 });
+            }
+        });
+    </script>
+
+    <script>
+        const input = document.getElementById('categorie_input');
+        const select = document.getElementById('categorie_produit');
+
+        input.addEventListener('input', function() {
+            const filter = this.value.toLowerCase();
+            for (let i = 0; i < select.options.length; i++) {
+                const option = select.options[i];
+                if (option.value === "") continue; // ignorer la première option vide
+                option.style.display = option.text.toLowerCase().includes(filter) ? '' : 'none';
             }
         });
     </script>

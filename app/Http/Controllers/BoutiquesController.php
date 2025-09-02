@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Boutique;
+use App\Models\Client;
+use App\Models\Coursier;
+use App\Models\Fournisseur;
 use App\Models\Package;
+use App\Models\User;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -76,8 +80,15 @@ class BoutiquesController extends Controller
 
     public function store_view(){
         $user = Auth::user();
-        $inf_boutiques = Boutique::where('fk_createur', $user->id)->get();
-        return view('Admin.boutiques' , compact('inf_boutiques'));
+        $inf_boutiques = Boutique::where('fk_createur', $user->id)->paginate(6);
+        $id_boutiques = Boutique::where('fk_createur' , $user->id)->pluck('id');
+        $nbre_coursiers = Coursier::whereIn('fk_boutique', $id_boutiques)->count();
+        $nbre_employes = User::whereIn('fk_boutique' , $id_boutiques)->count();
+        $nbre_boutiques = Boutique::where('fk_createur' , $user->id)->count();
+        $nbre_clients = Client::whereIn('fk_boutique' , $id_boutiques)->count();
+        $nbre_fournisseurs = Fournisseur::whereIn('fk_boutique', $id_boutiques)->count();
+        return view('Admin.boutiques' , compact('inf_boutiques' , 'nbre_employes' , 'nbre_coursiers' ,
+         'nbre_boutiques' , 'nbre_clients' , 'nbre_fournisseurs'));
     }
 
     public function update_boutique(Request $request , $id){
@@ -125,7 +136,7 @@ class BoutiquesController extends Controller
             'boutique_logo' => $boutique->logo,
         ]);
 
-        return redirect()->route('fournisseurs');
+        return redirect()->route('statistiques');
     }
 
     public function boutiques_view(){

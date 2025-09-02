@@ -67,5 +67,7 @@ class Kernel extends HttpKernel
         'check.boutique' => \App\Http\Middleware\CheckBoutiqueActive::class,
         'check.abonnement' => \App\Http\Middleware\CheckSubscription::class,
         'type' => \App\Http\Middleware\RoleMiddleware::class,
+        'controleConnexion' => \App\Http\Middleware\ControleConnexion::class,
+        'boutiqConnexion' => \App\Http\Middleware\checkBoutiqueConnexion::class,
     ];
 }
