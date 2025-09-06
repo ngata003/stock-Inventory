@@ -36,8 +36,18 @@
                                      <h4 class="card-title card-title-dash">Espace Roles </h4>
                                      <p class="card-subtitle card-subtitle-dash">managez les roles en toute aisance</p>
                                     </div>
-                                    <div>
-                                      <button class="add btn btn-icons btn-rounded btn-primary todo-list-add-btn text-white me-0 pl-12p" data-bs-toggle="modal" data-bs-target="#shopModal" type="button"><i class="mdi mdi-plus"></i></button>
+                                    <div class="d-flex justify-content-end mb-3 gap-2">
+                                        <form action="" method="GET" class="d-flex align-items-center position-relative" id="searchForm">
+                                            <button type="button" id="toggleSearch"class="btn p-2 me-2"
+                                                style="background: transparent; border: none; box-shadow: none;">
+                                                <i class="mdi mdi-magnify fs-5"></i>
+                                            </button>
+                                            <input type="text" name="role" id="searchInput"
+                                            class="form-control border-0 border-bottom shadow-none d-none"
+                                            placeholder=" entrez un nom " aria-label="Search"
+                                            style="max-width: 200px;">
+                                        </form>
+                                        <button class="add btn btn-icons btn-rounded btn-primary todo-list-add-btn text-white me-0 pl-12p" data-bs-toggle="modal" data-bs-target="#shopModal" type="button"><i class="mdi mdi-plus"></i></button>
                                     </div>
                                   </div>
                                   <div class="table-responsive mt-1">
@@ -48,7 +58,7 @@
                                                 <th> Action </th>
                                             </tr>
                                         </thead>
-                                      <tbody>
+                                      <tbody id="rolesTableBody">
                                         @forelse ($roles as $rol )
                                             <tr>
                                                 <td>{{$rol->nom}}</td>
@@ -75,7 +85,7 @@
                     </div>
                 </div>
             </div>
-         @include('includes/footer')
+         @include('includes.footer')
         </div>
       </div>
     </div>
@@ -340,6 +350,30 @@
                     searchInput.classList.add("d-none");
                 }
             });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#searchInput').on('keyup', function () {
+                let query = $(this).val();
+                fetchProducts(query);
+            });
+
+            function fetchProducts(query = '') {
+                $.ajax({
+                    url: "{{ route('roles') }}",
+                    type: "GET",
+                    data: { role: query },
+                    success: function (data) {
+                        let newTbody = $(data.html).find('#rolesTableBody').html();
+                        $('#rolesTableBody').html(newTbody);
+                    },
+                    error: function () {
+                        alert("Erreur lors du chargement des roles");
+                    }
+                });
+            }
         });
     </script>
 

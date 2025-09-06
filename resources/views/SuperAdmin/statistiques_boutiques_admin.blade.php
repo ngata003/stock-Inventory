@@ -33,49 +33,19 @@
                   <div class="d-sm-flex align-items-center justify-content-between border-bottom">
                     <div>
                         <div class="btn-wrapper d-flex align-items-center gap-2">
-                            <a href="#" class="btn btn-outline-dark"><i class="icon-printer"></i> Télécharger PDF</a>
-                            <a href="#" class="btn btn-primary text-white me-0"><i class="icon-download"></i> Exporter en Excel</a>
-                            <div class="dropdown">
-                                <a class="btn btn-outline-white dropdown-toggle" href="#" role="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                Selectionner Mois
-                                </a>
+                            <div class="dropdown ms-2">
+                                <button class="btn btn-primary dropdown-toggle" type="button" id="categoryDropdown"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                    Choisir un mois
+                                </button>
                                 <ul class="dropdown-menu" aria-labelledby="categoryDropdown">
-                                    <li>
-                                        <a class="dropdown-item" href="#"> Janvier </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#"> Fevrier </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#"> Mars </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#"> Avril </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#"> Mai </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#"> Juin </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#"> Juillet </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#"> Aout </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#"> Septembre </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#"> Octobre </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#"> Novembre </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#"> Decembre </a>
-                                    </li>
+                                    @for ($i = 1; $i <= 12; $i++)
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('statistiques_boutiques', ['mois' => $i  , 'id' => $id]) }}">
+                                                {{ \Carbon\Carbon::create()->month($i)->locale('fr')->monthName }}
+                                            </a>
+                                        </li>
+                                    @endfor
                                 </ul>
                             </div>
                         </div>

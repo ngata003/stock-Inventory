@@ -22,7 +22,7 @@
             <div class="col-lg-4 mx-auto">
               <div class="auth-form-light text-left py-5 px-4 px-sm-5">
                 <div class="brand-logo">
-                  <img src="{{asset('assets/images/exact.png')}} " alt="logo">
+                  <img src="{{asset('assets/images/cames_stock.png')}} " alt="logo">
                 </div>
                 <h6 class="fw-light"> Renseignez les informations de paiement.</h6>
                 <h5> vous devez recharger une somme de : {{$package->prix_abonnement * 700}} FCFA</h5>

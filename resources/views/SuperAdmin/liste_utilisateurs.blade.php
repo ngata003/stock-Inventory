@@ -33,7 +33,19 @@
                       <div>
                         <h4 class="card-title card-title-dash">Espace Utilisateurs  </h4>
                         <p class="card-subtitle card-subtitle-dash"> managez les utilisateurs </p>
-                      </div>
+                       </div>
+                        <div class="d-flex justify-content-end mb-3 gap-2">
+                            <form action="" method="GET" class="d-flex align-items-center position-relative" id="searchForm">
+                                <button type="button" id="toggleSearch"class="btn p-2 me-2"
+                                    style="background: transparent; border: none; box-shadow: none;">
+                                    <i class="mdi mdi-magnify fs-5"></i>
+                                </button>
+                                <input type="text" name="admin" id="searchInput"
+                                class="form-control border-0 border-bottom shadow-none d-none"
+                                placeholder=" entrez un nom " aria-label="Search"
+                                style="max-width: 200px;">
+                            </form>
+                        </div>
                     </div>
                     <div class="table-responsive">
                       <table class="table table-striped">
@@ -50,12 +62,12 @@
                             <th colspan="2"> Action </th>
                           </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="adminTableBody">
                             @forelse ($utilisateurs  as $util )
                                 <tr>
                                     <td>{{$util->name}}</td>
                                     <td>{{$util->email}}</td>
-                                    <td>{{$util->localisation}}</td>
+                                    <td>{{$util->adresse}}</td>
                                     <td>{{$util->contact }}</td>
                                     <td> {{$util->role}}</td>
                                     @if ($util->profil)
@@ -126,6 +138,29 @@
                     searchInput.classList.add("d-none");
                 }
             });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#searchInput').on('keyup', function () {
+                let query = $(this).val();
+                fetchProducts(query);
+            });
+
+            function fetchProducts(query = '') {
+                $.ajax({
+                    url: "{{ route('liste_utilisateurs') }}",
+                    type: "GET",
+                    data: { admin: query },
+                    success: function (data) {
+                        let newTbody = $(data.html).find('#adminTableBody').html();
+                        $('#adminTableBody').html(newTbody);
+                    },
+                    error: function () {
+                        alert("Erreur lors du chargement des propriétaires");
+                    }
+                });
+            }
         });
     </script>
   </body>

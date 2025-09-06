@@ -33,9 +33,24 @@ class RoleController extends Controller
         return back()->with('role_creation' , 'role crée avec succès');
     }
 
-    public function roles_view(){
+    public function roles_view(Request $request){
 
-        $roles = Role::paginate(6);
+        $search = $request->role ;
+        $query = Role::query();
+
+        if($search){
+            $query->where(function ($q) use ($search) {
+                $q->where('nom', 'LIKE', "%{$search}%");
+            });
+        }
+
+        $roles =$query->paginate(6);
+
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('SuperAdmin.roles', compact('roles'))->render(),
+            ]);
+        }
         return view('SuperAdmin.roles', compact('roles'));
 
     }

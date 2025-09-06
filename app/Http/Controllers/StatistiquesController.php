@@ -135,13 +135,48 @@ class StatistiquesController extends Controller
     }
 
 
-    public function statistiques_boutiques($id){
+    public function statistiques_boutiques(Request $request, $id , $mois = null){
 
-        $nb_commandes = Vente::where('fk_boutique' , $id)->where('type_operation' , 'commande')->whereYear('created_at' , now()->year)->count();
-        $nb_ventes = Vente::where('fk_boutique' , $id)->where('type_operation', 'vente')->whereYear('created_at' , now()->year)->count();
-        $nb_commandes_validees = Vente::where('fk_boutique' , $id)->where('type_operation', 'commande')->where('status' ,1)->whereYear('created_at' , now()->year)->count();
-        $chiffreA = Vente::whereIn('type_operation' , ['commande' , 'vente'])->where('fk_boutique' , $id)->where('status', 1)->whereYear('created_at' , now()->year)->sum('montant_total');
-        $ventes_id = Vente::whereIn( 'type_operation', ['commande' , 'vente'])->where('fk_boutique' , $id)->where('status' , 1)->whereYear('created_at' , now()->year)->pluck('id');
+        $mois = $request->mois ?? $mois ;
+
+
+        $nb_commandes = Vente::where('fk_boutique' , $id)
+        ->where('type_operation' , 'commande')
+        ->whereYear('created_at' , now()->year)
+        ->when($mois, function ($query, $mois) {
+            return $query->whereMonth('created_at', $mois);
+        })
+        ->count();
+
+        $nb_ventes = Vente::where('fk_boutique' , $id)
+        ->where('type_operation', 'vente')
+        ->whereYear('created_at' , now()->year)
+        ->when($mois, function ($query, $mois) {
+            return $query->whereMonth('created_at', $mois);
+        })
+        ->count();
+
+        $nb_commandes_validees = Vente::where('fk_boutique' , $id)
+        ->where('type_operation', 'commande')
+        ->where('status' ,1)->whereYear('created_at' , now()->year)
+        ->when($mois, function ($query, $mois) {
+                    return $query->whereMonth('created_at', $mois);
+        })->count();
+
+        $chiffreA = Vente::whereIn('type_operation' , ['commande' , 'vente'])
+        ->where('fk_boutique' , $id)->where('status', 1)
+        ->whereYear('created_at' , now()->year)
+        ->when($mois, function ($query, $mois) {
+            return $query->whereMonth('created_at', $mois);
+        })
+        ->sum('montant_total');
+
+        $ventes_id = Vente::whereIn( 'type_operation', ['commande' , 'vente'])
+        ->where('fk_boutique' , $id)->where('status' , 1)
+        ->when($mois, function ($query, $mois) {
+            return $query->whereMonth('created_at', $mois);
+        })
+        ->whereYear('created_at' , now()->year)->pluck('id');
 
         $benefice = DB::table('vente_details')
         ->join('produits', function($join) use ($id) {
@@ -151,7 +186,6 @@ class StatistiquesController extends Controller
         ->select(DB::raw('SUM(vente_details.qte * produits.benefice) as total_benefice'))
         ->value('total_benefice');
 
-        $ventes_id = Vente::where('fk_boutique' , $id)->where('status' , 1)->whereYear('created_at', now()->year)->pluck('id');
 
         $top_produits = DB::table('vente_details')
         ->join('ventes', 'ventes.id', '=', 'vente_details.fk_vente')
@@ -178,6 +212,9 @@ class StatistiquesController extends Controller
         ->whereYear('created_at', now()->year)
         ->whereIn('type_operation', ['commande', 'vente'])
         ->groupBy('client_identifiant')
+        ->when($mois, function ($query, $mois) {
+            return $query->whereMonth('created_at', $mois);
+        })
         ->orderByDesc('total_montant')
         ->take(5)
         ->get();
@@ -197,7 +234,7 @@ class StatistiquesController extends Controller
 
         return view('SuperAdmin.statistiques_boutiques_admin' ,
         compact('nb_commandes' , 'nb_ventes' ,
-        'nb_commandes_validees' , 'data' , 'donnees',
+        'nb_commandes_validees' , 'data' , 'donnees', 'id',
         'chiffreA' , 'benefice', 'top_produits' , 'top_clients'));
     }
 

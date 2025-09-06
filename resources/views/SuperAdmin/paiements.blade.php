@@ -30,14 +30,39 @@
                 <div class="card">
                   <div class="card-body">
                     <div class="d-sm-flex justify-content-between align-items-start">
-                      <div>
-                        <h4 class="card-title card-title-dash">Espace Paiements </h4>
-                        <p class="card-subtitle card-subtitle-dash"> managez les abonnements </p>
-                      </div>
-                       <div>
+                        <div>
+                            <h4 class="card-title card-title-dash">Espace Paiements </h4>
+                            <p class="card-subtitle card-subtitle-dash"> managez les abonnements </p>
+                        </div>
+                        <div class="d-flex justify-content-end mb-3 gap-2">
+                            <form action="" method="GET" class="d-flex align-items-center position-relative" id="searchForm">
+                                <button type="button" id="toggleSearch"class="btn p-2 me-2"
+                                    style="background: transparent; border: none; box-shadow: none;">
+                                    <i class="mdi mdi-magnify fs-5"></i>
+                                </button>
+                                <input type="text" name="abonnement" id="searchInput"
+                                class="form-control border-0 border-bottom shadow-none d-none"
+                                placeholder=" entrez un nom " aria-label="Search"
+                                style="max-width: 200px;">
+                            </form>
                             <a href="{{ route('export.paiements') }}" class="btn btn-success">
-                            Exporter en Excel
+                                Exporter en Excel
                             </a>
+                            <div class="dropdown ms-2">
+                                <button class="btn btn-primary dropdown-toggle" type="button" id="categoryDropdown"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                    Choisir un mois
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="categoryDropdown">
+                                    @for ($i = 1; $i <= 12; $i++)
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('liste_paiements', ['mois' => $i]) }}">
+                                                {{ \Carbon\Carbon::create()->month($i)->locale('fr')->monthName }}
+                                            </a>
+                                        </li>
+                                    @endfor
+                                </ul>
+                            </div>
                         </div>
                     </div>
                     <div class="table-responsive">
@@ -53,7 +78,7 @@
                             <th> Action </th>
                           </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="abonnementsTableBody">
                             @forelse ($paiements  as $pay )<tr>
                             <td >{{$pay->nom_depositaire}}</td>
                             <td>{{$pay->montant}}</td>
@@ -94,24 +119,46 @@
     </div>
 
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="deleteModalLabel">Supprimer le paiement </h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content border-danger shadow-lg">
+                <div class="modal-body text-center p-4">
+                    <div class="mb-3">
+                        <i class="mdi mdi-alert-circle-outline mdi-48px text-danger animate__animated animate__zoomIn"></i>
+                    </div>
+                    <h5 class="text-danger fw-bold mb-3">Supprimer le produit ?</h5>
+                    <p class="text-muted mb-3">Êtes-vous sûr de vouloir supprimer ce produit ?</p>
+                    <div class="d-flex justify-content-center gap-2">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Non</button>
+                        <form method="POST" id="deleteForm">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm">Oui</button>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="modal-body">
-              Êtes-vous sûr de vouloir supprimer ce paiement ?
+        </div>
+    </div>
+
+    <div class="modal fade" id="validModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content border-success shadow-lg">
+                <div class="modal-body text-center p-4">
+                    <div class="mb-3">
+                        <i class="mdi mdi-check-circle-outline mdi-48px text-success animate__animated animate__zoomIn"></i>
+                    </div>
+                    <h5 class="text-dark fw-bold mb-3"> valider le paiement ?</h5>
+                    <p class="text-muted mb-3"> Êtes-vous sûr de vouloir valider ce paiement? </p>
+                    <div class="d-flex justify-content-center gap-2">
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Non</button>
+                        <form method="POST" id="validForm">
+                            @csrf
+                            @method('PUT')
+                            <button type="submit" class="btn btn-success btn-sm">Oui</button>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Non</button>
-              <form method="POST" id="deleteForm">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-danger">Oui</button>
-              </form>
-            </div>
-          </div>
         </div>
     </div>
 
@@ -130,28 +177,6 @@
                     </button>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="valideModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="deleteModalLabel">valider le paiement </h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              Êtes-vous sûr de vouloir valider ce paiement ?
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Non</button>
-              <form method="POST" id="validForm">
-                @csrf
-                @method('PUT')
-                <button type="submit" class="btn btn-danger">Oui</button>
-              </form>
-            </div>
-          </div>
         </div>
     </div>
 
@@ -201,7 +226,7 @@
         function openValidModal(button) {
             var id = button.getAttribute('data-id');
             document.getElementById('validForm').action = validPayUrl.replace('__ID__', id);
-            var validModal = new bootstrap.Modal(document.getElementById('valideModal'));
+            var validModal = new bootstrap.Modal(document.getElementById('validModal'));
             validModal.show();
         }
     </script>
@@ -249,6 +274,30 @@
             });
         });
     </script>
-    
+
+    <script>
+        $(document).ready(function () {
+            $('#searchInput').on('keyup', function () {
+                let query = $(this).val();
+                fetchProducts(query);
+            });
+
+            function fetchProducts(query = '') {
+                $.ajax({
+                    url: "{{ route('liste_paiements') }}",
+                    type: "GET",
+                    data: { abonnement: query },
+                    success: function (data) {
+                        let newTbody = $(data.html).find('#abonnementsTableBody').html();
+                        $('#abonnementsTableBody').html(newTbody);
+                    },
+                    error: function () {
+                        alert("Erreur lors du chargement des produits");
+                    }
+                });
+            }
+        });
+    </script>
+
   </body>
 </html>

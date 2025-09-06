@@ -51,9 +51,13 @@
                               <p class="text-danger d-flex"></p>
                             </div>
                             <div class="d-none d-md-block">
-                              <p class="statistics-title"> Package</p>
-                              <h3 class="rate-percentage">{{$package->type_package}}</h3>
+                              <p class="statistics-title"> nbre de clients </p>
+                              <h3 class="rate-percentage">{{$nb_clients}}</h3>
                               <p class="text-success d-flex"></p>
+                            </div>
+                            <div class="d-none d-md-block">
+                              <p class="statistics-title"> nbre de fournisseurs </p>
+                              <h3 class="rate-percentage">{{$nb_fournisseurs}}</h3>
                             </div>
                           </div>
                         </div>

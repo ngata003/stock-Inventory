@@ -22,7 +22,11 @@
     <div class="container-scroller">
       @include('includes.user_profil_include')
       <div class="container-fluid page-body-wrapper">
-       @include('includes.nav_include')
+        @if (Auth::user()->type === "admin" || Auth::user()->type === "employe")
+            @include('includes.nav_include')
+        @else
+        @include('includes.adminNavig')
+        @endif
         <div class="main-panel">
         <div class="content-wrapper">
             <div class="d-flex justify-content-center align-items-center mt-4 mb-5">

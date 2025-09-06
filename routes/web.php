@@ -35,7 +35,7 @@ use Maatwebsite\Excel\Facades\Excel;
 |
 */
 
-Route::get('/', function () {return view('home');})->name('accueil')->middleware('controleConnexion');
+Route::get('/', function () {return view('home');})->name('accueil');
 Route::get('/profil' , [UserController::class , 'profil_user'])->name('profil');
 Route::put('/update_profil/{id}' , [UserController::class , 'update_profil'])->name('update_profil');
 
@@ -44,8 +44,8 @@ Route::put('/update_profil/{id}' , [UserController::class , 'update_profil'])->n
     Route::get('/reset-password-form/{token}', action: [UserController::class, 'showResetForm'])->name('reset.password.form');
     Route::post('/reset-password', [UserController::class, 'resetPassword'])->name('reset.password');
     Route::get('/password_forget', [UserController::class , 'reset_password'])->name('reset_password');
-    Route::get('/sign_up', function () {return view('Users.auth.inscription');})->name('inscription')->middleware('controleConnexion');
-    Route::get('/login', function () {return view('Users.auth.connexion');})->name('login')->middleware('controleConnexion');
+    Route::get('/sign_up', function () {return view('Users.auth.inscription');})->name('inscription');
+    Route::get('/login', function () {return view('Users.auth.connexion');})->name('login');
     Route::post('signup' , [UserController::class, 'signup'])->name('signup');
     Route::post('login' , [UserController::class, 'login_post'])->name('login_post');
     Route::post('/logout' , [UserController::class , 'logout'])->name('logout');
@@ -53,7 +53,7 @@ Route::put('/update_profil/{id}' , [UserController::class , 'update_profil'])->n
 
 /*ROUTES SUPER-ADMIN*/
     Route::middleware(['auth' , 'type:superadmin'])->group(function () {
-        Route::get('liste_paiements' , [SuperAdminController::class , 'liste_paiements'])->name('liste_paiements');
+        Route::get('liste_paiements/{mois?}' , [SuperAdminController::class , 'liste_paiements'])->name('liste_paiements');
         Route::put('/valider_paiement/{id}' , [PaiementController::class , 'valider_paiement'])->name('valider_paiement');
         Route::delete('/delete_paiement/{id}' , [PaiementController::class , 'delete_paiement'])->name('delete_paiement');
         Route::get('/roles' , [RoleController::class , 'roles_view'])->name('roles');
@@ -62,17 +62,17 @@ Route::put('/update_profil/{id}' , [UserController::class , 'update_profil'])->n
         Route::delete('/delete_roles/{id}' , [RoleController::class , 'delete_roles'])->name('delete_roles');
         Route::get('/liste_boutiques' , [SuperAdminController::class , 'liste_boutiques'])->name('liste_boutiques');
         Route::get('/liste_utilisateurs' , [SuperAdminController::class , 'liste_utilisateurs'])->name('liste_utilisateurs');
-        Route::get('/stats_superAdmin' , [StatistiquesController::class , 'statistiques_admin'])->name('stats_superAdmin');
         Route::get('/export-paiements', function () {return Excel::download(new PaiementsExport, 'paiements.xlsx');})->name('export.paiements');
         Route::middleware(['auth', 'check.abonnement'])->group(function () {
             Route::get('/boutiques_admin', [BoutiquesController::class, 'store_view'])->name('boutiques_view');
         });
 
-        Route::get('statistiques_superadmin' , [SuperAdminController::class , 'statistiques'])->name('statistiques_SA');
+        Route::get('statistiques_superadmin/{mois?}' , [SuperAdminController::class , 'statistiques'])->name('statistiques_SA');
         Route::get('/details_admin/{id}', [SuperAdminController::class , 'details_admin'])->name('details_admin');
-        Route::get('/statistiques_boutiques/{id}' , [StatistiquesController::class , 'statistiques_boutiques'])->name('statistiques_boutiques');
+        Route::get('/statistiques_boutiques/{id}/{mois?}' , [StatistiquesController::class , 'statistiques_boutiques'])->name('statistiques_boutiques');
         Route::get('/suggestions_SA' , [SuggestionsController::class , 'SA_suggestions'])->name('suggestions_SA');
         Route::get('/notifications_SA' , [SuggestionsController::class , 'notifications_SA'])->name('notifications_SA');
+        Route::get('/abonnements_pdf' , [SuperAdminController::class , 'paiementsPdf'])->name('abonnements_pdf');
     });
 /*FIN ROUTES SUPER-ADMIN*/
 
