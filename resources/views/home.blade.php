@@ -148,7 +148,6 @@
             </button>
             <a class="btn btn-outline-primary rounded-pill mb-2 mb-lg-0 me-lg-2" href="{{route('login')}}">Connexion</a>
             <a class="btn btn-primary rounded-pill mb-2 mb-lg-0 me-lg-2" href="{{route('inscription')}}">Inscription</a>
-            <a class="btn btn-outline-secondary rounded-pill" href="{{asset('assets/videos/demo.mp4')}}" target="_blank">Demo d'utilisation</a>
         </div>
     </div>
 
@@ -197,38 +196,58 @@
 
           <div class="col-md-4">
             <div class="advantage-card">
-              <i class="mdi mdi-cellphone advantage-icon"></i>
-              <h5>Responsive</h5>
-              <p>Accessible depuis tout appareil : mobile, tablette ou ordinateur.</p>
-            </div>
-          </div>
-
-          <div class="col-md-4">
-            <div class="advantage-card">
               <i class="mdi mdi-cloud-upload advantage-icon"></i>
               <h5>Sauvegarde Cloud</h5>
               <p>Vos données sont sauvegardées automatiquement dans le cloud.</p>
             </div>
           </div>
 
+        </div>
+      </section>
+
+     <section class="text-center mb-5">
+        <h3 class="mb-4">Découvrez notre application en vidéo</h3>
+        <div class="mx-auto" style="max-width: auto; height: 300px;">
+            <iframe src="https://www.youtube.com/embed/VIDÉO_ID"
+                title="Présentation CAMES STOCK"
+                allowfullscreen
+                style="width: 100%; height: 100%; border: none;"
+                loading="lazy">
+            </iframe>
+            </div>
+     </section>
+
+      <section class="text-center mb-5">
+        <h3 class="mb-4"> Fonctionnalités Principales</h3>
+        <div class="row g-4 justify-content-center">
+
           <div class="col-md-4">
             <div class="advantage-card">
-              <i class="mdi mdi-chart-bar advantage-icon"></i>
-              <h5>Statistiques</h5>
-              <p>Analysez vos performances avec des graphiques en temps réel.</p>
+              <i class="mdi mdi-account-check advantage-icon"></i>
+              <h5>Gestion des clients</h5>
+              <p>Suivez vos clients et historique de transactions.</p>
             </div>
           </div>
 
           <div class="col-md-4">
             <div class="advantage-card">
-              <i class="mdi mdi-account-multiple advantage-icon"></i>
-              <h5>Multi-utilisateur</h5>
-              <p>Travaillez en équipe grâce à une gestion avancée des accès.</p>
+               <i class="mdi mdi-cash-multiple advantage-icon"></i>
+               <h5>Suivi paiements</h5>
+                <p>Ne manquez jamais un paiement grâce aux alertes automatiques.</p>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="advantage-card">
+              <i class="mdi mdi-file-document advantage-icon"></i>
+              <h5>Factures illimitées</h5>
+              <p>Créez, personnalisez et envoyez vos factures facilement.</p>
             </div>
           </div>
 
         </div>
       </section>
+
     </div>
 
   </main>
