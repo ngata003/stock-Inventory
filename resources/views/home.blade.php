@@ -3,88 +3,95 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title> CAMES STOCK - Gestion de Stock</title>
+  <title>CAMES STOCK - Gestion de Stock</title>
   @include('includes.seo')
 
-    <!-- iOS / macOS -->
-    <link rel="apple-touch-icon" href="{{ asset('assets/images/cames_favIcon.png') }}">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="CAMES STOCK">
-
-    <!-- Windows -->
-    <meta name="msapplication-TileColor" content="#0d6efd">
-    <meta name="msapplication-TileImage" content="{{ asset('assets/images/cames_favIcon.png') }}">
-
-
+  <!-- CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css" rel="stylesheet">
-  <link rel="shortcut icon" href="{{asset(path: 'assets/images/cames_favIcon.png')}}"/>
+  <link rel="shortcut icon" href="{{asset('assets/images/cames_favIcon.png')}}"/>
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#0d6efd">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
     body {
       background-color: #f8f9fa;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Hanken Grotesk', sans-serif;
     }
 
-    /* Navbar */
+    /* === NAVBAR TRANSPARENTE === */
     .navbar {
-      padding-top: 1.2rem;
-      padding-bottom: 1.2rem;
-    }
-
-        /* Bouton d'installation PWA */
-    .install-pwa-btn {
-      background: linear-gradient(45deg, #0d6efd 0%, #6610f2 100%);
-      color: white;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 25px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
+      background-color: transparent !important;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
       transition: all 0.3s ease;
-      display: none; /* Caché par défaut */
-      text-decoration: none;
+      box-shadow: none;
+    }
+    .navbar.scrolled {
+      background-color: #f8f9fa !important;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
-    .install-pwa-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
-      color: white;
-      text-decoration: none;
+    .navbar .navbar-brand img {
+      margin-left: -10px; /* Logo un peu à gauche */
+      transition: all 0.3s ease;
     }
 
-    .install-pwa-btn:active {
-      transform: translateY(0);
+    .navbar .btn,
+    .navbar .language-card {
+      margin-left: 10px;
     }
 
-    .install-pwa-btn i {
+    /* === LISTES BANNIERE === */
+    section ul {
+      list-style-type: disc;
+      padding-left: 20px;
+    }
+    section ul li {
+      margin-bottom: 8px;
+      font-size: 1.1rem;
+      font-family: 'Hanken Grotesk', sans-serif;
+      color: #000; /* points et texte noirs */
+    }
+    section ul li::marker {
+      color: #000; /* points noirs */
+      font-size: 1.2em;
+    }
+
+    /* === CARD OPTIONS DE LANGUE === */
+    .language-card {
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 5px 12px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      background-color: #fff;
+      position: relative;
+      min-width: 120px;
+    }
+    .language-card img.flag {
+      width: 20px;
+      height: 15px;
+      margin-right: 8px;
+      object-fit: cover;
+    }
+    .language-card .dropdown-menu {
+        top: 100%; /* Positionne le menu juste en dessous de la card */
+        bottom: auto !important;
+        margin-top: 5px; /* petit espace entre la card et le menu */
+    }
+
+    .language-card .dropdown-item img {
+      width: 20px;
+      height: 15px;
       margin-right: 8px;
     }
 
-
-    .navbar-brand span {
-      font-weight: bold;
-      color: #0d6efd;
-      font-size: 1.4rem;
-    }
-
-    /* Carousel */
-    .carousel img {
-      width: 100%;
-      height: 500px;
-      object-fit: cover;
-    }
-
-    /* Section title */
-    section h3 {
-      font-weight: 700;
-      color: #333;
-    }
-
-    /* Cards */
+    /* === ADVANTAGE CARDS === */
     .advantage-card {
       background-color: #fff;
       border: none;
@@ -95,129 +102,244 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.05);
       transition: all 0.3s ease-in-out;
     }
-
     .advantage-card:hover {
       transform: translateY(-5px);
       box-shadow: 0 6px 18px rgba(0,0,0,0.1);
     }
-
     .advantage-icon {
       font-size: 2.5rem;
       color: #0d6efd;
       margin-bottom: 15px;
     }
 
-    /* Footer */
+    /* === FOOTER STYLE ZERVANT === */
     footer {
-      background-color: #fff;
-      padding: 20px 0;
-      text-align: center;
-      border-top: 1px solid #dee2e6;
-      font-size: 0.9rem;
+      background-color: #f8f9fa;
+      padding: 50px 20px 20px 20px;
+      border-top: 1px solid #ddd;
+    }
+    footer .footer-links a {
+      color: #333;
+      text-decoration: none;
+      margin-right: 20px;
+      font-weight: 500;
+    }
+    footer .footer-links a:hover {
+      text-decoration: underline;
+    }
+    footer .social-icons a {
+      color: #333;
+      margin-right: 15px;
+      font-size: 1.2rem;
+    }
+    footer .social-icons a:hover {
+      color: #0d6efd;
     }
 
-    /* Responsive tweaks */
-    @media (max-width: 768px) {
-      .carousel img {
-        height: 300px;
-      }
-      .navbar-collapse {
-        background-color: #fff;
-        padding: 1rem;
-      }
+    /* === GALERIE === */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 150px);
+      gap: 15px;
+      justify-items: center;
+      align-items: center;
+    }
+    .gallery img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 15px;
+      display: block;
+    }
+    .center { grid-column: 2 / 3; grid-row: 2 / 3; }
+    .top { grid-column: 2 / 3; grid-row: 1 / 2; }
+    .bottom { grid-column: 2 / 3; grid-row: 3 / 4; }
+    .left { grid-column: 1 / 2; grid-row: 2 / 3; }
+    .right { grid-column: 3 / 4; grid-row: 2 / 3; }
+
+    @media(max-width: 768px) {
+      .gallery { grid-template-columns: repeat(2, 1fr); grid-template-rows: auto; }
+      .center { grid-column: 1 / 3; grid-row: auto; }
+      .navbar .d-flex.flex-lg-row { flex-direction: column !important; align-items: flex-start; }
+      .language-card { margin-bottom: 10px; }
     }
   </style>
 </head>
 <body>
 
   <!-- NAVBAR -->
-  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
-   <div class="container">
-  <a class="navbar-brand" href="">
-    <img src="{{asset('assets/images/cames_stock.png')}}" height="45px" width="45px" alt="">
-  </a>
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="">
+        <img src="{{asset('assets/images/cames_stock.png')}}" height="45px" width="45px" alt="">
+      </a>
 
-  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-    <div class="collapse navbar-collapse justify-content-end" id="navMenu">
+      <div class="collapse navbar-collapse justify-content-end" id="navMenu">
         <div class="d-flex flex-column flex-lg-row align-items-lg-center">
-            <button id="installBtn" class="install-pwa-btn me-lg-2">
-                <i class="mdi mdi-download"></i>Installer l'application
-            </button>
-            <a class="btn btn-outline-primary rounded-pill mb-2 mb-lg-0 me-lg-2" href="{{route('login')}}">Connexion</a>
-            <a class="btn btn-primary rounded-pill mb-2 mb-lg-0 me-lg-2" href="{{route('inscription')}}">Inscription</a>
-        </div>
-    </div>
+          <!-- Card Langue -->
+         <div class="dropdown dropup language-card">
+            <img src="https://flagcdn.com/16x12/fr.png" class="flag" alt="fr">
+            <span>Français</span>
+            <i class="mdi mdi-menu-down ms-auto"></i>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#"><img src="https://flagcdn.com/16x12/gb.png" class="flag"> English</a></li>
+                <li><a class="dropdown-item" href="#"><img src="https://flagcdn.com/16x12/es.png" class="flag"> Español</a></li>
+            </ul>
+          </div>
 
+          <button id="installBtn" class="btn btn-primary me-lg-2 mb-2 mb-lg-0">
+            <i class="mdi mdi-download"></i> Installer l'application
+          </button>
 
-  </nav>
-
-  <main class="mt-5 pt-4">
-
-    <div id="carouselExampleIndicators" class="carousel slide mb-5" data-bs-ride="carousel">
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <img src="{{asset('assets/images/banni1.png')}}" class="d-block w-100" alt="Gestion de stock - Rapidité" loading="lazy">
-        </div>
-        <div class="carousel-item">
-          <img src="{{asset('assets/images/banni2.png')}}" class="d-block w-100" alt="Sécurité des données" loading="lazy">
+          <a class="btn btn-outline-primary rounded-pill mb-2 mb-lg-0 me-lg-2" href="{{route('login')}}">Connexion</a>
+          <a class="btn btn-primary rounded-pill mb-2 mb-lg-0 me-lg-2" href="{{route('inscription')}}">Inscription</a>
         </div>
       </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon"></span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-        <span class="carousel-control-next-icon"></span>
-      </button>
     </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="mt-5 pt-4">
+    <!-- BANNIÈRE -->
+    <section class="container-fluid bg-light py-5">
+      <div class="row align-items-center">
+        <div class="col-lg-6 text-center text-lg-start px-5">
+          <h1 class="fw-bold mb-3">Votre outil gratuit pour des factures professionnelles,<br> simples et rapides</h1>
+          <ul class="mb-4">
+            <li>Générez vos devis et factures gratuitement</li>
+            <li>Profitez d’une interface intuitive et rapide</li>
+            <li>Créez des documents 100 % professionnels</li>
+            <li>Inscrivez-vous en quelques clics</li>
+            <li>Anticipez la réforme de la facturation électronique</li>
+          </ul>
+          <a class="btn btn-primary rounded-pill me-2" href="{{route('inscription')}}">Créer un compte gratuit</a>
+        </div>
+        <div class="col-lg-6 px-5 mt-4 mt-lg-0">
+          <div class="gallery">
+            <img src="{{asset('assets/images/info.jpg')}}" class="center shadow-sm" alt="" loading="lazy">
+            <img src="{{asset('assets/images/banniere.jpg')}}" class="top shadow-sm" alt="" loading="lazy">
+            <img src="{{asset('assets/images/magasin2.jpg')}}" class="bottom shadow-sm" alt="" loading="lazy">
+            <img src="{{asset('assets/images/magasin.jpg')}}" class="left shadow-sm" alt="" loading="lazy">
+            <img src="{{asset('assets/images/boulangerie.jpg')}}" class="right shadow-sm" alt="" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </section>
 
     <div class="container-fluid px-5 mt-4">
+        <section class="container-fluid bg-light py-5">
+            <div id="featuresCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="row align-items-center">
+                        <div class="col-lg-6 text-center text-lg-start px-5">
+                            <h3 class="fw-bold mb-3" style="font-family: 'Hanken Grotesk', sans-serif; font-weight: 700;">
+                            Un Logiciel qui grandit avec vos besoins
+                            </h3>
+                            <p class="mb-4" style="font-family: 'Hanken Grotesk', sans-serif; font-weight: 500; font-size: 1.1rem;">
+                            Camestocks s’adapte à votre entreprise et évolue avec vos besoins.
+                            Dès aujourd’hui, commencez à gérer efficacement votre facturation avec nos solutions professionnelles.
+                            Vous pouvez créer et envoyer vos factures en quelques clics, suivre vos ventes et optimiser votre gestion.
+                            Au fur et à mesure que votre activité se développe, il vous suffit de choisir le pack qui correspond le mieux à vos objectifs.
+                            </p>
+                        </div>
+                        <div class="col-lg-6 px-5 mt-4 mt-lg-0">
+                            <div class="card border-0 shadow-lg rounded overflow-hidden">
+                            <img src="{{asset('assets/images/banner.png')}}" alt="Autres fonctionnalités"
+                                class="w-100" style="max-height: 400px; object-fit: cover;">
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+
+                    <div class="carousel-item">
+                        <div class="row align-items-center">
+                        <div class="col-lg-6 text-center text-lg-start px-5">
+                            <h3 class="fw-bold mb-3"> Gagnez du temps et en productivité </h3>
+                            <p class="mb-4" style="font-family: 'Hanken Grotesk', sans-serif; font-weight: 500; font-size: 1.1rem;">
+                                Passez moins de temps à gérer votre facturation pour vous concentrer sur l’essentiel !
+                                En plus de pouvoir facturer en moins d’une minute, vous pouvez facilement suivre votre temps passé à travailler et voir en en clin d’œil comment votre entreprise se développe grâce au rapport des ventes.
+                            </p>
+                        </div>
+                        <div class="col-lg-6 px-5 mt-4 mt-lg-0">
+                            <div class="card border-0 shadow-lg rounded overflow-hidden">
+                            <img src="{{asset('assets/images/humm.png')}}" alt="Gestion des stocks"
+                                class="w-100" style="max-height: 400px; object-fit: cover;">
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+
+                    <div class="carousel-item">
+                        <div class="row align-items-center">
+                        <div class="col-lg-6 text-center text-lg-start px-5">
+                            <h3 class="fw-bold mb-3"> De l'aide dsponible pour creer vos factures facilement </h3>
+                            <p class="mb-4" style="font-family: 'Hanken Grotesk', sans-serif; font-weight: 500; font-size: 1.1rem;">
+                            L’interface simple et intuitive de Camestocks en fait un logiciel de facturation extrêmement simple d’utilisation.
+                            Si toutefois vous avez des questions ou besoin d’aide, redigez la dans la rubrique suggestions et n’hésitez pas à contacter notre équipe de support qui vous aidera à profiter pleinement de votre compte camestoks.
+                            </p>
+                        </div>
+                        <div class="col-lg-6 px-5 mt-4 mt-lg-0">
+                            <div class="card border-0 shadow-lg rounded overflow-hidden">
+                            <img src="{{asset('assets/images/info.jpg')}}" alt="Facturation rapide"
+                                class="w-100" style="max-height: 400px; object-fit: cover;">
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <button class="carousel-control-prev" type="button" data-bs-target="#featuresCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#featuresCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
+            </div>
+        </section>
+
+
+        <section class="text-center mb-5">
+            <h3 class="mb-4">Pourquoi choisir notre application ?</h3>
+            <div class="row g-4 justify-content-center">
+                <div class="col-md-4">
+                    <div class="advantage-card">
+                    <i class="mdi mdi-speedometer advantage-icon"></i>
+                    <h5>Rapidité</h5>
+                    <p>Gérez vos stocks en quelques clics, rapidement et efficacement.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="advantage-card">
+                    <i class="mdi mdi-shield-check advantage-icon"></i>
+                    <h5>Sécurité</h5>
+                    <p>Vos données sont chiffrées et protégées grâce à des technologies avancées.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="advantage-card">
+                    <i class="mdi mdi-cloud-upload advantage-icon"></i>
+                    <h5>Sauvegarde Cloud</h5>
+                    <p>Vos données sont sauvegardées automatiquement dans le cloud.</p>
+                    </div>
+                </div>
+            </div>
+       </section>
+
       <section class="text-center mb-5">
-        <h3 class="mb-4">Pourquoi choisir notre application ?</h3>
-        <div class="row g-4 justify-content-center">
-
-          <div class="col-md-4">
-            <div class="advantage-card">
-              <i class="mdi mdi-speedometer advantage-icon"></i>
-              <h5>Rapidité</h5>
-              <p>Gérez vos stocks en quelques clics, rapidement et efficacement.</p>
-            </div>
-          </div>
-
-          <div class="col-md-4">
-            <div class="advantage-card">
-              <i class="mdi mdi-shield-check advantage-icon"></i>
-              <h5>Sécurité</h5>
-              <p>Vos données sont chiffrées et protégées grâce à des technologies avancées.</p>
-            </div>
-          </div>
-
-          <div class="col-md-4">
-            <div class="advantage-card">
-              <i class="mdi mdi-cloud-upload advantage-icon"></i>
-              <h5>Sauvegarde Cloud</h5>
-              <p>Vos données sont sauvegardées automatiquement dans le cloud.</p>
-            </div>
-          </div>
-
+        <h3 class="mb-4">Découvrez notre application en vidéo</h3>
+        <div class="mx-auto" style="max-width: auto; height: 300px;">
+          <iframe src="https://www.youtube.com/embed/VIDÉO_ID" title="Présentation CAMES STOCK" allowfullscreen style="width: 100%; height: 100%; border: none;" loading="lazy"></iframe>
         </div>
       </section>
 
      <section class="text-center mb-5">
-        <h3 class="mb-4">Découvrez notre application en vidéo</h3>
-        <div class="mx-auto" style="max-width: auto; height: 300px;">
-            <iframe src="https://www.youtube.com/embed/VIDÉO_ID"
-                title="Présentation CAMES STOCK"
-                allowfullscreen
-                style="width: 100%; height: 100%; border: none;"
-                loading="lazy">
-            </iframe>
-            </div>
-     </section>
-
-      <section class="text-center mb-5">
         <h3 class="mb-4"> Fonctionnalités Principales</h3>
         <div class="row g-4 justify-content-center">
 
@@ -248,103 +370,82 @@
         </div>
       </section>
 
-    </div>
 
+    </div>
   </main>
 
-  <footer>
-    <div class="container">
-      <p class="mb-0 text-muted">© {{ date('Y') }} CAMES ORGANISATION. Tous droits réservés.</p>
-    </div>
-  </footer>
+    <footer class="text-white py-5" style="background-color: #0c408e;">
+        <div class="container">
+            <div class="row">
 
-   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+            <!-- RUBRIQUE 1 : PAGES -->
+            <div class="col-md-4 mb-4 mb-md-0">
+                <h5 class="fw-bold mb-3">Pages</h5>
+                <ul class="list-unstyled">
+                <li><a href="#" class="text-white text-decoration-none">Accueil</a></li>
+                <li><a href="#" class="text-white text-decoration-none">Fonctionnalités</a></li>
+                <li><a href="#" class="text-white text-decoration-none">Tarifs</a></li>
+                <li><a href="#" class="text-white text-decoration-none">Contact</a></li>
+                </ul>
+            </div>
 
-    <script>
-        let deferredPrompt;
-        let installButton = document.getElementById('installBtn');
+            <!-- RUBRIQUE 2 : HORAIRES -->
+            <div class="col-md-4 mb-4 mb-md-0">
+                <h5 class="fw-bold mb-3">Horaires</h5>
+                <p class="mb-1">Lundi - Vendredi : 08h - 17h</p>
+                <p class="mb-1">Samedi : 09h - 14h</p>
+                <p class="mb-0">Dimanche : Fermé</p>
+            </div>
 
-        if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/sw.js')
-            .then(registration => {
-                console.log('Service Worker enregistré avec succès:', registration);
-            })
-            .catch(registrationError => {
-                console.log('Erreur lors de l\'enregistrement du Service Worker:', registrationError);
-            });
-        });
-        }
+            <!-- RUBRIQUE 3 : JOURS -->
+            <div class="col-md-4">
+                <h5 class="fw-bold mb-3">Disponibilité</h5>
+                <p class="mb-1">✔️ Ouvert 7j/7 en ligne</p>
+                <p class="mb-1">✔️ Support réactif</p>
+                <p class="mb-0">✔️ Assistance rapide</p>
+            </div>
 
-        window.addEventListener('beforeinstallprompt', (e) => {
-        console.log('Prompt d\'installation PWA disponible');
+            </div>
 
-        e.preventDefault();
+            <hr class="border-light my-4">
 
-        deferredPrompt = e;
+            <div class="row">
+            <div class="col-md-6">
+                <p class="mb-0">© {{ date('Y') }} CAMES ORGANISATION. Tous droits réservés.</p>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <a href="#" class="text-white me-3"><i class="mdi mdi-facebook"></i></a>
+                <a href="#" class="text-white me-3"><i class="mdi mdi-twitter"></i></a>
+                <a href="#" class="text-white"><i class="mdi mdi-linkedin"></i></a>
+            </div>
+            </div>
+        </div>
+    </footer>
 
-        if (installButton) {
-            installButton.style.display = 'inline-block';
-        }
-        });
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Navbar scroll
+    const navbar = document.querySelector('.navbar');
+    window.addEventListener('scroll', () => {
+      if(window.scrollY > 10) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
 
-        if (installButton) {
-        installButton.addEventListener('click', async () => {
-            if (deferredPrompt) {
-            // Affiche le prompt d'installation
-            deferredPrompt.prompt();
-
-            // Attend la réponse de l'utilisateur
-            const { outcome } = await deferredPrompt.userChoice;
-
-            console.log(`Résultat de l'installation: ${outcome}`);
-
-            // Reset de la variable
-            deferredPrompt = null;
-
-            // Cache le bouton
-            installButton.style.display = 'none';
-
-            if (outcome === 'accepted') {
-                console.log('L\'utilisateur a accepté l\'installation de la PWA');
-            } else {
-                console.log('L\'utilisateur a refusé l\'installation de la PWA');
-            }
-            }
-        });
-        }
-
-        // Détecte si l'app est installée
-        window.addEventListener('appinstalled', (evt) => {
-        console.log('PWA a été installée avec succès');
-
-        // Cache le bouton d'installation
-        if (installButton) {
-            installButton.style.display = 'none';
-        }
-        });
-
-        // Vérifie si l'app est déjà en mode standalone (installée)
-        if (window.matchMedia('(display-mode: standalone)').matches) {
-        console.log('L\'application fonctionne en mode PWA installée');
-
-        // Cache le bouton d'installation
-        if (installButton) {
-            installButton.style.display = 'none';
-        }
-        }
-
-        // Gestion des notifications push (optionnel)
-        if ('Notification' in window && navigator.serviceWorker) {
-        // Demande la permission pour les notifications
-        Notification.requestPermission().then(permission => {
-            if (permission === 'granted') {
-            console.log('Permission accordée pour les notifications');
-            }
-        });
-        }
-   </script>
-
+    // Dropdown langue
+    const languageCard = document.querySelector('.language-card');
+    const dropdownMenu = languageCard.querySelector('.dropdown-menu');
+    languageCard.addEventListener('click', () => {
+      dropdownMenu.classList.toggle('show');
+    });
+    document.addEventListener('click', e => {
+      if(!languageCard.contains(e.target)) {
+        dropdownMenu.classList.remove('show');
+      }
+    });
+  </script>
 </body>
 </html>
 
