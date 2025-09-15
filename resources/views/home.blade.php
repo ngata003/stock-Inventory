@@ -224,8 +224,8 @@
             <img src="{{asset('assets/images/info.jpg')}}" class="center shadow-sm" alt="" loading="lazy">
             <img src="{{asset('assets/images/banniere.jpg')}}" class="top shadow-sm" alt="" loading="lazy">
             <img src="{{asset('assets/images/magasin2.jpg')}}" class="bottom shadow-sm" alt="" loading="lazy">
-            <img src="{{asset('assets/images/magasin.jpg')}}" class="left shadow-sm" alt="" loading="lazy">
-            <img src="{{asset('assets/images/boulangerie.jpg')}}" class="right shadow-sm" alt="" loading="lazy">
+            <img src="{{asset('assets/images/magasin.jpg')}}" class="left shadow-sm" alt="" loading="">
+            <img src="{{asset('assets/images/boulangerie.jpg')}}" class="right shadow-sm" alt="">
           </div>
         </div>
       </div>
@@ -448,4 +448,7 @@
   </script>
 </body>
 </html>
+
+
+
 

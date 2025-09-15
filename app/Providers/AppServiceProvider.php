@@ -32,7 +32,7 @@ class AppServiceProvider extends ServiceProvider
 
         View::composer('*', function ($view) {
 
-            $fk_boutique = session('fk_boutique');
+            $fk_boutique = session('boutique_active_id');
             $notifications_non_lues = Suggestion::where('fk_boutique', $fk_boutique)
                 ->where('direction', 'admin')
                 ->where('type_operation', 'notification')
@@ -50,7 +50,7 @@ class AppServiceProvider extends ServiceProvider
             ->whereYear('created_at' , now()->year)
             ->count();
 
-            $view->with('notifications_non_lues', $suggestions_attentes);
+            $view->with('suggestions_attentes', $suggestions_attentes);
         });
 
         View::composer('*' , function($view){
@@ -60,7 +60,7 @@ class AppServiceProvider extends ServiceProvider
             ->whereYear('created_at' , now()->year)
             ->count();
 
-            $view->with('notifications_non_lues', $notifications_attentes);
+            $view->with('notifications_attentes', $notifications_attentes);
         });
     }
 }

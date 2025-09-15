@@ -58,90 +58,152 @@
         @include('includes.nav_include')
         <div class="main-panel">
           <div class="content-wrapper">
-            <div class="row">
-              <div class="col-12 grid-margin">
-                <div class="card">
-                  <div class="card-body">
-                    <h4 class="card-title"> Espace ventes </h4>
-                    <form class="form-sample" id="formulaireCommande" method="POST" action="{{route('add_ventes')}}">
-                        @csrf
-                        <p class="card-description">Rentrer une vente</p>
+<div class="row">
+    <!-- Colonne Formulaire -->
+    <div class="col-md-8 grid-margin">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Espace ventes</h4>
+                <form class="form-sample" id="formulaireCommande" method="POST" action="{{ route('add_ventes') }}">
+                    @csrf
+                    <p class="card-description">Rentrer une vente</p>
 
-                        <!-- Infos client -->
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group row">
-                                    <label class="col-sm-4 col-form-label">Nom Client</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" name="nom_client" class="form-control" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group row">
-                                    <label class="col-sm-4 col-form-label">Email client</label>
-                                    <div class="col-sm-8">
-                                        <input type="email" name="email_client" class="form-control" />
-                                    </div>
+                    <!-- Infos client -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">Nom Client</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="nom_client" class="form-control" oninput="majFacture()" />
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Conteneur des commandes -->
-                        <div id="commandesContainer">
-                            <div class="row align-items-center g-3 mb-3" id="nouvelle_commande0">
-                                <div class="col-md-3">
-                                    <div class="autocomplete-container">
-                                        <input type="text" id="nom_produit0" name="nom_produit0" class="form-control"
-                                            placeholder="Entrer un nom de produit" onkeyup="autoCompletion_produits(0)" />
-                                        <div id="suggestions_0" class="autocomplete-suggestions"></div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="number" id="quantite0" name="qte0" class="form-control"
-                                        placeholder="Entrer une quantité" oninput="calculTotal(0)" />
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="number" id="prix_unitaire0" name="prix_unitaire0" class="form-control"
-                                        placeholder="Prix unitaire" readonly />
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="number" id="total0" name="montant_total0" class="form-control" placeholder="Total"
-                                        readonly />
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">Email client</label>
+                                <div class="col-sm-8">
+                                    <input type="email" name="email_client" class="form-control" oninput="majFacture()" />
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="row align-items-center g-3 mb-3">
+                    <!-- Conteneur des commandes -->
+                    <div id="commandesContainer">
+                        <div class="row align-items-center g-3 mb-3" id="nouvelle_commande0">
                             <div class="col-md-3">
-                                <select class="form-select form-select-sm text-dark" name="moyen_paiement">
-                                    <option selected class="text-dark">moyen paiement</option>
-                                    <option value="orange_money" class="text-dark">Orange Money</option>
-                                    <option value="mobile_money" class="text-dark">Mobile Money</option>
-                                    <option value="cash" class="text-dark">Cash</option>
-                                    <option value="paiement_bancaire" class="text-dark">Paiement bancaire</option>
-                                </select>
+                                <div class="autocomplete-container">
+                                    <input type="text" id="nom_produit0" name="nom_produit0" class="form-control"
+                                        placeholder="Entrer un nom de produit" onkeyup="autoCompletion_produits(0)" oninput="majFacture()" />
+                                    <div id="suggestions_0" class="autocomplete-suggestions"></div>
+                                </div>
                             </div>
                             <div class="col-md-3">
-                                <input type="number" id="total_commandee"  name="montant_total" class="form-control" placeholder=" total commande" oninput="calculerReste()"  />
+                                <input type="number" id="quantite0" name="qte0" class="form-control"
+                                    placeholder="Quantité" oninput="calculTotal(0)" />
                             </div>
                             <div class="col-md-3">
-                                <input type="number" id="montant_paye" name="montant_paye" class="form-control" placeholder="montant verse" oninput="calculerReste()" />
+                                <input type="number" id="prix_unitaire0" name="prix_unitaire0" class="form-control"
+                                    placeholder="PU" readonly />
                             </div>
                             <div class="col-md-3">
-                                <input type="number" id="reste" name="montant_rembourse" class="form-control" placeholder="reste" readonly />
+                                <input type="number" id="total0" name="montant_total0" class="form-control"
+                                    placeholder="Total" readonly />
                             </div>
-                            <input type="hidden" name="numRows" id="numRows">
-                            <input type="hidden" name="type_operation" value="vente">
                         </div>
-                        <button type="submit" class="btn btn-success me-2">Enregistrer</button>
-                        <button type="button" class="btn btn-danger me-2" id="btnAnnuler">Recommencer la commande</button>
-                        <button type="button" class="btn btn-primary me-2" id="ajouterCommande">Ajouter une nouvelle commande</button>
-                    </form>
-                  </div>
-                </div>
-              </div>
+                    </div>
+
+                    <!-- Paiement -->
+                    <div class="row align-items-center g-3 mb-3">
+                        <div class="col-md-3">
+                            <select class="form-select form-select-sm text-dark" name="moyen_paiement" oninput="majFacture()">
+                                <option selected>moyen paiement</option>
+                                <option value="orange_money">Orange Money</option>
+                                <option value="mobile_money">Mobile Money</option>
+                                <option value="cash">Cash</option>
+                                <option value="paiement_bancaire">Paiement bancaire</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="number" id="total_commandee" name="montant_total" class="form-control"
+                                placeholder="Total commande" readonly />
+                        </div>
+                        <div class="col-md-3">
+                            <input type="number" id="montant_paye" name="montant_paye" class="form-control"
+                                placeholder="Montant versé" oninput="calculerReste()" />
+                        </div>
+                        <div class="col-md-3">
+                            <input type="number" id="reste" name="montant_rembourse" class="form-control"
+                                placeholder="Reste" readonly />
+                        </div>
+                        <input type="hidden" name="numRows" id="numRows" value="1">
+                        <input type="hidden" name="type_operation" value="vente">
+                    </div>
+
+                    <!-- Boutons -->
+                    <button type="submit" class="btn btn-success me-2">Enregistrer</button>
+                    <button type="button" class="btn btn-dark me-2" onclick="enregistrerEtImprimer()">Enregistrer & Imprimer</button>
+                    <button type="button" class="btn btn-danger me-2" id="btnAnnuler">Recommencer</button>
+                    <button type="button" class="btn btn-primary me-2" id="ajouterCommande">Ajouter commande</button>
+                </form>
             </div>
+        </div>
+    </div>
+
+    <!-- Colonne Facture -->
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-body" id="facture-apercu" style="font-size:12px;">
+                <div class="header text-center mb-3">
+                    <h5>FACTURE (aperçu)</h5>
+                    <p id="facture-date"></p>
+                </div>
+
+                <!-- Infos client -->
+                <div class="mb-3">
+                    <strong>Client :</strong> <span id="facture-client">---</span><br>
+                    <strong>Email :</strong> <span id="facture-email">---</span>
+                </div>
+
+                <!-- Produits -->
+                <table class="table table-sm table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Produit</th>
+                            <th>Qte</th>
+                            <th>PU</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="facture-produits"></tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" class="text-end">TOTAL</td>
+                            <td id="facture-total">0</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="text-end">Payé</td>
+                            <td id="facture-paye">0</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="text-end">Reste</td>
+                            <td id="facture-reste">0</td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <div class="footer text-center mt-3">
+                    <small>Merci pour votre confiance</small>
+                    <div class="mt-2">
+                        <button type="button" class="btn btn-dark" onclick="imprimerFacture()">🖨️ Imprimer la facture</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
           </div>
           @include('includes.footer')
         </div>
@@ -179,12 +241,13 @@
     <script src="{{asset('assets/js/file-upload.js')}}"></script>
     <script src="{{asset('assets/js/typeahead.js')}}"></script>
     <script src="{{asset('assets/js/select2.js')}}"></script>
+
     <script>
         let index = 1;
         const numRows = document.getElementById('numRows');
-        numRows.value = 1;
         const divCommande = document.getElementById('commandesContainer');
         const boutonAjouter = document.getElementById('ajouterCommande');
+
         boutonAjouter.addEventListener('click', () => {
             const produit0 = document.getElementById('nom_produit0').value.trim();
             const qte0 = document.getElementById('quantite0').value.trim();
@@ -195,40 +258,40 @@
             }
 
             const nouvelleCommande = document.createElement('div');
-            nouvelleCommande.classList.add('row', 'align-items-center', 'g-3', 'mb-3', 'test');
+            nouvelleCommande.classList.add('row', 'align-items-center', 'g-3', 'mb-3');
             nouvelleCommande.id = `nouvelle_commande${index}`;
 
             nouvelleCommande.innerHTML = `
                 <div class="col-md-3">
                     <div class="autocomplete-container">
                         <input type="text" id="nom_produit${index}" name="nom_produit${index}" class="form-control"
-                            placeholder="Entrer un nom de produit" onkeyup="autoCompletion_produits(${index})" />
+                            placeholder="Produit" onkeyup="autoCompletion_produits(${index})" oninput="majFacture()" />
                         <div id="suggestions_${index}" class="autocomplete-suggestions"></div>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <input type="number" id="quantite${index}" name="qte${index}" class="form-control"
-                        placeholder="Entrer une quantité" oninput="calculTotal(${index})" />
+                        placeholder="Quantité" oninput="calculTotal(${index})" />
                 </div>
                 <div class="col-md-3">
                     <input type="number" id="prix_unitaire${index}" name="prix_unitaire${index}" class="form-control"
-                        placeholder="Prix unitaire" readonly />
+                        placeholder="PU" readonly />
                 </div>
                 <div class="col-md-2">
                     <input type="number" id="total${index}" name="montant_total${index}" class="form-control"
                         placeholder="Total" readonly />
                 </div>
                 <div class="col-md-1">
-                    <button type="button" class="btn btn-danger px-3 py-1 rounded-pill shadow-sm"
-                        onclick="retirerCommande(${index}, this)">
-                        <i class="fas fa-trash-alt"></i> Retirer
-                    </button>
+                    <button type="button" class="btn btn-danger px-3 py-1"
+                        onclick="retirerCommande(${index}, this)">🗑 Retirer</button>
                 </div>
             `;
 
             divCommande.appendChild(nouvelleCommande);
             index++;
             numRows.value = index;
+
+            majFacture();
         });
 
         function autoCompletion_produits(index) {
@@ -259,7 +322,6 @@
                                 prixUnitaire.value = produit.prix_vente;
                             }
                             suggestionsContainer.innerHTML = "";
-
                             calculTotal(index);
                         });
 
@@ -274,11 +336,11 @@
             const prix = parseFloat(document.getElementById(`prix_unitaire${idx}`).value) || 0;
             document.getElementById(`total${idx}`).value = (quantite * prix).toFixed(2);
             calculerTotalGeneral();
+            majFacture();
         }
 
         function calculerTotalGeneral() {
             let totalGeneral = 0;
-            // On prend uniquement les inputs de total par ligne (id qui commence par "total" et pas "total_commandee")
             document.querySelectorAll("input[id^='total']:not(#total_commandee)").forEach(input => {
                 const val = parseFloat(input.value) || 0;
                 totalGeneral += val;
@@ -287,32 +349,21 @@
             calculerReste();
         }
 
-        function calculerReste(){
-            let montantInput = document.getElementById('montant_paye');
+        function calculerReste() {
+            let montant = parseFloat(document.getElementById('montant_paye').value) || 0;
+            let total = parseFloat(document.getElementById('total_commandee').value) || 0;
             let reste = document.getElementById('reste');
-            let total_commandeeInput = document.getElementById('total_commandee');
 
-            montant = parseFloat(montantInput.value);
-            total_com = parseFloat(total_commandeeInput.value);
-
-            if ( montant >= total_com){
-                let restes = montant - total_com;
-
-                reste.value = restes.toFixed(2);
-            }
-
-            else{
-                reste.value = '';
-            }
-
+            reste.value = (montant - total).toFixed(2);
+            majFacture();
         }
-
 
         function retirerCommande(idx) {
             const commande = document.getElementById(`nouvelle_commande${idx}`);
             if (commande) {
                 commande.remove();
                 calculerTotalGeneral();
+                majFacture();
             }
         }
 
@@ -322,17 +373,17 @@
                     <div class="col-md-3">
                         <div class="autocomplete-container">
                             <input type="text" id="nom_produit0" name="nom_produit0" class="form-control"
-                                placeholder="Entrer un nom de produit" onkeyup="autoCompletion_produits(0)" />
+                                placeholder="Produit" onkeyup="autoCompletion_produits(0)" oninput="majFacture()" />
                             <div id="suggestions_0" class="autocomplete-suggestions"></div>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <input type="number" id="quantite0" name="qte0" class="form-control"
-                            placeholder="Entrer une quantité" oninput="calculTotal(0)" />
+                            placeholder="Quantité" oninput="calculTotal(0)" />
                     </div>
                     <div class="col-md-3">
                         <input type="number" id="prix_unitaire0" name="prix_unitaire0" class="form-control"
-                            placeholder="Prix unitaire" readonly />
+                            placeholder="PU" readonly />
                     </div>
                     <div class="col-md-3">
                         <input type="number" id="total0" name="montant_total0" class="form-control" placeholder="Total"
@@ -342,8 +393,51 @@
             index = 1;
             numRows.value = index;
             calculerTotalGeneral();
+            majFacture();
         });
 
+        function majFacture() {
+            document.getElementById('facture-date').textContent = new Date().toLocaleDateString();
+            document.getElementById('facture-client').textContent = document.querySelector("input[name='nom_client']").value || "---";
+            document.getElementById('facture-email').textContent = document.querySelector("input[name='email_client']").value || "---";
+
+            const tbody = document.getElementById('facture-produits');
+            tbody.innerHTML = "";
+            document.querySelectorAll("div[id^='nouvelle_commande']").forEach(div => {
+                const idx = div.id.replace("nouvelle_commande", "");
+                const produit = document.getElementById(`nom_produit${idx}`)?.value || "";
+                const qte = document.getElementById(`quantite${idx}`)?.value || 0;
+                const prix = document.getElementById(`prix_unitaire${idx}`)?.value || 0;
+                const total = document.getElementById(`total${idx}`)?.value || 0;
+
+                if (produit) {
+                    const tr = document.createElement("tr");
+                    tr.innerHTML = `<td>${produit}</td><td>${qte}</td><td>${prix}</td><td>${total}</td>`;
+                    tbody.appendChild(tr);
+                }
+            });
+
+            document.getElementById('facture-total').textContent = document.getElementById('total_commandee').value || 0;
+            document.getElementById('facture-paye').textContent = document.getElementById('montant_paye').value || 0;
+            document.getElementById('facture-reste').textContent = document.getElementById('reste').value || 0;
+        }
+
+        function imprimerFacture() {
+            let contenuFacture = document.getElementById('facture-apercu').innerHTML;
+            let fenetre = window.open('', '', 'height=600,width=800');
+            fenetre.document.write('<html><head><title>Facture</title>');
+            fenetre.document.write('<style>table{width:100%;border-collapse:collapse}td,th{border:1px solid #000;padding:5px;text-align:center}</style>');
+            fenetre.document.write('</head><body>');
+            fenetre.document.write(contenuFacture);
+            fenetre.document.write('</body></html>');
+            fenetre.document.close();
+            fenetre.print();
+        }
+
+        function enregistrerEtImprimer() {
+            document.getElementById('formulaireCommande').submit();
+            setTimeout(() => { imprimerFacture(); }, 800);
+        }
     </script>
 
     <script>

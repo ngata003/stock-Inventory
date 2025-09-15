@@ -17,6 +17,13 @@
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
     <link rel="shortcut icon" href="{{asset('assets/images/cames_favIcon.png')}}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .fixed-height-card {
+            height: 400px;        /* hauteur fixe */
+            overflow-y: auto;     /* scroll si le contenu dépasse */
+            height: 300px;        /* hauteur fixe */
+        }
+    </style>
 
   </head>
   <body class="with-welcome-text">
@@ -77,13 +84,18 @@
                                                                 <td>{{$notif->id}}</td>
                                                                 <td>{{$notif->description}}</td>
                                                                 <td>{{$notif->created_at->format('d-m-y')}}</td>
-                                                                <td>
-                                                                    @if ($notif->status === "lu")
-                                                                        <button class="btn btn-success btn-sm"> <span style="color: white"> Déjà lu</span></button>
-                                                                    @elseif ($notif->status === "attente")
-                                                                        <button class="btn btn-primary btn-sm"> <span style="color: white"> Nouveau message</span></button>
-                                                                    @endif
+                                                                <td id="notif-{{ $notif->id }}">
+                                                                        @if ($notif->status === "lu")
+                                                                            <button class="btn btn-success btn-sm">
+                                                                                <span style="color: white">Déjà lu</span>
+                                                                            </button>
+                                                                        @elseif ($notif->status === "attente")
+                                                                            <button class="btn btn-primary btn-sm" onclick="showNotif({{ $notif->id }})">
+                                                                                <span style="color: white">Nouveau message</span>
+                                                                            </button>
+                                                                        @endif
                                                                 </td>
+
                                                                 <td>
                                                                     <button type="button" class="btn btn-danger btn-sm" data-id="{{$notif->id}}" onclick="openSuppModal(this)">
                                                                         <i class="mdi mdi-trash-can-outline text-white"></i>
@@ -114,7 +126,7 @@
                         <div class="col-lg-5 d-flex flex-column" id="lecture-notif">
                             <div class="row flex-grow">
                                 <div class="col-12 grid-margin stretch-card">
-                                    <div class="card card-rounded">
+                                    <div class="card card-rounded fixed-height-card">
                                         <div class="card-body">
                                             <div class="d-sm-flex justify-content-between align-items-start">
                                                 <div>
@@ -122,7 +134,6 @@
                                                 </div>
                                             </div>
                                             <div id="placeholder" class="text-muted">
-                                                <em>Veuillez cliquer sur une notification pour la lire</em>
                                             </div>
                                             <div class="mt-4" id="notif-content" class="d-none">
                                             </div>
@@ -196,25 +207,48 @@
     <script src="{{asset('assets/js/dashboard.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <script>
-        function showNotif(id) {
-
+   <script>
+       function showNotif(id) {
             let bloc = document.getElementById('lecture-notif');
             bloc.classList.remove('d-none');
 
             fetch(`/notifications_message/${id}`)
                 .then(response => response.json())
                 .then(data => {
+                    // Afficher le contenu du message
                     document.getElementById('notif-content').innerHTML = `
                         <p><strong>Message :</strong> ${data.message}</p>
+                    `;
+
+                    // Décrémenter le badge
+                    let badge = document.querySelector('.badge.bg-danger');
+                    if (badge) {
+                        let count = parseInt(badge.innerText);
+                        if (count > 0) {
+                            badge.innerText = count - 1;
+                            if (count - 1 === 0) {
+                                badge.style.display = "none"; // cacher si 0
+                            }
+                        }
+                    }
+
+                    // Mettre à jour le bouton dans le tableau
+                    let td = document.getElementById(`notif-${id}`);
+                    if (td) {
+                        td.innerHTML = `
+                            <button class="btn btn-success btn-sm">
+                                <span style="color: white">Déjà lu</span>
+                            </button>
                         `;
-                    })
-                    .catch(error => {
-                        console.error("Erreur :", error);
-                        document.getElementById('notif-content').innerHTML =
-                            `<p class="text-danger">Impossible de charger la notification.</p>`;
-                    });
+                    }
+                })
+                .catch(error => {
+                    console.error("Erreur :", error);
+                    document.getElementById('notif-content').innerHTML =
+                        `<p class="text-danger">Impossible de charger la notification.</p>`;
+                });
         }
+
     </script>
 
     <script>

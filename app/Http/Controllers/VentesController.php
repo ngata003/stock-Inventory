@@ -179,23 +179,23 @@ class VentesController extends Controller
             ];
 
             $pdf = Pdf::loadView('Users.ventes.facture', ['data' => $data]);
-            $pdfPath = public_path('assets/PDF/facture_'.$id_facture.'.pdf');
-            $pdf->save($pdfPath);
+            /*$pdfPath = public_path('assets/PDF/facture_'.$id_facture.'.pdf');
+            $pdf->save($pdfPath);*/
 
-            if ($request->type_operation === "vente" && $request->email_client) {
+           /* if ($request->type_operation === "vente" && $request->email_client) {
                 Mail::to($request->email_client)->send(new FactureClientMail($data, $pdfPath));
-            }
+            }*/
 
             DB::commit();
 
-            if ($request->type_operation === "vente") {
+          /*  if ($request->type_operation === "vente") {
                 return redirect()->route('liste_ventes')->with('success_transfert' , 'facture enregistrée et envoyée au client avec succès');
             }
 
             elseif($request->type_operation === "commande"){
                 return redirect()->route('liste_commandes')->with('success_transfert' , 'facture enregistrée et envoyée au client avec succès');
-            }
-
+            }*/
+            return $pdf->stream('facture'.$id_facture.'.pdf');
 
 
         } catch (\Exception $e) {

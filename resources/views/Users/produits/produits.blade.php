@@ -17,6 +17,7 @@
     <link rel="shortcut icon" href="{{asset('assets/images/cames_favIcon.png')}}" />
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.bootstrap5.min.css">
   </head>
   <body>
     <div class="container-scroller">
@@ -153,31 +154,20 @@
                                 <label for="centreName" class="form-label"> Image du produit </label>
                                 <input type="file" name="image_produit" class="form-control" >
                             </div>
-                           <div class="col-12">
+                            <div class="col-12">
                                 <label for="categorie_produit" class="form-label">Catégorie du produit</label>
 
-                                <!-- Input de recherche -->
-                                <div class="search-input-container">
-                                    <i class="mdi mdi-magnify search-icon"></i>
-                                    <input
-                                        type="text"
-                                        class="form-control search-input search-input-with-icon"
-                                        placeholder="Rechercher dans les catégories..."
-                                        id="searchCategorie"
-                                    >
-                                </div>
-
-                                <!-- Votre select original -->
-                                <select name="fk_categorie" id="categorie_produit" class="form-select text-dark filtered-select">
-                                    <option value="" selected disabled class="text-dark">— Sélectionnez une catégorie —</option>
+                                <select name="fk_categorie" id="categorie_produit_add" class="form-select text-dark" autocomplete="off">
+                                    <option value="">— Sélectionnez une catégorie —</option>
                                     @foreach ($categories as $cat)
-                                        <option value="{{ $cat->id }}">{{ $cat->categorie }}</option>
+                                    <option value="{{ $cat->id }}">{{ $cat->categorie }}</option>
                                     @endforeach
                                 </select>
                             </div>
+
                             <div  class="col-12">
                                 <label for="fournisseur" class="form-label"> fournisseur </label>
-                                <select name="fk_fournisseur" id="fournisseur" class="form-select text-dark">
+                                <select name="fk_fournisseur" id="fournisseur_add" class="form-select text-dark">
                                     <option value="" selected disabled class="text-dark">— Sélectionnez une fournisseur —</option>
                                     @foreach ($fournisseurs as $fournis)
                                         <option value="{{ $fournis->id }}">{{ $fournis->nom_fournisseur }}</option>
@@ -241,30 +231,19 @@
                             </div>
 
                             <div class="col-12">
-                                <label for="categorie_input" class="form-label">Catégorie du produit</label>
-                                <input type="text" id="categorie_input" class="form-control text-dark mb-2" placeholder="Tapez pour filtrer la catégorie">
-
-                                <select name="fk_categorie" id="categorie_produit" class="form-select text-dark">
-                                    <option value="" selected class="text-dark">— Sélectionnez une catégorie —</option>
-                                    @foreach ($categories as $cat)
-                                        <option value="{{ $cat->id }}">{{ $cat->categorie }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-
-                            <div class="col-12">
                                 <label for="categorie_produit" class="form-label">Catégorie du produit</label>
-                                <select name="fk_categorie" id="categorie_produit" class="form-select text-dark">
-                                    <option value="" id="categorie" selected class="text-dark">— Sélectionnez une categorie —</option>
+
+                                <select name="fk_categorie" id="categorie_produit_edit" class="form-select text-dark" autocomplete="off">
+                                    <option value="">— Sélectionnez une catégorie —</option>
                                     @foreach ($categories as $cat)
-                                        <option value="{{ $cat->id }}">{{ $cat->categorie }}</option>
+                                    <option value="{{ $cat->id }}">{{ $cat->categorie }}</option>
                                     @endforeach
                                 </select>
                             </div>
+
                             <div class="col-12">
                                 <label for="fournisseur" class="form-label">fournisseur</label>
-                                <select name="fk_fournisseur" id="categorie_produit" class="form-select text-dark">
+                                <select name="fk_fournisseur" id="fournisseur_edit" class="form-select text-dark" autocomplete="off">
                                     <option value="" id="fournisseur" selected class="text-dark" >— Sélectionnez une fournisseur —</option>
                                     @foreach ($fournisseurs as $fournis)
                                         <option value="{{ $fournis->id }}">{{ $fournis->nom_fournisseur }}</option>
@@ -411,6 +390,7 @@
     <script src="{{asset('ssets/js/hoverable-collapse.js')}}"></script>
     <script src="{{asset('assets/js/todolist.js')}}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
 
     <script>
         function openEditModal(button) {
@@ -575,19 +555,71 @@
         });
     </script>
 
-    <script>
-        const input = document.getElementById('categorie_input');
-        const select = document.getElementById('categorie_produit');
+   <script>
+        document.addEventListener('DOMContentLoaded', function () {
 
-        input.addEventListener('input', function() {
-            const filter = this.value.toLowerCase();
-            for (let i = 0; i < select.options.length; i++) {
-                const option = select.options[i];
-                if (option.value === "") continue; // ignorer la première option vide
-                option.style.display = option.text.toLowerCase().includes(filter) ? '' : 'none';
-            }
+            // Fonction pour appliquer TomSelect à un select donné
+            function initTomSelect(selector) {
+                if (document.querySelector(selector)) {
+                    new TomSelect(selector, {
+                            create: false,                // pas d’ajout libre
+                            allowEmptyOption: true,       // garde l’option vide
+                            searchField: ['text'],        // recherche sur le libellé
+                            sortField: { field: 'text', direction: 'asc' },
+                            plugins: ['dropdown_input','clear_button'], // input en haut + bouton X
+                            dropdownInputPlaceholder: 'Tapez pour filtrer...',
+                            placeholder: '— Sélectionnez une catégorie —',
+                            maxOptions: 500,
+                            diacritics: true,             // gère accents (é, è, ê…)
+                            render: {
+                                no_results: function(data, escape) {
+                                    return '<div class="px-3 py-2 text-muted">Aucun résultat</div>';
+                                }
+                            }
+                        });
+                    }
+                }
+
+                // Appliquer sur les deux selects (ajout et édition)
+                initTomSelect('#categorie_produit_add');
+                initTomSelect('#categorie_produit_edit');
+
         });
     </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            // Fonction pour appliquer TomSelect à un select donné
+            function initTomSelect(selector) {
+                if (document.querySelector(selector)) {
+                    new TomSelect(selector, {
+                            create: false,                // pas d’ajout libre
+                            allowEmptyOption: true,       // garde l’option vide
+                            searchField: ['text'],        // recherche sur le libellé
+                            sortField: { field: 'text', direction: 'asc' },
+                            plugins: ['dropdown_input','clear_button'], // input en haut + bouton X
+                            dropdownInputPlaceholder: 'Tapez pour filtrer...',
+                            placeholder: '— Sélectionnez un fournisseur —',
+                            maxOptions: 500,
+                            diacritics: true,             // gère accents (é, è, ê…)
+                            render: {
+                                no_results: function(data, escape) {
+                                    return '<div class="px-3 py-2 text-muted">Aucun résultat</div>';
+                                }
+                            }
+                        });
+                    }
+                }
+
+                // Appliquer sur les deux selects (ajout et édition)
+                initTomSelect('#fournisseur_add');
+                initTomSelect('#fournisseur_edit');
+
+        });
+    </script>
+
+
 
   </body>
 </html>

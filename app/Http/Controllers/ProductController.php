@@ -140,7 +140,7 @@ class ProductController extends Controller
 
         $clients = Client::where('fk_boutique', $fk_boutique)->get();
         foreach ($clients as $clt) {
-            Mail::to($clt->email)->send(new ProductSendMail($product, $nom_boutique));
+            Mail::to($clt->email)->queue(new ProductSendMail($product, $nom_boutique));
         }
 
         return back()->with('product_creation', 'Produit créé avec succès');
