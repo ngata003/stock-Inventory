@@ -37,6 +37,7 @@ class VentesController extends Controller
 
     public function add_ventes(Request $request)
     {
+        //dd($request->all());
         $messages = [
             'email_client.email' => 'Veuillez entrer une adresse email valide.',
             'email_client.regex' => 'L\'adresse email doit commencer par une lettre et respecter le format correct (ex: exemple@mail.com).',
@@ -56,6 +57,7 @@ class VentesController extends Controller
             'moyen_paiement'=>'nullable|string',
             'type_operation' => 'required',
             'fk_coursier' => 'nullable',
+            'reduction' => 'nullable|string',
             'contact_client' => 'nullable|regex:/^\+?[0-9]{7,15}$/',
         ] , $messages);
 
@@ -93,6 +95,7 @@ class VentesController extends Controller
             $facture->montant_remboursé = $request->montant_rembourse;
             $facture->type_operation = $request->type_operation;
             $facture->fk_boutique = $fk_boutique;
+            $facture->reduction = $request->reduction;
             $facture->fk_createur = $user->id;
             $facture->fk_coursier = $request->fk_coursier;
             $facture->contact_client = $request->contact_client;
@@ -166,6 +169,7 @@ class VentesController extends Controller
                 'logo' => $boutique->logo,
                 'date' => now()->format('Y-m-d'),
                 'email' => $boutique->email,
+                'nui' => $boutique->nui,
                 'contact' => $boutique->telephone,
                 'site_web' => $boutique->site_web,
                 'localisation' => $boutique->adresse,
@@ -175,28 +179,36 @@ class VentesController extends Controller
                 'ventes' => $details,
                 'montant_paye' => $request->montant_paye,
                 'remboursement' => $request->montant_rembourse,
+                'reduction' => $request->reduction,
                 'total_achat' => $request->montant_total,
             ];
 
+          // 1) Générer le PDF en mémoire
             $pdf = Pdf::loadView('Users.ventes.facture', ['data' => $data]);
-            /*$pdfPath = public_path('assets/PDF/facture_'.$id_facture.'.pdf');
-            $pdf->save($pdfPath);*/
 
-           /* if ($request->type_operation === "vente" && $request->email_client) {
-                Mail::to($request->email_client)->send(new FactureClientMail($data, $pdfPath));
-            }*/
+            // 2) Définir le chemin du fichier PDF
+            $pdfPath = public_path('assets/PDF/facture_'.$id_facture.'.pdf');
+
+            // 3) Sauvegarder le PDF sur le disque
+            $pdf->save($pdfPath);
 
             DB::commit();
 
-          /*  if ($request->type_operation === "vente") {
-                return redirect()->route('liste_ventes')->with('success_transfert' , 'facture enregistrée et envoyée au client avec succès');
+            // 4) Si c’est une vente et que le client a un email → envoyer le mail
+            if ($request->type_operation === "vente" && $request->email_client) {
+                Mail::to($request->email_client)->send(new FactureClientMail($data, $pdfPath));
             }
 
-            elseif($request->type_operation === "commande"){
+            // 5) Redirection
+            return redirect()
+                ->route('liste_ventes')
+                ->with('success_transfert', 'Facture enregistrée et envoyée au client avec succès');
+
+
+           /* elseif($request->type_operation === "commande"){
                 return redirect()->route('liste_commandes')->with('success_transfert' , 'facture enregistrée et envoyée au client avec succès');
             }*/
-            return $pdf->stream('facture'.$id_facture.'.pdf');
-
+            // Sauvegarder le PDF
 
         } catch (\Exception $e) {
             DB::rollBack();

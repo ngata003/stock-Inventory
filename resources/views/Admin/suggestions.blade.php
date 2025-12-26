@@ -37,23 +37,25 @@
                         <?php $user = Auth::user();?>
                       <div class="form-group">
                         <label for="exampleInputEmail3"> Mail Envoyé à : </label>
-                        <input type="email" value="{{$superadmin->email}}" readonly class="form-control" id="exampleInputEmail3" placeholder="Email">
+                        <input type="email" value="{{$superadmin->email}}" readonly class="form-control" id="exampleInputEmail3" name="mailAdmin" placeholder="Email">
                       </div>
                      <div class="form-group row">
                         <div class="col-6">
                             <label for="exampleInputName1" class="col-12">Votre Mail</label>
                             <input type="email" readonly class="form-control" value="{{$user->email}}" id="exampleInputName1" placeholder="votre mail">
+                            <input type="hidden" name="nom_admin" value="{{$user->name}}">
                         </div>
 
                         <div class="col-6">
                              <label for="exampleInputName1" class="col-12">Votre Boutique</label>
-                            <input type="text" readonly value="{{$boutique_nom}}" class="form-control" id="exampleInputName2" placeholder="votre boutique">
+                            <input type="text" readonly value="{{$boutique_nom}}" name="nom_boutique" class="form-control" id="exampleInputName2" placeholder="votre boutique">
                         </div>
                      </div>
                       <div class="form-group">
                         <label for="exampleTextarea1">Message (problèmes) : </label>
                         <textarea class="form-control" name="message" id="exampleTextarea1" rows="4"></textarea>
                       </div>
+                      <input type="text"  name="type_operation" id="type_operation" value="suggestion" hidden>
                       <button type="submit" class="btn btn-primary me-2">Envoyer</button>
                       <button class="btn btn-light">Annuler</button>
                     </form>
@@ -137,6 +139,6 @@
             });
         </script>
     @endif
-    
+
   </body>
 </html>

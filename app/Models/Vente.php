@@ -21,6 +21,7 @@ class Vente extends Model
         'moyen_paiement',
         'fk_createur',
         'fk_coursier',
+        'reduction',
         'fk_boutique',
     ];
 

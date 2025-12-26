@@ -21,6 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger('fk_boutique');
             $table->unsignedBigInteger('fk_createur');
 
+
             $table->foreign('fk_boutique')->references('id')->on('boutiques')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('fk_createur')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();

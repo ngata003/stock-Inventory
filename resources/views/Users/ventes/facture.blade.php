@@ -168,6 +168,7 @@
                         <strong>Contact :</strong> {{ $data['contact'] }}<br>
                         <strong>Site web :</strong> {{ $data['site_web'] }}<br>
                         <strong>Localisation :</strong> {{ $data['localisation'] }}
+                        <strong>Numero contribuable :</strong> {{ $data['nui'] }}
                     </div>
                 </td>
                 <td>
@@ -203,7 +204,7 @@
         </tbody>
         <tfoot>
             <tr class="totals-row-1">
-                <td colspan="3" style="text-align: right;">Montant payé</td>
+                <td colspan="3" style="text-align: right;">Montant à payer</td>
                 <td style="text-align: center;">{{ number_format($data['montant_paye'], 0, ',', ' ') }} FCFA</td>
             </tr>
             <tr class="totals-row-2">
@@ -213,6 +214,10 @@
             <tr class="total-final-row">
                 <td colspan="3" style="text-align: right;">TOTAL ACHAT</td>
                 <td style="text-align: center;">{{ number_format($data['total_achat'], 0, ',', ' ') }} FCFA</td>
+            </tr>
+            <tr class="total-final-row">
+                <td colspan="3" style="text-align: right;">Réduction</td>
+                <td style="text-align: center;">{{ number_format($data['reduction'], 0, ',', ' ') }} FCFA</td>
             </tr>
         </tfoot>
     </table>

@@ -167,7 +167,8 @@
                         <strong>Email :</strong> {{ $boutique->email }}<br>
                         <strong>Contact :</strong> {{ $boutique->telephone }}<br>
                         <strong>Site web :</strong> {{ $boutique->site_web }}<br>
-                        <strong>Localisation :</strong> {{ $boutique->adresse }}
+                        <strong>Localisation :</strong> {{ $boutique->adresse }}<br>
+                        <strong>NUI :</strong> {{ $boutique->nui }}
                     </div>
                 </td>
                 <td>
@@ -206,20 +207,20 @@
                 <td colspan="3" style="text-align: right;">TOTAL ACHAT</td>
                 <td style="text-align: center;">{{ number_format($invoice->montant_total, 0, ',', ' ') }} FCFA</td>
             </tr>
-            <tr class="totals-row-1">
-                <td colspan="3" style="text-align: right;">Montant payé</td>
-                <td style="text-align: center;">{{ number_format($invoice->montant_paye, 0, ',', ' ') }} FCFA</td>
+             <tr class="total-final-row">
+                <td colspan="3" style="text-align: right;">reduction</td>
+                <td style="text-align: center;">{{ number_format($invoice->reduction, 0, ',', ' ') }} FCFA</td>
             </tr>
-            <tr class="total-final-row">
-                <td colspan="3" style="text-align: right;">Montant remboursé</td>
-                <td style="text-align: center;">{{ number_format($invoice->montant_remboursé, 0, ',', ' ') }} FCFA</td>
+            <tr class="totals-row-1">
+                <td colspan="3" style="text-align: right;">Montant a payer</td>
+                <td style="text-align: center;">{{ number_format($invoice->montant_total - $invoice->reduction, 0, ',', ' ') }} FCFA</td>
             </tr>
         </tfoot>
     </table>
 
     <!-- Footer -->
     <div class="footer">
-        <p>{{ $boutique->site_web }} | {{ $boutique->localisation}}</p>
+        <p>{{ $boutique->site_web }} | {{ $boutique->adresse}}</p>
         <p>Merci pour votre confiance</p>
     </div>
 

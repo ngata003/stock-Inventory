@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('suggestions', function (Blueprint $table) {
             $table->id();
             $table->string('direction')->nullable();
-            $table->string('status');
-            $table->string('description');
+            $table->string('status')->default('attente');
+            $table->string('description')->nullable();
             $table->string('message');
             $table->string('type_operation');
             $table->unsignedBigInteger('fk_createur')->nullable();

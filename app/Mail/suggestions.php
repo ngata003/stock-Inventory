@@ -25,7 +25,7 @@ class suggestions extends Mailable
         //
         $this->nom_admin = $nom_admin;
         $this->nom_boutique = $nom_boutique;
-        $this->message = $suggestion;
+        $this->suggestion = $suggestion;
     }
 
     /**

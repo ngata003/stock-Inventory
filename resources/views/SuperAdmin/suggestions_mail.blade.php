@@ -5,6 +5,6 @@
     <title> Message de suggestion </title>
 </head>
 <body>
-    <p> l'admin au nom de : {{$nom_admin}} de la boutique: {{$nom_boutique}} a remarqué vous a suggéré ceci : {{$suggestion}} , tachez d'arranger cela au plus tot.</p>
+    <p> l'admin au nom de : {{$nom_admin}} de la boutique: {{$nom_boutique}} a remarqué ceci : {{$suggestion}} , tachez d'arranger cela au plus tot.</p>
 </body>
 </html>

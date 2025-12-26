@@ -14,6 +14,7 @@ class Boutique extends Model
         'adresse',
         'telephone',
         'email',
+        'nui',
         'site_web',
         'logo',
         'fk_createur',

@@ -125,13 +125,13 @@
                                     <option value="paiement_bancaire" class="text-dark" >Paiement bancaire</option>
                                 </select>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <input type="number" id="total_commandee"  name="montant_total" class="form-control" placeholder=" total commande" oninput="calculerReste()"  />
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <input type="number" id="montant_paye" name="montant_paye" class="form-control" placeholder="montant verse" oninput="calculerReste()" />
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <input type="number" id="reste" name="montant_rembourse" class="form-control" placeholder="reste" readonly />
                             </div>
                             <input type="hidden" name="numRows" id="numRows">

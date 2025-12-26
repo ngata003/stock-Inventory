@@ -25,6 +25,7 @@ class suggestionsController extends Controller
             'message.required' => 'veuillez remplir la case de message',
             'message.string' => 'rentrez une chaine de caractere',
             'message.regex' => 'veuillez rentrer une composition de lettres et de chiffres',
+            'type_operation' => 'veuillez entrer le type d\'opération',
         ];
 
         $validated = $request->validate([
@@ -39,7 +40,7 @@ class suggestionsController extends Controller
             'type_operation' => $validated['type_operation'],
         ]);
 
-        Mail::to('storecames@gmail.com')->send( new suggestions($request->nom_admin,$request->nom_boutique,  $request->message));
+        Mail::to($request->mailAdmin)->send( new suggestions($request->nom_admin,$request->nom_boutique,  $request->message));
 
         return back()->with('succes_suggestions' , 'suggestion envoyé à l\'administrateur réussi');
     }
@@ -52,7 +53,7 @@ class suggestionsController extends Controller
 
     public function notifications  (Request $request , $mois = null){
         $fk_boutique = session('boutique_active_id');
-        
+
         $mois = $request->mois ?? $mois;
 
         $notifications = Suggestion::where('fk_boutique' , $fk_boutique)

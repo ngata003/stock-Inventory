@@ -58,152 +58,159 @@
         @include('includes.nav_include')
         <div class="main-panel">
           <div class="content-wrapper">
-<div class="row">
-    <!-- Colonne Formulaire -->
-    <div class="col-md-8 grid-margin">
-        <div class="card">
-            <div class="card-body">
-                <h4 class="card-title">Espace ventes</h4>
-                <form class="form-sample" id="formulaireCommande" method="POST" action="{{ route('add_ventes') }}">
-                    @csrf
-                    <p class="card-description">Rentrer une vente</p>
+            <div class="row">
+                <!-- Colonne Formulaire -->
+                <div class="col-md-8 grid-margin">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Espace ventes</h4>
+                            <form class="form-sample" id="formulaireCommande" method="POST" action="{{ route('add_ventes') }}">
+                                @csrf
+                                <p class="card-description">Rentrer une vente</p>
 
-                    <!-- Infos client -->
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group row">
-                                <label class="col-sm-4 col-form-label">Nom Client</label>
-                                <div class="col-sm-8">
-                                    <input type="text" name="nom_client" class="form-control" oninput="majFacture()" />
+                                <!-- Infos client -->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label">Nom Client</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" name="nom_client" class="form-control" oninput="majFacture()" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label">Email client</label>
+                                            <div class="col-sm-8">
+                                                <input type="email" name="email_client" class="form-control" oninput="majFacture()" />
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+
+                                <!-- Conteneur des commandes -->
+                                <div id="commandesContainer">
+                                    <div class="row align-items-center g-3 mb-3" id="nouvelle_commande0">
+                                        <div class="col-md-3">
+                                            <div class="autocomplete-container">
+                                                <input type="text" id="nom_produit0" name="nom_produit0" class="form-control"
+                                                    placeholder="Entrer un nom de produit" onkeyup="autoCompletion_produits(0)" oninput="majFacture()" />
+                                                <div id="suggestions_0" class="autocomplete-suggestions"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="number" id="quantite0" name="qte0" class="form-control"
+                                                placeholder="Quantité" oninput="calculTotal(0)" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="number" id="prix_unitaire0" name="prix_unitaire0" class="form-control"
+                                                placeholder="PU" readonly />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="number" id="total0" name="montant_total0" class="form-control"
+                                                placeholder="Total" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row align-items-center g-3 mb-4">
+                                    <div class="col-md-3">
+                                        <select class="form-select form-select-sm text-dark" name="moyen_paiement" oninput="majFacture()">
+                                            <option selected>moyen paiement</option>
+                                            <option value="orange_money">Orange Money</option>
+                                            <option value="mobile_money">Mobile Money</option>
+                                            <option value="cash">Cash</option>
+                                            <option value="paiement_bancaire">Paiement bancaire</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="number" id="total_commandee" name="montant_total" class="form-control"
+                                            placeholder="Total commande" readonly />
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="number" id="montant_paye" name="montant_paye" class="form-control"
+                                            placeholder="Montant versé" oninput="calculerReste()" />
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="number" id="reste" name="montant_rembourse" class="form-control"
+                                            placeholder="Reste" readonly />
+                                    </div>
+
+                                    <input type="hidden" name="numRows" id="numRows" value="1">
+                                    <input type="hidden" name="type_operation" value="vente">
+                                </div>
+                                <div class="row mb-4">
+                                    <div class="col-md-3">
+                                        <input type="number" id="reduction" name="reduction" class="form-control"
+                                            placeholder="Réduction en FCFA"  oninput="calculerTotalGeneral()" />
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="number" id="remise" name="remise"  class="form-control"
+                                            placeholder="tva:25%" oninput="calculerTotalGeneral()"/>
+                                    </div>
+                                </div>
+
+                                <!-- Boutons -->
+                                <button type="submit" class="btn btn-success me-2">Enregistrer</button>
+                                <button type="button" class="btn btn-danger me-2" id="btnAnnuler">Recommencer</button>
+                                <button type="button" class="btn btn-primary me-2" id="ajouterCommande">Ajouter commande</button>
+                            </form>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group row">
-                                <label class="col-sm-4 col-form-label">Email client</label>
-                                <div class="col-sm-8">
-                                    <input type="email" name="email_client" class="form-control" oninput="majFacture()" />
+                    </div>
+                </div>
+
+                <!-- Colonne Facture -->
+                <div class="col-md-4">
+                    <div class="card shadow-sm">
+                        <div class="card-body" id="facture-apercu" style="font-size:12px;">
+                            <div class="header text-center mb-3">
+                                <h5>FACTURE (aperçu)</h5>
+                                <p id="facture-date"></p>
+                            </div>
+
+                            <!-- Infos client -->
+                            <div class="mb-3">
+                                <strong>Client :</strong> <span id="facture-client">---</span><br>
+                                <strong>Email :</strong> <span id="facture-email">---</span>
+                            </div>
+
+                            <!-- Produits -->
+                            <table class="table table-sm table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Produit</th>
+                                        <th>Qte</th>
+                                        <th>PU</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="facture-produits"></tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="3" class="text-end">TOTAL</td>
+                                        <td id="facture-total">0</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" class="text-end">Payé</td>
+                                        <td id="facture-paye">0</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" class="text-end">Reste</td>
+                                        <td id="facture-reste">0</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+
+                            <div class="footer text-center mt-3">
+                                <small>Merci pour votre confiance</small>
+                                <div class="mt-2">
+                                    <button type="button" class="btn btn-dark" onclick="imprimerFacture()">🖨️ Imprimer la facture</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Conteneur des commandes -->
-                    <div id="commandesContainer">
-                        <div class="row align-items-center g-3 mb-3" id="nouvelle_commande0">
-                            <div class="col-md-3">
-                                <div class="autocomplete-container">
-                                    <input type="text" id="nom_produit0" name="nom_produit0" class="form-control"
-                                        placeholder="Entrer un nom de produit" onkeyup="autoCompletion_produits(0)" oninput="majFacture()" />
-                                    <div id="suggestions_0" class="autocomplete-suggestions"></div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <input type="number" id="quantite0" name="qte0" class="form-control"
-                                    placeholder="Quantité" oninput="calculTotal(0)" />
-                            </div>
-                            <div class="col-md-3">
-                                <input type="number" id="prix_unitaire0" name="prix_unitaire0" class="form-control"
-                                    placeholder="PU" readonly />
-                            </div>
-                            <div class="col-md-3">
-                                <input type="number" id="total0" name="montant_total0" class="form-control"
-                                    placeholder="Total" readonly />
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Paiement -->
-                    <div class="row align-items-center g-3 mb-3">
-                        <div class="col-md-3">
-                            <select class="form-select form-select-sm text-dark" name="moyen_paiement" oninput="majFacture()">
-                                <option selected>moyen paiement</option>
-                                <option value="orange_money">Orange Money</option>
-                                <option value="mobile_money">Mobile Money</option>
-                                <option value="cash">Cash</option>
-                                <option value="paiement_bancaire">Paiement bancaire</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <input type="number" id="total_commandee" name="montant_total" class="form-control"
-                                placeholder="Total commande" readonly />
-                        </div>
-                        <div class="col-md-3">
-                            <input type="number" id="montant_paye" name="montant_paye" class="form-control"
-                                placeholder="Montant versé" oninput="calculerReste()" />
-                        </div>
-                        <div class="col-md-3">
-                            <input type="number" id="reste" name="montant_rembourse" class="form-control"
-                                placeholder="Reste" readonly />
-                        </div>
-                        <input type="hidden" name="numRows" id="numRows" value="1">
-                        <input type="hidden" name="type_operation" value="vente">
-                    </div>
-
-                    <!-- Boutons -->
-                    <button type="submit" class="btn btn-success me-2">Enregistrer</button>
-                    <button type="button" class="btn btn-dark me-2" onclick="enregistrerEtImprimer()">Enregistrer & Imprimer</button>
-                    <button type="button" class="btn btn-danger me-2" id="btnAnnuler">Recommencer</button>
-                    <button type="button" class="btn btn-primary me-2" id="ajouterCommande">Ajouter commande</button>
-                </form>
+                </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Colonne Facture -->
-    <div class="col-md-4">
-        <div class="card shadow-sm">
-            <div class="card-body" id="facture-apercu" style="font-size:12px;">
-                <div class="header text-center mb-3">
-                    <h5>FACTURE (aperçu)</h5>
-                    <p id="facture-date"></p>
-                </div>
-
-                <!-- Infos client -->
-                <div class="mb-3">
-                    <strong>Client :</strong> <span id="facture-client">---</span><br>
-                    <strong>Email :</strong> <span id="facture-email">---</span>
-                </div>
-
-                <!-- Produits -->
-                <table class="table table-sm table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Produit</th>
-                            <th>Qte</th>
-                            <th>PU</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
-                    <tbody id="facture-produits"></tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="3" class="text-end">TOTAL</td>
-                            <td id="facture-total">0</td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" class="text-end">Payé</td>
-                            <td id="facture-paye">0</td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" class="text-end">Reste</td>
-                            <td id="facture-reste">0</td>
-                        </tr>
-                    </tfoot>
-                </table>
-
-                <div class="footer text-center mt-3">
-                    <small>Merci pour votre confiance</small>
-                    <div class="mt-2">
-                        <button type="button" class="btn btn-dark" onclick="imprimerFacture()">🖨️ Imprimer la facture</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
           </div>
           @include('includes.footer')
         </div>
@@ -345,6 +352,21 @@
                 const val = parseFloat(input.value) || 0;
                 totalGeneral += val;
             });
+
+            let remise = document.getElementById('remise').value || 0;
+            let reduction = document.getElementById('reduction').value || 0;
+
+            if(reduction > 0){
+                totalGeneral -= parseFloat(reduction);
+            }
+            else if(remise > 0){
+                totalGeneral -= (totalGeneral * parseFloat(remise) / 100);
+            }
+            else if( remise && reduction){
+                alert('svp remplir un seul champ entre remise et reduction');
+            }
+
+
             document.getElementById('total_commandee').value = totalGeneral.toFixed(2);
             calculerReste();
         }
@@ -354,7 +376,7 @@
             let total = parseFloat(document.getElementById('total_commandee').value) || 0;
             let reste = document.getElementById('reste');
 
-            reste.value = (montant - total).toFixed(2);
+            reste.value = (montant - total ).toFixed(2);
             majFacture();
         }
 
